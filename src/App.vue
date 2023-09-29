@@ -1,0 +1,36 @@
+
+<style scoped>
+</style>
+<template>
+  <t-button @click="handleOpenDrawerClick">批量分享操作</t-button>
+  <!---->
+  <t-drawer
+      v-model:visible="visible" header="标题名称" size="600px"
+            :on-confirm="handleClose" @close="handleClose" placement="right" :closeOnOverlayClick="false">
+    <!--天翼云盘-->
+    <!--<TianyiCloud ref="tianyiCloudRef"/>-->
+
+  </t-drawer>
+</template>
+
+
+<script setup lang="ts">
+//import TianyiCloud from "./components/tianyiCloud/index.vue";
+import {ref} from "vue";
+
+const visible = ref<boolean>(false);
+
+//天翼云
+//const tianyiCloudRef = ref();
+
+//按钮打开
+const handleOpenDrawerClick = ():void => {
+  visible.value = true;
+}
+//关闭
+const handleClose = ():void => {
+  visible.value = false;
+  //天翼云
+  //tianyiCloudRef.value.handleEnd();
+}
+</script>
