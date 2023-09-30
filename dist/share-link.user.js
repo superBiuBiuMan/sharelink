@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         网盘批量分享工具
 // @namespace    dreamlove
-// @version      1.0.0
+// @version      1.0.1
 // @author       superBiuBiu
 // @description  网盘文件批量分享,目前支持百度网盘,天翼网盘,115网盘~
 // @iconURL      https://www.google.com/s2/favicons?domain=dreamlove.top
@@ -9,7 +9,7 @@
 // @match        https://cloud.189.cn/*
 // @match        https://pan.baidu.com/*
 // @match        https://115.com/*
-// @require      https://cdn.bootcdn.net/ajax/libs/vue/3.3.4/dist/vue.global.prod.js
+// @require      https://cdn.bootcdn.net/ajax/libs/vue/3.3.4/vue.global.prod.js
 // @connect      webapi.115.com
 // @grant        GM_addStyle
 // @grant        GM_xmlhttpRequest

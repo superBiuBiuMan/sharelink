@@ -11,7 +11,7 @@ export default defineConfig({
       userscript: {
         name:'网盘批量分享工具',
         author:'superBiuBiu',
-        version:'1.0.0',
+        version:'1.0.1',
         namespace: 'dreamlove',
         match:
             [
@@ -28,7 +28,7 @@ export default defineConfig({
       },
       build: {
         externalGlobals: {
-          vue: cdn.bootcdn('Vue', 'dist/vue.global.prod.js'),
+          vue: cdn.bootcdn('Vue', 'vue.global.prod.js'),
         },
       },
     }),
