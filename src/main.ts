@@ -12,7 +12,7 @@ import {
     RadioButton,
     RadioGroup,
     Space,
-    Textarea
+    Textarea, Tooltip
 } from 'tdesign-vue-next';
 
 
@@ -27,7 +27,7 @@ app.use(Button)
     .use(InputNumber)
     .use(Progress)
     .use(Checkbox)
-
+    .use(Tooltip)
 app.mount(
   (() => {
     const app = document.createElement('div');
@@ -35,7 +35,11 @@ app.mount(
     //document.querySelector('ul.nav-menu')?.append(app);
 
     //微云
-    document.querySelector('div.mod-nav')?.append(app);
+    //document.querySelector('div.mod-nav')?.append(app);
+
+    //百度云
+    const tempDOM = document.querySelector('div.wp-s-header__right');
+    tempDOM.insertBefore(app,tempDOM.firstChild)
     //document.body.append(app);
     return app;
   })(),

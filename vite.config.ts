@@ -11,11 +11,12 @@ export default defineConfig({
       userscript: {
         icon: 'https://vitejs.dev/logo.svg',
         namespace: 'npm/vite-plugin-monkey',
+        //'https://www.weiyun.com/*',
         match:
             [
                 'https://www.google.com/',
                 'https://cloud.189.cn/*/**',
-                'https://www.weiyun.com/*',
+                'https://pan.baidu.com/*',
             ],
       },
       build: {

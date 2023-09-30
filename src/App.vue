@@ -10,18 +10,24 @@
     <!--天翼云盘-->
     <!--<TianyiCloud ref="tianyiCloudRef"/>-->
 
+    <!--百度云-->
+    <BaiduCloud ref="baiduCloudRef"/>
   </t-drawer>
 </template>
 
 
 <script setup lang="ts">
 //import TianyiCloud from "./components/tianyiCloud/index.vue";
+import BaiduCloud from "./components/baiduCloud/index.vue";
 import {ref} from "vue";
 
 const visible = ref<boolean>(false);
 
 //天翼云
 //const tianyiCloudRef = ref();
+
+//百度云
+const baiduCloudRef = ref();
 
 //按钮打开
 const handleOpenDrawerClick = ():void => {
@@ -32,5 +38,10 @@ const handleClose = ():void => {
   visible.value = false;
   //天翼云
   //tianyiCloudRef.value.handleEnd();
+
+  //百度云
+  baiduCloudRef.value.handleEnd();
+
+
 }
 </script>

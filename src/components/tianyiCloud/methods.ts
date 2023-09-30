@@ -14,6 +14,7 @@ import { MessagePlugin } from 'tdesign-vue-next';
 
 import axios from "axios";
 import {ref} from "vue";
+import {CopyValueToClipBoard, DownloadTxt} from "../../utils";
 export const useTianyiCloud:UseTianyiCloud = () => {
     const shareDelay = ref<number>(1000);
     const expireTime = ref<typeof ExpireTimeEnum>(ExpireTimeEnum.forever);
@@ -45,7 +46,9 @@ export const useTianyiCloud:UseTianyiCloud = () => {
 
         //获取选中DOM
         const selectDOM = document.querySelectorAll("li[data-selected=true].c-file-item");
-        if(!selectDOM.length) return alert('请选择要分享的文件');
+        if(!selectDOM.length) {
+            return MessagePlugin.warning('请选择要分享的文件!')
+        }
         //开始分享
         isSharing.value = true;
         for(let dom of selectDOM){
@@ -78,7 +81,7 @@ export const useTianyiCloud:UseTianyiCloud = () => {
             shareInfo.value.push(tempData)
             //生成用户观看数据
             shareInfoUserSee.value+= (handleTransformFormat(tempData) + '\n')
-            console.warn('结果',shareInfo.value);
+            //console.warn('结果',shareInfo.value);
             //进度条
             shareProgress.value = Math.floor((shareInfo.value.length / selectFileInfoList.value.length) * 100 );
             //等待时间
@@ -103,24 +106,14 @@ export const useTianyiCloud:UseTianyiCloud = () => {
     }
 
     const copyValue:CopyValue = () => {
-        if(window.isSecureContext){
-            navigator.clipboard.writeText(shareInfoUserSee.value+"").then(res=>{
-                MessagePlugin.success('复制成功');
-            }).catch(err=>{
-                MessagePlugin.warning('复制到剪贴板失败,可能是浏览器不支持该操作');
-            });
-        }else{
-            MessagePlugin.warning('很抱歉，暂时不支持在此网站上复制');
-        }
+        CopyValueToClipBoard(shareInfoUserSee.value+"").then(() => {
+            MessagePlugin.success('复制成功');
+        }).catch(() => {
+            MessagePlugin.warning('复制到剪贴板失败,可能是浏览器不支持该操作');
+        })
     }
     const download:Download = () => {
-        const element = document.createElement('a');
-        element.setAttribute('href','data:text/plain;charset=utf-8,' + encodeURIComponent(shareInfoUserSee.value));
-        element.setAttribute('download','天翼云盘批量分享' + Date.now())
-        element.style.display = 'none';
-        document.body.append(element);
-        element.click();
-        document.body.removeChild(element);
+        DownloadTxt('天翼云盘批量分享' + Date.now(),shareInfoUserSee.value)
     }
     return {
         shareDelay,
