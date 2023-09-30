@@ -9,20 +9,26 @@ export default defineConfig({
     monkey({
       entry: 'src/main.ts',
       userscript: {
+        name:'网盘批量分享工具',
         author:'superBiuBiu',
         version:'1.0.0',
-        icon: 'https://vitejs.dev/logo.svg',
-        namespace: 'npm/vite-plugin-monkey',
+        namespace: 'dreamlove',
         match:
             [
                 'https://cloud.189.cn/*',
                 'https://pan.baidu.com/*',
                 'https://115.com/*'
             ],
+        description:'网盘文件批量分享,目前支持百度网盘,天翼网盘,115网盘~',
+        supportURL:'https://github.com/superBiuBiuMan/sharelink/',
+        iconURL:'https://www.google.com/s2/favicons?domain=dreamlove.top',
+        connect:[
+            'webapi.115.com',
+        ]
       },
       build: {
         externalGlobals: {
-          vue: cdn.jsdelivr('Vue', 'dist/vue.global.prod.js'),
+          vue: cdn.bootcdn('Vue', 'dist/vue.global.prod.js'),
         },
       },
     }),
