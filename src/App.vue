@@ -5,36 +5,40 @@
   <t-button @click="handleOpenDrawerClick">批量分享操作</t-button>
   <!---->
   <t-drawer
-      v-model:visible="visible" header="标题名称" size="600px"
+      v-model:visible="visible" :header="name + '批量分享工具'" size="600px"
             :on-confirm="handleClose" @close="handleClose" placement="right" :closeOnOverlayClick="false">
-    <!--天翼云盘-->
-    <!--<TianyiCloud ref="tianyiCloudRef"/>-->
-
-    <!--百度云-->
-    <!--<BaiduCloud ref="baiduCloudRef"/>-->
-
-    <!--115网盘-->
-    <!--<Cloud115 ref="cloud115Ref"/>-->
+    <component :is="ShowComponent" ref="operationRef"></component>
   </t-drawer>
 </template>
 
 
 <script setup lang="ts">
-//import TianyiCloud from "./components/tianyiCloud/index.vue";
-//import BaiduCloud from "./components/baiduCloud/index.vue";
+import TianyiCloud from "./components/tianyiCloud/index.vue";
+import BaiduCloud from "./components/baiduCloud/index.vue";
 import Cloud115 from "./components/115Cloud/index.vue";
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import {ComputedRef} from "vue";
 
 const visible = ref<boolean>(false);
+const name = ref<string>('未知网盘');
 
-//天翼云
-//const tianyiCloudRef = ref();
+const operationRef = ref();
 
-//百度云
-//const baiduCloudRef = ref();
-
-//115
-//const cloud115Ref = ref();
+const ShowComponent:ComputedRef = computed(() => {
+  const url = window.location.href;
+  if(url.startsWith('https://pan.baidu.com/disk/main')) {
+    name.value = '百度网盘'
+    return BaiduCloud
+  }
+  else if(url.startsWith('https://cloud.189.cn/web/main/')) {
+    name.value = '天翼云盘'
+    return TianyiCloud;
+  }
+  else if(url.startsWith('https://115.com')) {
+    name.value = '115网盘'
+    return Cloud115;
+  }
+})
 
 //按钮打开
 const handleOpenDrawerClick = ():void => {
@@ -43,13 +47,6 @@ const handleOpenDrawerClick = ():void => {
 //关闭
 const handleClose = ():void => {
   visible.value = false;
-  //天翼云
-  //tianyiCloudRef.value.handleEnd();
-
-  //百度云
-  //baiduCloudRef.value.handleEnd();
-
-  //115
-  //cloud115Ref.value.handleEnd();
+  operationRef.value.handleEnd();
 }
 </script>

@@ -31,19 +31,22 @@ app.use(Button)
 app.mount(
   (() => {
     const app = document.createElement('div');
-    //天翼云
-    //document.querySelector('ul.nav-menu')?.append(app);
-
-    //微云(未做)
-    //document.querySelector('div.mod-nav')?.append(app);
-
-    //百度云
-    //const tempDOM = document.querySelector('div.wp-s-header__right');
-    //tempDOM.insertBefore(app,tempDOM.firstChild)
-
-    //115云盘
-    document.querySelector('div.search-ceiling')?.append(app);
-    //document.body.append(app);
+    const url = window.location.href;
+    if(url.startsWith('https://pan.baidu.com/disk/main')){
+        //百度云
+        const tempDOM = document.querySelector('div.wp-s-header__right');
+        tempDOM.insertBefore(app,tempDOM.firstChild)
+    }
+    else if(url.startsWith('https://cloud.189.cn/web/main/')){
+        //天翼云
+        document.querySelector('ul.nav-menu')?.append(app);
+    }
+    else if(url.startsWith('https://115.com')){
+        //115云盘
+        const temp = document.createElement('li')
+        temp.append(app);
+        document.querySelector('div.navigation-ceiling ul')?.append(temp);
+    }
     return app;
   })(),
 );

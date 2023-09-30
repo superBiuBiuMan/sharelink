@@ -9,20 +9,16 @@ export default defineConfig({
     monkey({
       entry: 'src/main.ts',
       userscript: {
+        author:'superBiuBiu',
+        version:'1.0.0',
         icon: 'https://vitejs.dev/logo.svg',
         namespace: 'npm/vite-plugin-monkey',
-        //'https://www.weiyun.com/*',
         match:
             [
-                'https://www.google.com/',
-                'https://cloud.189.cn/*/**',
+                'https://cloud.189.cn/*',
                 'https://pan.baidu.com/*',
                 'https://115.com/*'
             ],
-        // todo
-        //connect:[
-        //    '*'
-        //]
       },
       build: {
         externalGlobals: {

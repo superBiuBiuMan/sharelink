@@ -61,18 +61,6 @@
 <script lang="ts" setup>
 import {ExpireTimeEnum} from "./types";
 import { useBaiduCloud } from "./methods";
-//interface Props {
-//  modelValue: any
-//}
-//
-//interface Emits {
-//  (event: 'update:modelValue', data: any): void
-//}
-//
-//const props = defineProps<Props>()
-//const emits = defineEmits<Emits>()
-
-
 const {
         expireTime,
         shareDelay,
