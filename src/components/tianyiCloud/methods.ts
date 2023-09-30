@@ -17,7 +17,7 @@ import {ref} from "vue";
 import {CopyValueToClipBoard, DownloadTxt} from "../../utils";
 export const useTianyiCloud:UseTianyiCloud = () => {
     const shareDelay = ref<number>(1000);
-    const expireTime = ref<typeof ExpireTimeEnum>(ExpireTimeEnum.forever);
+    const expireTime = ref<ExpireTimeEnum>(ExpireTimeEnum.forever);
     const shareInfo = ref<Array<ShareInfoTypes>>([]);
     const shareInfoUserSee = ref<string>('');
     const shareProgress = ref<number>(0);
@@ -53,7 +53,7 @@ export const useTianyiCloud:UseTianyiCloud = () => {
         isSharing.value = true;
         for(let dom of selectDOM){
             selectFileInfoList.value.push({
-                id:dom.getAttribute('data-fileid'),
+                id:dom.getAttribute('data-fileid') ?? '',
                 fileName:dom.querySelector('.file-item-name-fileName-span')?.textContent ?? '(!!$$未知名称!!$$)',
             })
         }
@@ -85,7 +85,7 @@ export const useTianyiCloud:UseTianyiCloud = () => {
             //进度条
             shareProgress.value = Math.floor((shareInfo.value.length / selectFileInfoList.value.length) * 100 );
             //等待时间
-            await new Promise(resolve => {
+            await new Promise<void>(resolve => {
                 setTimeout(() => {
                     resolve()
                 },shareDelay.value)

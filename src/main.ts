@@ -6,7 +6,7 @@ import {
     Button,
     Checkbox,
     Drawer,
-    InputNumber,
+    InputNumber, MessagePlugin,
     Progress,
     Radio,
     RadioButton,
@@ -35,7 +35,11 @@ app.mount(
     if(url.startsWith('https://pan.baidu.com/disk/main')){
         //百度云
         const tempDOM = document.querySelector('div.wp-s-header__right');
-        tempDOM.insertBefore(app,tempDOM.firstChild)
+        if(tempDOM){
+            tempDOM.insertBefore(app,tempDOM?.firstChild)
+        }else{
+            MessagePlugin.error('初始化出错,请刷新重试')
+        }
     }
     else if(url.startsWith('https://cloud.189.cn/web/main/')){
         //天翼云

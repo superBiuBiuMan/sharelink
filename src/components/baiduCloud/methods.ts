@@ -16,7 +16,7 @@ import {unsafeWindow} from "$";
 import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../utils";
 export const useBaiduCloud:UseBaiduCloud = () => {
     const shareDelay = ref<number>(1000);
-    const expireTime = ref<typeof ExpireTimeEnum>(ExpireTimeEnum.forever);
+    const expireTime = ref<ExpireTimeEnum>(ExpireTimeEnum.forever);
     const shareInfo = ref<Array<ShareInfoTypes>>([]);
     const shareInfoUserSee = ref<string>('');
     const shareProgress = ref<number>(0);
@@ -51,26 +51,20 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         //开始分享
         isSharing.value = true;
         for(let dom of selectDOM){
-            const id = dom.getAttribute('data-id');
+            const id = dom.getAttribute('data-id') ?? '';
             const tempDOM = dom.querySelector('.wp-s-pan-list__file-name-title-text');
-            const { title } = tempDOM;
+            const title = tempDOM?  tempDOM.getAttribute('title') ?? '(!!$$未知名称!!$$)' : '获取名称失败';
             selectFileInfoList.value.push({
                 id,//存储文件id
-                fileName:title ?? '(!!$$未知名称!!$$)',//文件名称
+                fileName:title,//文件名称
             })
         }
         //遍历发送
         for(let fileInfo of selectFileInfoList.value){
-            //const { data:{shareLinkList} }: { data:{shareLinkList:Array<ShareReturnInfoTypes>} }
-            //const formData = new FormData();
-            //formData.append('period',expireTime.value + '')
-            //formData.append('pwd','6666')
-            //formData.append('eflag_disable','true')
-            //formData.append('channel_list','[]')
-            //formData.append('schannel','4')
-            //formData.append('fid_list','[297649734372532]')
             const pwd = generateRandomString(4);//提取码随机生成
+            //@ts-ignore
             const { locals } = unsafeWindow ?? {};
+            //@ts-ignore
             const { data } : { data: ShareReturnInfoTypes } = await axios({
                 method:'post',
                 url:'https://pan.baidu.com/share/set',
@@ -82,7 +76,6 @@ export const useBaiduCloud:UseBaiduCloud = () => {
                     web:1,
                     //'dp-logid':'96456600647322280113',//未知
                 },
-                //data:formData,
                 data:{
                     period:expireTime.value,
                     pwd,
@@ -97,7 +90,6 @@ export const useBaiduCloud:UseBaiduCloud = () => {
                 }
             }).catch(() => ({}))
             //console.warn('返回的数据',data)
-            //todo 这里或许可以加一个判断,出错就填充,否则就中断或者忽略
             //填充返回结果
             let tempData = {
                 ...data,
@@ -112,7 +104,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
             //进度条
             shareProgress.value = Math.floor((shareInfo.value.length / selectFileInfoList.value.length) * 100 );
             //等待时间
-            await new Promise(resolve => {
+            await new Promise<void>(resolve => {
                 setTimeout(() => {
                     resolve()
                 },shareDelay.value)

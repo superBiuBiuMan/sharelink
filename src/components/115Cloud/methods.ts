@@ -17,7 +17,7 @@ import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../uti
 import {ShareDOMSelect} from "../../infoConfig";
 export const use115Cloud:Use115Cloud = () => {
     const shareDelay = ref<number>(1000);
-    const expireTime = ref<typeof ExpireTimeEnum>(ExpireTimeEnum.forever);
+    const expireTime = ref<ExpireTimeEnum>(ExpireTimeEnum.forever);
     const shareInfo = ref<Array<ShareInfoTypes>>([]);
     const shareInfoUserSee = ref<string>('');
     const shareProgress = ref<number>(0);
@@ -27,17 +27,18 @@ export const use115Cloud:Use115Cloud = () => {
       return `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.receive_code} 分享有效时间: ${info.share_ex_duration}`;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
-        const { contentWindow } = document.getElementsByName('wangpan')[0];//获取iframe
+        const iframe= document.querySelector('iframe');//获取iframe
+        const iframeWindow = (<HTMLIFrameElement>iframe).contentWindow ?? unsafeWindow;
         //获取选中DOM
-        const selectDOM = contentWindow.document.querySelectorAll(ShareDOMSelect["115Cloud"].select);
+        const selectDOM = iframeWindow.document.querySelectorAll(ShareDOMSelect["115Cloud"].select);
         if(!selectDOM.length) {
             return MessagePlugin.warning('请选择要分享的文件!')
         }
         //开始分享
         isSharing.value = true;
         for(let dom of selectDOM){
-            const id = dom.getAttribute(ShareDOMSelect["115Cloud"].idAttribute[0]) || dom.getAttribute(ShareDOMSelect["115Cloud"].idAttribute[1]);
-            const { title } = dom;
+            const id =( dom.getAttribute(ShareDOMSelect["115Cloud"].idAttribute[0]) || dom.getAttribute(ShareDOMSelect["115Cloud"].idAttribute[1]) ) ?? '';
+            const title = dom.getAttribute('title');
             selectFileInfoList.value.push({
                 id,//存储文件id
                 fileName:title ?? '(!!$$未知名称!!$$)',//文件名称
@@ -46,6 +47,7 @@ export const use115Cloud:Use115Cloud = () => {
         //遍历发送
         for(let fileInfo of selectFileInfoList.value){
             const formData = new FormData();
+            //@ts-ignore
             const { user_id } = unsafeWindow || {};
             formData.append('user_id',user_id);//用户id
             formData.append('file_ids',fileInfo.id + '');//文件id
@@ -64,17 +66,17 @@ export const use115Cloud:Use115Cloud = () => {
                 data:formData,
                 onload:({response}) => {
                     const result:ShareReturnInfoTypes = JSON.parse(response);
-                    let tempData:ShareInfoTypes;
-                    if(result.state){
-                        //成功
-                        tempData = {
-                            ...(result.data || {}),
-                            fileName:fileInfo.fileName,
-                        }
-                    }else{
-                        //失败
-                        console.error('分享失败',result.error)
+                    let tempData:ShareInfoTypes = {
+                        ...(result.data || {}),
+                        fileName:fileInfo.fileName,
                     }
+                    //if(result.state){
+                    //    //成功
+                    //
+                    //}else{
+                    //    //失败
+                    //    console.error('分享失败',result.error)
+                    //}
                     //填充返回结果
                     shareInfo.value.push(tempData)
                     //生成用户观看数据
@@ -88,7 +90,7 @@ export const use115Cloud:Use115Cloud = () => {
                 }
             })
             //等待时间
-            await new Promise(resolve => {
+            await new Promise<void>(resolve => {
                 setTimeout(() => {
                     resolve()
                 },shareDelay.value)
