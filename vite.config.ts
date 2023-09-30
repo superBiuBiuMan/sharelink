@@ -17,6 +17,7 @@ export default defineConfig({
                 'https://www.google.com/',
                 'https://cloud.189.cn/*/**',
                 'https://pan.baidu.com/*',
+                'https://115.com/*'
             ],
       },
       build: {

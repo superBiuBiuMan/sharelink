@@ -34,12 +34,15 @@ app.mount(
     //天翼云
     //document.querySelector('ul.nav-menu')?.append(app);
 
-    //微云
+    //微云(未做)
     //document.querySelector('div.mod-nav')?.append(app);
 
     //百度云
-    const tempDOM = document.querySelector('div.wp-s-header__right');
-    tempDOM.insertBefore(app,tempDOM.firstChild)
+    //const tempDOM = document.querySelector('div.wp-s-header__right');
+    //tempDOM.insertBefore(app,tempDOM.firstChild)
+
+    //115云盘
+    document.querySelector('div.search-ceiling')?.append(app);
     //document.body.append(app);
     return app;
   })(),
