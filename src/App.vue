@@ -14,7 +14,7 @@
     <!--<BaiduCloud ref="baiduCloudRef"/>-->
 
     <!--115网盘-->
-    <Cloud115/>
+    <!--<Cloud115 ref="cloud115Ref"/>-->
   </t-drawer>
 </template>
 
@@ -33,6 +33,9 @@ const visible = ref<boolean>(false);
 //百度云
 //const baiduCloudRef = ref();
 
+//115
+//const cloud115Ref = ref();
+
 //按钮打开
 const handleOpenDrawerClick = ():void => {
   visible.value = true;
@@ -46,6 +49,7 @@ const handleClose = ():void => {
   //百度云
   //baiduCloudRef.value.handleEnd();
 
-
+  //115
+  //cloud115Ref.value.handleEnd();
 }
 </script>

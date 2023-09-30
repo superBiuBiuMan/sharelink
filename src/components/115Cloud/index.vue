@@ -24,9 +24,8 @@
         <span>有效期:</span>
         <!--分享时间-->
         <t-radio-group  v-model="expireTime" >
-          <t-radio-button :value="ExpireTimeEnum.oneDay">1天</t-radio-button>
-          <t-radio-button :value="ExpireTimeEnum.sevenDay">7天</t-radio-button>
-          <t-radio-button :value="ExpireTimeEnum.thirtyDay">30天</t-radio-button>
+          <!--<t-radio-button :value="ExpireTimeEnum.oneDay">1天</t-radio-button>-->
+          <!--<t-radio-button :value="ExpireTimeEnum.sevenDay">7天</t-radio-button>-->
           <t-radio-button :value="ExpireTimeEnum.forever">永久</t-radio-button>
         </t-radio-group>
       <div class="115Cloud_option_time">

@@ -19,6 +19,10 @@ export default defineConfig({
                 'https://pan.baidu.com/*',
                 'https://115.com/*'
             ],
+        // todo
+        //connect:[
+        //    '*'
+        //]
       },
       build: {
         externalGlobals: {

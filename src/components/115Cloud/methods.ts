@@ -12,7 +12,7 @@ import { MessagePlugin } from 'tdesign-vue-next';
 
 import axios from "axios";
 import {ref} from "vue";
-import {unsafeWindow} from "$";
+import {GM_xmlhttpRequest, unsafeWindow} from "$";
 import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../utils";
 import {ShareDOMSelect} from "../../infoConfig";
 export const use115Cloud:Use115Cloud = () => {
@@ -24,23 +24,7 @@ export const use115Cloud:Use115Cloud = () => {
     const selectFileInfoList = ref<Array<SelectFileInfoList>>([]);
     const isSharing = ref<boolean>(false);
     const handleTransformFormat:HandleTransformFormat = (info) => {
-        switch (info.expireTime) {
-            case ExpireTimeEnum.oneDay: {
-                return `文件名称: ${info.fileName} 分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: 1天`;
-            }
-            case ExpireTimeEnum.sevenDay: {
-                return `文件名称: ${info.fileName} 分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: 7天`;
-            }
-            case ExpireTimeEnum.thirtyDay: {
-                return `文件名称: ${info.fileName} 分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: 30天`;
-            }
-            case ExpireTimeEnum.forever: {
-                return `文件名称: ${info.fileName} 分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: 永久`;
-            }
-            default: {
-                return `文件名称: ${info.fileName} 分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: 未知`;
-            }
-        }
+      return `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.receive_code} 分享有效时间: ${info.share_ex_duration}`;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
         const { contentWindow } = document.getElementsByName('wangpan')[0];//获取iframe
@@ -52,7 +36,7 @@ export const use115Cloud:Use115Cloud = () => {
         //开始分享
         isSharing.value = true;
         for(let dom of selectDOM){
-            const id = dom.getAttribute(ShareDOMSelect["115Cloud"].idAttribute);
+            const id = dom.getAttribute(ShareDOMSelect["115Cloud"].idAttribute[0]) || dom.getAttribute(ShareDOMSelect["115Cloud"].idAttribute[1]);
             const { title } = dom;
             selectFileInfoList.value.push({
                 id,//存储文件id
@@ -61,56 +45,48 @@ export const use115Cloud:Use115Cloud = () => {
         }
         //遍历发送
         for(let fileInfo of selectFileInfoList.value){
-            //const { data:{shareLinkList} }: { data:{shareLinkList:Array<ShareReturnInfoTypes>} }
-            //const formData = new FormData();
-            //formData.append('period',expireTime.value + '')
-            //formData.append('pwd','6666')
-            //formData.append('eflag_disable','true')
-            //formData.append('channel_list','[]')
-            //formData.append('schannel','4')
-            //formData.append('fid_list','[297649734372532]')
-            const pwd = generateRandomString(4);//提取码随机生成
-            const { locals } = unsafeWindow ?? {};
-            const { data } : { data: ShareReturnInfoTypes } = await axios({
+            const formData = new FormData();
+            const { user_id } = unsafeWindow || {};
+            formData.append('user_id',user_id);//用户id
+            formData.append('file_ids',fileInfo.id + '');//文件id
+            formData.append('ignore_warn','1');
+            formData.append('is_asc','0');
+            formData.append('order','user_ptime');
+            GM_xmlhttpRequest({
                 method:'post',
                 url:'https://webapi.115.com/share/send',
-                params:{
-                    channel:'channel',
-                    clienttype:'0',
-                    bdstoken:locals?.userInfo?.bdstoken,
-                    app_id:'250528',//未知-好像是定值
-                    web:1,
-                    //'dp-logid':'96456600647322280113',//未知
-                },
-                //data:formData,
-                data:{
-                    period:expireTime.value,
-                    pwd,
-                    'eflag_disable':true,//不知道是什么参数,好像是分享类型eflag_disable: "personal" === e.shareType
-                    channel_list:[],//未知
-                    schannel:4,//未知-貌似是一个定制
-                    fid_list:`[${fileInfo.id}]`,//文件id
-                },
                 headers:{
-                    'accept':'application/json;charset=UTF-8',
-                    'Content-Type':' application/x-www-form-urlencoded'
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
+                    'Cookie':document.cookie,
+                    'Accept':'application/json, text/javascript, */*; q=0.01',
+                    'Referer':'https://115.com/',
+                },
+                data:formData,
+                onload:({response}) => {
+                    const result:ShareReturnInfoTypes = JSON.parse(response);
+                    let tempData:ShareInfoTypes;
+                    if(result.state){
+                        //成功
+                        tempData = {
+                            ...(result.data || {}),
+                            fileName:fileInfo.fileName,
+                        }
+                    }else{
+                        //失败
+                        console.error('分享失败',result.error)
+                    }
+                    //填充返回结果
+                    shareInfo.value.push(tempData)
+                    //生成用户观看数据
+                    shareInfoUserSee.value+= (handleTransformFormat(tempData) + '\n')
+                    //console.warn('结果',shareInfo.value);
+                    //进度条
+                    shareProgress.value = Math.floor((shareInfo.value.length / selectFileInfoList.value.length) * 100 );
+                },
+                onerror:(res) => {
+                    console.error('失败',res)
                 }
-            }).catch(() => ({}))
-            //console.warn('返回的数据',data)
-            //todo 这里或许可以加一个判断,出错就填充,否则就中断或者忽略
-            //填充返回结果
-            let tempData = {
-                ...data,
-                expireTime: expireTime.value,
-                fileName:fileInfo.fileName,
-                pwd,
-            }
-            shareInfo.value.push(tempData)
-            //生成用户观看数据
-            shareInfoUserSee.value+= (handleTransformFormat(tempData) + '\n')
-            //console.warn('结果',shareInfo.value);
-            //进度条
-            shareProgress.value = Math.floor((shareInfo.value.length / selectFileInfoList.value.length) * 100 );
+            })
             //等待时间
             await new Promise(resolve => {
                 setTimeout(() => {

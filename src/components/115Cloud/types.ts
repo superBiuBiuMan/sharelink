@@ -2,26 +2,31 @@ import {Ref} from "vue";
 export enum ExpireTimeEnum {
     oneDay=1,//1天
     sevenDay=7,
-    thirtyDay=30,
-    forever=0,//永久
+    forever=-1,//永久
 }
 
 
 
 //分享链接返回的数据(只取有用的)
 export interface ShareReturnInfoTypes {
-    link:string,//链接
-    errorno?:number,//0成功,2失败
-    shareid?:number,//-1失败,成功返回分享id
-    shorturl:string,
+    data?:{
+        share_title?:string,//分享文件名,
+        share_url?:string,//分享链接,
+        share_ex_duration?:string,//分享有效期
+        receive_code?:string,//提取码
+    }
+    error:string,//错误信息,为空则成功,否则返回失败信息
+    state:boolean,// 成功返回true 失败返回false
+
+    //link:string,//链接
+    //errorno?:number,//0成功,2失败
+    //shareid?:number,//-1失败,成功返回分享id
+    //shorturl:string,
 
 }
 
-
-export type ShareInfoTypes  = Partial<ShareReturnInfoTypes> & {
-        expireTime:string | number,//分享有效时间
+export type ShareInfoTypes  = ShareReturnInfoTypes['data'] & {
         fileName:string,//文件名
-        pwd:string,//四位提取码
 }
 
 export interface SelectFileInfoList {
