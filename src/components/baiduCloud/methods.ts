@@ -14,6 +14,7 @@ import axios from "axios";
 import {ref} from "vue";
 import {unsafeWindow} from "$";
 import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../utils";
+import {ShareDOMSelect} from "../../infoConfig";
 export const useBaiduCloud:UseBaiduCloud = () => {
     const shareDelay = ref<number>(1000);
     const expireTime = ref<ExpireTimeEnum>(ExpireTimeEnum.forever);
@@ -44,7 +45,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
     const handleBatchOperation:HandleBatchOperation = async () => {
 
         //获取选中DOM
-        const selectDOM = document.querySelectorAll("tr.wp-s-table-skin-hoc__tr.selected");
+        const selectDOM = document.querySelectorAll(ShareDOMSelect['baiduCloud'].select);
         if(!selectDOM.length) {
             return MessagePlugin.warning('请选择要分享的文件!')
         }
@@ -52,7 +53,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         isSharing.value = true;
         for(let dom of selectDOM){
             const id = dom.getAttribute('data-id') ?? '';
-            const tempDOM = dom.querySelector('.wp-s-pan-list__file-name-title-text');
+            const tempDOM = dom.querySelector(ShareDOMSelect['baiduCloud'].select);
             const title = tempDOM?  tempDOM.getAttribute('title') ?? '(!!$$未知名称!!$$)' : '获取名称失败';
             selectFileInfoList.value.push({
                 id,//存储文件id

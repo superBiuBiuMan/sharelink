@@ -15,6 +15,7 @@ import { MessagePlugin } from 'tdesign-vue-next';
 import axios from "axios";
 import {ref} from "vue";
 import {CopyValueToClipBoard, DownloadTxt} from "../../utils";
+import {ShareDOMSelect} from "../../infoConfig";
 export const useTianyiCloud:UseTianyiCloud = () => {
     const shareDelay = ref<number>(1000);
     const expireTime = ref<ExpireTimeEnum>(ExpireTimeEnum.forever);
@@ -45,7 +46,7 @@ export const useTianyiCloud:UseTianyiCloud = () => {
     const handleBatchOperation:HandleBatchOperation = async () => {
 
         //获取选中DOM
-        const selectDOM = document.querySelectorAll("li[data-selected=true].c-file-item");
+        const selectDOM = document.querySelectorAll(ShareDOMSelect['tianyiCloud'].select);
         if(!selectDOM.length) {
             return MessagePlugin.warning('请选择要分享的文件!')
         }
@@ -54,7 +55,7 @@ export const useTianyiCloud:UseTianyiCloud = () => {
         for(let dom of selectDOM){
             selectFileInfoList.value.push({
                 id:dom.getAttribute('data-fileid') ?? '',
-                fileName:dom.querySelector('.file-item-name-fileName-span')?.textContent ?? '(!!$$未知名称!!$$)',
+                fileName:dom.querySelector(ShareDOMSelect['tianyiCloud'].fileNameSelect)?.textContent ?? '(!!$$未知名称!!$$)',
             })
         }
         //遍历发送
