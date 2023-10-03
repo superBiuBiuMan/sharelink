@@ -52,7 +52,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         //开始分享
         isSharing.value = true;
         for(let dom of selectDOM){
-            const id = dom.getAttribute('data-id') ?? '';
+            const id = dom.getAttribute(ShareDOMSelect['baiduCloud'].idAttribute[0]) ?? '';
             const tempDOM = dom.querySelector(ShareDOMSelect['baiduCloud'].select);
             const title = tempDOM?  tempDOM.getAttribute('title') ?? '(!!$$未知名称!!$$)' : '获取名称失败';
             selectFileInfoList.value.push({

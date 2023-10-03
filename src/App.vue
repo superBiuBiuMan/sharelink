@@ -3,7 +3,6 @@
 </style>
 <template>
   <t-button @click="handleOpenDrawerClick">批量分享操作</t-button>
-  <!---->
   <t-drawer
       v-model:visible="visible" :header="name + '批量分享工具'" size="600px"
             :on-confirm="handleClose" @close="handleClose" placement="right" :closeOnOverlayClick="false">
@@ -16,6 +15,7 @@
 import TianyiCloud from "./components/tianyiCloud/index.vue";
 import BaiduCloud from "./components/baiduCloud/index.vue";
 import Cloud115 from "./components/115Cloud/index.vue";
+import Cloud123 from "./components/123Cloud/index.vue";
 import {computed, ref} from "vue";
 import {ComputedRef} from "vue";
 
@@ -29,6 +29,10 @@ const ShowComponent:ComputedRef = computed(() => {
   if(url.startsWith('https://pan.baidu.com/disk/main')) {
     name.value = '百度网盘'
     return BaiduCloud
+  }
+  else if(url.startsWith('https://www.123pan.com')){
+    name.value = '123云盘'
+    return Cloud123;
   }
   else if(url.startsWith('https://cloud.189.cn/web/main/')) {
     name.value = '天翼云盘'

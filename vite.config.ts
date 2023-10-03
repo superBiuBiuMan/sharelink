@@ -17,7 +17,8 @@ export default defineConfig({
             [
                 'https://cloud.189.cn/*',
                 'https://pan.baidu.com/*',
-                'https://115.com/*'
+                'https://115.com/*',
+                'https://www.123pan.com/*',
             ],
         description:'网盘文件批量分享,目前支持百度网盘,天翼网盘,115网盘~',
         supportURL:'https://github.com/superBiuBiuMan/sharelink/',
