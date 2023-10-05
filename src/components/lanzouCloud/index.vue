@@ -52,10 +52,10 @@
               <t-radio-button :value="PwdEnum.yes">随机提取码</t-radio-button>
               <t-radio-button :value="PwdEnum.self">自定义提取码</t-radio-button>
             </t-radio-group>
-            <template v-if="userOptions.pwdType === PwdEnum.self">
-              <t-input v-model="userOptions.pwd" placeholder="请输入自定义提取码" maxlength="6" />
-            </template>
           </div>
+          <template v-if="userOptions.pwdType === PwdEnum.self">
+            <t-input v-model="userOptions.pwd" placeholder="请输入自定义提取码" maxlength="6"/>
+          </template>
         </t-collapse-panel>
         <!--表格-->
         <t-collapse-panel value="1" header="文件选择">
