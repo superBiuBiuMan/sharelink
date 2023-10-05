@@ -2,7 +2,7 @@ import {ListData, TransformListData, UseListModule} from "./types";
 import {ref, UnwrapRef} from "vue";
 import {TdPrimaryTableProps} from "tdesign-vue-next";
 import dayjs from "dayjs";
-
+// @ts-ignore
 export const useListModule:UseListModule = (props, emits) => {
     const selectedRowKeys = ref<(number | string)[]>([])//选中id信息
     const selectedRowInfos = ref<ListData[]>([])//选中的文件信息

@@ -30,14 +30,14 @@ export const use115Cloud:Use115Cloud = () => {
         const iframe= document.querySelector('iframe');//获取iframe
         const iframeWindow = (<HTMLIFrameElement>iframe).contentWindow ?? unsafeWindow;
         //获取选中DOM
-        const selectDOM = iframeWindow.document.querySelectorAll(ShareDOMSelect["cloud115"].select);
+        const selectDOM = iframeWindow.document.querySelectorAll(ShareDOMSelect["cloud115"]?.select ?? '');
         if(!selectDOM.length) {
             return MessagePlugin.warning('请选择要分享的文件!')
         }
         //开始分享
         isSharing.value = true;
         for(let dom of selectDOM){
-            const id =( dom.getAttribute(ShareDOMSelect["cloud115"].idAttribute[0]) || dom.getAttribute(ShareDOMSelect["cloud115"].idAttribute[1]) ) ?? '';
+            const id =( dom.getAttribute(ShareDOMSelect["cloud115"]?.idAttribute?.[0] ?? '') || dom.getAttribute(ShareDOMSelect["cloud115"]?.idAttribute?.[1] ?? '') ) ?? '';
             const title = dom.getAttribute('title');
             selectFileInfoList.value.push({
                 id,//存储文件id

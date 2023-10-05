@@ -16,8 +16,9 @@ export default defineStore({
         //初始化网盘信息
         initCloudInfo(){
             const url = window.location.href;
-            //判断所属网盘 todo 可能为空
-            this.currentCloud = CloudInfoEnum[ findCloudProvider(url,cloudUrlInfo) ?? ''];
+            //判断所属网盘
+            //@ts-ignore
+            this.currentCloud = CloudInfoEnum[findCloudProvider(url,cloudUrlInfo) ?? ''];
         }
     }
 })

@@ -25,7 +25,7 @@
     <!--操作栏-->
     <div class="cloud123_operation">
       <t-space>
-        <t-button @click="handleBatchOperation" :loading="isSharing">批量分享</t-button>
+        <t-button @click="handleBatchOperation" :loading="userOptions.isSharing">批量分享</t-button>
         <t-button theme="default" @click="copyValue">复制到剪贴板</t-button>
         <t-button theme="default" @click="download">下载分享链接</t-button>
       </t-space>
@@ -99,14 +99,9 @@
 import {DefaultShowEnum, ExpireTimeEnum, PwdEnum} from "./types";
 import { use123Cloud } from "./methods";
 import ListModule from "../../modules/123Cloud/listModule/index.vue";
-import {watch} from "vue";
 
 const {
-        isSharing,
         userOptions,
-        shareInfoUserSee,
-        shareProgress,
-        handleChangeTime,
         handleBatchOperation,
         handleEnd,
         copyValue,

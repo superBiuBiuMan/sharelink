@@ -118,7 +118,7 @@ export const use123Cloud:Use123Cloud = () => {
                 ...transformOptions(userOptions.value),
                 driveId:0,
                 event:"shareCreate",
-                fileIdList:fileInfo.FileId * 1,//文件id
+                fileIdList:<number>fileInfo.FileId,//文件id
                 fileNum:1,//文件数量,
                 operatePlace:1,
                 renameVisible:false,
