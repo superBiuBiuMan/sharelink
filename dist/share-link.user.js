@@ -406,7 +406,7 @@
     },
     "cloudTianyi": {
       select: "li[data-selected=true].c-file-item",
-      fileNameSelect: "file-item-name-fileName-span"
+      fileNameSelect: ".file-item-name-fileName-span"
     },
     "cloudBaidu": {
       select: "tr.wp-s-table-skin-hoc__tr.selected",
@@ -33650,7 +33650,7 @@
       for (let fileInfo of selectFileInfoList.value) {
         const { data: { shareLinkList } } = await axios$1({
           method: "get",
-          url: "https://cloud.189.cn/api/open/share/createShareLink.action",
+          url: window.location.origin + "/api/open/share/createShareLink.action",
           params: {
             noCache: Math.random(),
             fileId: fileInfo.id,
@@ -33899,8 +33899,9 @@
       }
       isSharing.value = true;
       for (let dom of selectDOM) {
+        console.warn("查看DOM", dom);
         const id = dom.getAttribute((_c = (_b = ShareDOMSelect["cloudBaidu"]) == null ? void 0 : _b.idAttribute) == null ? void 0 : _c[0]) ?? "";
-        const tempDOM = dom.querySelector((_d = ShareDOMSelect["cloudBaidu"]) == null ? void 0 : _d.select);
+        const tempDOM = dom.querySelector((_d = ShareDOMSelect["cloudBaidu"]) == null ? void 0 : _d.fileNameSelect);
         const title = tempDOM ? tempDOM.getAttribute("title") ?? "(!!$$未知名称!!$$)" : "获取名称失败";
         selectFileInfoList.value.push({
           id,
@@ -33914,7 +33915,7 @@
         const { locals } = _unsafeWindow ?? {};
         const { data: data2 } = await axios$1({
           method: "post",
-          url: "https://pan.baidu.com/share/set",
+          url: window.location.origin + "/share/set",
           params: {
             channel: "channel",
             clienttype: "0",
@@ -35211,7 +35212,7 @@
           }
         }
       ],
-      empty: "暂无数据,请重新进入目录以拦截获取数据",
+      empty: "暂无数据,请重新进入任意文件夹目录以拦截获取数据",
       onSelectChange: (value, ctx) => {
         selectedRowKeys.value = value;
         selectedRowInfos.value = ctx.selectedRowData;
@@ -35674,7 +35675,7 @@
           title: "时间"
         }
       ],
-      empty: "暂无数据,请重新进入目录以拦截获取文件数据",
+      empty: "暂无数据,请重新进入任意文件夹目录以拦截获取文件数据",
       onSelectChange: (value, ctx) => {
         selectedRowKeys.value = value;
         selectedRowInfos.value = ctx.selectedRowData;
