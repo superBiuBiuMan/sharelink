@@ -70,18 +70,10 @@ export const use115Cloud:Use115Cloud = () => {
                         ...(result.data || {}),
                         fileName:fileInfo.fileName,
                     }
-                    //if(result.state){
-                    //    //成功
-                    //
-                    //}else{
-                    //    //失败
-                    //    console.error('分享失败',result.error)
-                    //}
                     //填充返回结果
                     shareInfo.value.push(tempData)
                     //生成用户观看数据
                     shareInfoUserSee.value+= (handleTransformFormat(tempData) + '\n')
-                    //console.warn('结果',shareInfo.value);
                     //进度条
                     shareProgress.value = Math.floor((shareInfo.value.length / selectFileInfoList.value.length) * 100 );
                 },

@@ -17,12 +17,6 @@ export interface ShareReturnInfoTypes {
     }
     error:string,//错误信息,为空则成功,否则返回失败信息
     state:boolean,// 成功返回true 失败返回false
-
-    //link:string,//链接
-    //errorno?:number,//0成功,2失败
-    //shareid?:number,//-1失败,成功返回分享id
-    //shorturl:string,
-
 }
 
 export type ShareInfoTypes  = ShareReturnInfoTypes['data'] & {
