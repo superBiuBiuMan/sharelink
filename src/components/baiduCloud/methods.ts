@@ -52,9 +52,10 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         //开始分享
         isSharing.value = true;
         for(let dom of selectDOM){
+            console.warn('查看DOM',dom)
             const id = dom.getAttribute(ShareDOMSelect['cloudBaidu']?.idAttribute?.[0] ?? '') ?? '';
-            const tempDOM = dom.querySelector(ShareDOMSelect['cloudBaidu']?.select ?? '');
-            const title = tempDOM?  tempDOM.getAttribute('title') ?? '(!!$$未知名称!!$$)' : '获取名称失败';
+            const tempDOM = dom.querySelector(ShareDOMSelect['cloudBaidu']?.fileNameSelect ?? '');
+            const title = tempDOM ?  tempDOM.getAttribute('title') ?? '(!!$$未知名称!!$$)' : '获取名称失败';
             selectFileInfoList.value.push({
                 id,//存储文件id
                 fileName:title,//文件名称
@@ -68,7 +69,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
             //@ts-ignore
             const { data } : { data: ShareReturnInfoTypes } = await axios({
                 method:'post',
-                url:'https://pan.baidu.com/share/set',
+                url:window.location.origin + '/share/set',
                 params:{
                     channel:'channel',
                     clienttype:'0',

@@ -38,7 +38,7 @@ export const useListModule:UseListModule = (props, emits) => {
                 }
             },
         ],
-        empty:'暂无数据,请重新进入目录以拦截获取数据',
+        empty:'暂无数据,请重新进入任意文件夹目录以拦截获取数据',
         onSelectChange:(value, ctx) => {
             selectedRowKeys.value = value;//存储文件id
             selectedRowInfos.value = ctx.selectedRowData as ListData[];//存储已选中文件信息

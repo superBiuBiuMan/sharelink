@@ -24,7 +24,7 @@ export const ShareDOMSelect:ShareDOMSelectTypes = {
     },
     'cloudTianyi':{
         select:'li[data-selected=true].c-file-item',
-        fileNameSelect:'file-item-name-fileName-span',
+        fileNameSelect:'.file-item-name-fileName-span',
     },
     'cloudBaidu':{
         select:'tr.wp-s-table-skin-hoc__tr.selected',
@@ -39,7 +39,14 @@ export const ShareDOMSelect:ShareDOMSelectTypes = {
 export const cloudUrlInfo:CloudUrlInfoTypes = {
     cloud123: ['https://www.123pan.com/'],
     cloudBaidu: ['https://pan.baidu.com/disk/main'],
-    cloudLanZou: ['https://pc.woozooo.com/'],
+    cloudLanZou: [
+        'https://pc.woozooo.com/',
+        'https://www.lanzou.com/',
+        'https://pan.lanzou.com/',
+        'https://lanzou.com',
+        'https:\\/\\/..*?\\.woozooo\\.com',
+        'https:\\/\\/.*?\\.lanzou.*?\\.com'
+    ],
     cloudTianyi: ['https://cloud.189.cn/web/main/'],
     cloud115:['https://115.com']
 }

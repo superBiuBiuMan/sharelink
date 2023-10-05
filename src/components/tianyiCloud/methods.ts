@@ -62,7 +62,7 @@ export const useTianyiCloud:UseTianyiCloud = () => {
         for(let fileInfo of selectFileInfoList.value){
             const { data:{shareLinkList} }: { data:{shareLinkList:Array<ShareReturnInfoTypes>} } = await axios({
                 method:'get',
-                url:'https://cloud.189.cn/api/open/share/createShareLink.action',
+                url:window.location.origin + '/api/open/share/createShareLink.action',
                 params:{
                     noCache: Math.random(),
                     fileId:fileInfo.id,

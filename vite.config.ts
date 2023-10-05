@@ -9,9 +9,9 @@ export default defineConfig({
     monkey({
       entry: 'src/main.ts',
       userscript: {
-        name:'网盘批量分享工具',
+        name:'网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,天翼网盘)',
         author:'superBiuBiu',
-        version:'1.0.1',
+        version:'2.0.0',
         namespace: 'dreamlove',
         match:
             [
@@ -19,14 +19,11 @@ export default defineConfig({
                 'https://pan.baidu.com/*',
                 'https://115.com/*',
                 'https://www.123pan.com/*',
-                'https://lanzou.com/u',
-                'https://www.lanzou.com/u',
-                'https://www.lanzou.com/account.php*',
-                'https://up.woozooo.com/u',
-                'https://up.woozooo.com/mydisk.php*',
-                'https://pc.woozooo.com/u',
-                'https://pc.woozooo.com/mydisk.php*',
+                //蓝奏云
+                'https://lanzou.com/*',
+                'https://www.lanzou.com/*',
                 'https://pan.lanzou.com/*',
+                'https://*.woozooo.com/*',
                 'https://*.lanzoub.com/*',
                 'https://*.lanzoue.com/*',
                 'https://*.lanzouf.com/*',
@@ -45,13 +42,12 @@ export default defineConfig({
                 'https://*.lanzoux.com/*',
                 'https://*.lanzouy.com/*',
             ],
-        description:'网盘文件批量分享,目前支持百度网盘,天翼网盘,115网盘~',
+        description:'网盘文件批量分享,目前支持百度网盘,天翼网盘,115网盘,123网盘,蓝奏云,~',
         supportURL:'https://github.com/superBiuBiuMan/sharelink/',
         iconURL:'https://www.google.com/s2/favicons?domain=dreamlove.top',
         connect:[
             'webapi.115.com',
         ],
-        "run-at":'document-start',
       },
       build: {
         externalGlobals: {

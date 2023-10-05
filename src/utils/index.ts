@@ -196,7 +196,7 @@ export function bodyParse(body:string){
 }
 
 /**
- * 我有一段js代码如下
+ *
  * const url = window.location.href;
  * const cloudUrlInfos = {
  *     cloud123: ['https://www.123pan.com/'],
@@ -208,14 +208,22 @@ export function bodyParse(body:string){
  * js实现根据url来遍历cloudUrlInfos,如果找到对应的链接,则返回所属的键值
  *  findCloudProvider('https://www.123pan.com/',cloudUrlInfo); //返回cloud123
  */
-export function findCloudProvider(url:any, cloudUrlInfos:any) {
+export function findCloudProvider(url, cloudUrlInfos) {
     for (const provider in cloudUrlInfos) {
         const urls = cloudUrlInfos[provider];
         for (const cloudUrl of urls) {
-            if (url.startsWith(cloudUrl)) {
+            if (isMatchingUrl(url, cloudUrl)) {
                 return provider;
             }
         }
     }
     return null; // 如果没有找到匹配的链接，则返回null
+}
+
+export function isMatchingUrl(url, pattern) {
+    if (pattern.includes('*')) {
+        return new RegExp(pattern,'g').test(url);
+    } else {
+        return url.startsWith(pattern);
+    }
 }

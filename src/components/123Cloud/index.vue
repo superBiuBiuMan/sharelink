@@ -30,6 +30,10 @@
         <t-button theme="default" @click="download">下载分享链接</t-button>
       </t-space>
     </div>
+    <!--进度条-->
+    <div class="cloud123_progress">
+      <t-progress :percentage="userOptions.shareProgress" :color="{ from:' #84fab0',to: '#00A870' }"/>
+    </div>
     <!--配置栏-->
     <div class="cloud123_option">
       <t-collapse  expandMutex>
@@ -78,10 +82,6 @@
           </div>
         </t-collapse-panel>
       </t-collapse>
-    </div>
-    <!--进度条-->
-    <div class="cloud123_progress">
-      <t-progress :percentage="userOptions.shareProgress" :color="{ from:' #84fab0',to: '#00A870' }"/>
     </div>
     <!--分享结果-->
     <div class="cloud123_result">
