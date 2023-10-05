@@ -11,7 +11,7 @@ import {
     Radio,
     RadioButton,
     RadioGroup,
-    Space,
+    Space, Table,
     Textarea, Tooltip
 } from 'tdesign-vue-next';
 const app = createApp(App);
@@ -29,6 +29,7 @@ app.use(Button)
    .use(Collapse)
    .use(CollapsePanel)
    .use(Input)
+   .use(Table)
 app.mount(
     (() => {
         const app = document.createElement('div');

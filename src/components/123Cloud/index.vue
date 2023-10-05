@@ -59,12 +59,16 @@
             <template v-if="userOptions.pwdType === PwdEnum.self">
               <t-input v-model="userOptions.pwd" placeholder="请输入自定义提取码" maxlength="4"/>
             </template>
-
           </div>
-
         </t-collapse-panel>
       </t-collapse>
     </div>
+
+
+    <ListModule/>
+
+
+
     <!--操作栏-->
     <div class="cloud123_operation">
       <t-space>
@@ -92,6 +96,7 @@
 <script lang="ts" setup>
 import {DefaultShowEnum, ExpireTimeEnum, PwdEnum} from "./types";
 import { use123Cloud } from "./methods";
+import ListModule from "../../modules/123Cloud/listModule/index.vue";
 const {
         isSharing,
         userOptions,
