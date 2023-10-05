@@ -6,7 +6,7 @@
   <t-drawer
       v-model:visible="visible" :header="name + '批量分享工具'" size="600px"
             :on-confirm="handleClose" @close="handleClose" placement="right" :closeOnOverlayClick="false">
-    <component :is="ShowComponent" ref="operationRef"></component>
+      <component :is="ShowComponent" ref="operationRef"></component>
   </t-drawer>
 </template>
 

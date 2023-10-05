@@ -3,14 +3,17 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  //&_option{
-  //  display: flex;
-  //  align-items: center;
-  //  margin: 0 0 20px 0;
-  //  &_time{
-  //    margin-left: 10px;
-  //  }
-  //}
+  &_option{
+    margin: 0 0 10px 0;
+    &_item{
+      display: flex;
+      align-items: center;
+      &_title{
+        display: inline-block;
+        width: 100px;
+      }
+    }
+  }
   &_result{
     flex: 1;
     overflow: auto;
@@ -19,19 +22,27 @@
 </style>
 <template>
   <div class="cloud123">
-    <!--配置项-->
+    <!--操作栏-->
+    <div class="cloud123_operation">
+      <t-space>
+        <t-button @click="handleBatchOperation" :loading="isSharing">批量分享</t-button>
+        <t-button theme="default" @click="copyValue">复制到剪贴板</t-button>
+        <t-button theme="default" @click="download">下载分享链接</t-button>
+      </t-space>
+    </div>
+    <!--配置栏-->
     <div class="cloud123_option">
-      <t-collapse defaultExpandAll>
-        <t-collapse-panel value="0" header="配置项" >
+      <t-collapse  expandMutex>
+        <!--配置项-->
+        <t-collapse-panel value="0" header="分享配置" >
           <!--分享延迟-->
           <div class="cloud123_option_item">
-            <t-tooltip content="分享一次后等待下一次分享的时间(避免请求频率过高)">延迟(毫秒):</t-tooltip>
+            <t-tooltip content="分享一次后等待下一次分享的时间(避免请求频率过高)"><span class="cloud123_option_item_title">延迟(毫秒):</span></t-tooltip>
             <t-input-number v-model="userOptions.shareDelay" step="100"/>
           </div>
           <!--有效期-->
-          <div class="cloud123_option_time">
-            <span>有效期:</span>
-            <!--@change="handleChangeTime" :default-value="ExpireTimeEnum.forever"-->
+          <div class="cloud123_option_item">
+            <span class="cloud123_option_item_title">有效期:</span>
             <t-radio-group  v-model="userOptions.expiration">
               <t-radio-button :value="ExpireTimeEnum.oneDay">1天</t-radio-button>
               <t-radio-button :value="ExpireTimeEnum.sevenDay">7天</t-radio-button>
@@ -41,16 +52,15 @@
           </div>
           <!--默认展示-->
           <div class="cloud123_option_item">
-            <span>默认展示:</span>
+            <span class="cloud123_option_item_title">默认展示:</span>
             <t-radio-group v-model="userOptions.displayStatus">
               <t-radio-button :value="DefaultShowEnum.tile">平铺</t-radio-button>
               <t-radio-button :value="DefaultShowEnum.list">列表</t-radio-button>
             </t-radio-group>
           </div>
-
           <!--分享形式-->
           <div class="cloud123_option_item">
-            <span>分享形式:</span>
+            <span class="cloud123_option_item_title">分享形式:</span>
             <t-radio-group v-model="userOptions.pwdType">
               <t-radio-button :value="PwdEnum.no">无提取码</t-radio-button>
               <t-radio-button :value="PwdEnum.yes">随机提取码</t-radio-button>
@@ -61,20 +71,13 @@
             </template>
           </div>
         </t-collapse-panel>
+        <!--表格-->
+        <t-collapse-panel value="1" header="文件选择">
+          <div style="height: 60vh;overflow-y: scroll">
+            <ListModule :list="userOptions.listData" v-model:infos="userOptions.selectFileInfoList"/>
+          </div>
+        </t-collapse-panel>
       </t-collapse>
-    </div>
-
-    <div style="height: 300px;overflow: scroll">
-      <ListModule :list="userOptions.listData" v-model:infos="userOptions.selectFileInfoList"/>
-    </div>
-
-    <!--操作栏-->
-    <div class="cloud123_operation">
-      <t-space>
-        <t-button @click="handleBatchOperation" :loading="isSharing">批量分享</t-button>
-        <t-button theme="default" @click="copyValue">复制到剪贴板</t-button>
-        <t-button theme="default" @click="download">下载分享链接</t-button>
-      </t-space>
     </div>
     <!--进度条-->
     <div class="cloud123_progress">

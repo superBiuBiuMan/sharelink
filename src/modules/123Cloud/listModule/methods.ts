@@ -38,6 +38,7 @@ export const useListModule:UseListModule = (props, emits) => {
                 }
             },
         ],
+        empty:'暂无数据,请重新进入目录',
         onSelectChange:(value, ctx) => {
             selectedRowKeys.value = value;//存储文件id
             selectedRowInfos.value = ctx.selectedRowData as ListData[];//存储已选中文件信息

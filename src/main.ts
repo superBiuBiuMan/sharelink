@@ -33,6 +33,7 @@ app.use(Button)
 app.mount(
     (() => {
         const app = document.createElement('div');
+        app.style.textAlign = 'center';
         const url = window.location.href;
         if (url.startsWith('https://pan.baidu.com/disk/main')) {
             //百度云
@@ -52,9 +53,7 @@ app.mount(
             document.querySelector('div.navigation-ceiling ul')?.append(temp);
         } else if (url.startsWith('https://www.123pan.com/')) {
             //123云盘
-            //const temp = document.querySelector('div.OfflineDownloadBtn');
-            //temp.parentNode?.insertBefore(app, temp);
-            document.body.append(app)
+            document.querySelector('.ant-menu-light')?.append(app)
         }
         return app;
     })(),
