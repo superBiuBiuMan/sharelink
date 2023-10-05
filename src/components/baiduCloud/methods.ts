@@ -45,15 +45,15 @@ export const useBaiduCloud:UseBaiduCloud = () => {
     const handleBatchOperation:HandleBatchOperation = async () => {
 
         //获取选中DOM
-        const selectDOM = document.querySelectorAll(ShareDOMSelect['baiduCloud'].select);
+        const selectDOM = document.querySelectorAll(ShareDOMSelect['cloudBaidu'].select);
         if(!selectDOM.length) {
             return MessagePlugin.warning('请选择要分享的文件!')
         }
         //开始分享
         isSharing.value = true;
         for(let dom of selectDOM){
-            const id = dom.getAttribute(ShareDOMSelect['baiduCloud'].idAttribute[0]) ?? '';
-            const tempDOM = dom.querySelector(ShareDOMSelect['baiduCloud'].select);
+            const id = dom.getAttribute(ShareDOMSelect['cloudBaidu'].idAttribute[0]) ?? '';
+            const tempDOM = dom.querySelector(ShareDOMSelect['cloudBaidu'].select);
             const title = tempDOM?  tempDOM.getAttribute('title') ?? '(!!$$未知名称!!$$)' : '获取名称失败';
             selectFileInfoList.value.push({
                 id,//存储文件id

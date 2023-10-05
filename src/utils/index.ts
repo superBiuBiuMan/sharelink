@@ -1,3 +1,4 @@
+
 /**
  * 随机生成指定位数提取码从数字和字母中
  * @param numDigits 生成的位数
@@ -175,4 +176,46 @@ export function getDate123Cloud(day){
         case 30:return Object(M)(new Date(+new Date + 2592e6));
         case 99:return Object(M)(new Date("2099/12/12 08:00:00"));//永久
     }
+}
+
+/**
+ * @description body解析 task=5&folder_id=8788641 => {tak:5,folder_id:8788641}
+ * @param body 要解析的body
+ * @return 对象
+ */
+export function bodyParse(body:string){
+    const result = body?.split('&') ?? [];
+    let obj = {};
+    for(let item of result){
+        const temp = item?.split('=') ?? [];
+        if(temp.length > 1){
+            obj[temp[0]] = temp[1]
+        }
+    }
+    return obj;
+}
+
+/**
+ * 我有一段js代码如下
+ * const url = window.location.href;
+ * const cloudUrlInfos = {
+ *     cloud123: ['https://www.123pan.com/'],
+ *     cloudBaidu: ['https://pan.baidu.com/disk/main'],
+ *     cloudLanZou: ['https://pc.woozooo.com/'],
+ *     cloudTianyi: ['https://cloud.189.cn/web/main/'],
+ *     cloud115:['https://115.com']
+ * }
+ * js实现根据url来遍历cloudUrlInfos,如果找到对应的链接,则返回所属的键值
+ *  findCloudProvider('https://www.123pan.com/',cloudUrlInfo); //返回cloud123
+ */
+export function findCloudProvider(url, cloudUrlInfos) {
+    for (const provider in cloudUrlInfos) {
+        const urls = cloudUrlInfos[provider];
+        for (const cloudUrl of urls) {
+            if (url.startsWith(cloudUrl)) {
+                return provider;
+            }
+        }
+    }
+    return null; // 如果没有找到匹配的链接，则返回null
 }

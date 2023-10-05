@@ -46,7 +46,7 @@ export const useTianyiCloud:UseTianyiCloud = () => {
     const handleBatchOperation:HandleBatchOperation = async () => {
 
         //获取选中DOM
-        const selectDOM = document.querySelectorAll(ShareDOMSelect['tianyiCloud'].select);
+        const selectDOM = document.querySelectorAll(ShareDOMSelect['cloudTianyi'].select);
         if(!selectDOM.length) {
             return MessagePlugin.warning('请选择要分享的文件!')
         }
@@ -55,7 +55,7 @@ export const useTianyiCloud:UseTianyiCloud = () => {
         for(let dom of selectDOM){
             selectFileInfoList.value.push({
                 id:dom.getAttribute('data-fileid') ?? '',
-                fileName:dom.querySelector(ShareDOMSelect['tianyiCloud'].fileNameSelect)?.textContent ?? '(!!$$未知名称!!$$)',
+                fileName:dom.querySelector(ShareDOMSelect['cloudTianyi'].fileNameSelect)?.textContent ?? '(!!$$未知名称!!$$)',
             })
         }
         //遍历发送
