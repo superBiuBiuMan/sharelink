@@ -52,8 +52,9 @@ app.mount(
             document.querySelector('div.navigation-ceiling ul')?.append(temp);
         } else if (url.startsWith('https://www.123pan.com/')) {
             //123云盘
-            const temp = document.querySelector('div.OfflineDownloadBtn');
-            temp.parentNode?.insertBefore(app, temp);
+            //const temp = document.querySelector('div.OfflineDownloadBtn');
+            //temp.parentNode?.insertBefore(app, temp);
+            document.body.append(app)
         }
         return app;
     })(),

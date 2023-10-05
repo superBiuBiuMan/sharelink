@@ -5,7 +5,7 @@ import {
     ExpireTimeEnum,
     GiveAfter,
     HandleBatchOperation,
-    HandleEnd,
+    HandleEnd, Init,
     PwdEnum,
     ShareResultInfoList,
     TransformInfoStyle,
@@ -15,17 +15,12 @@ import {
     UserOptions,
 } from "./types";
 import {MessagePlugin} from 'tdesign-vue-next';
-import {ref} from "vue";
+import {nextTick, ref} from "vue";
 import {CopyValueToClipBoard, DownloadTxt, generateRandomString, get123CloudSecret, getDate123Cloud} from "../../utils";
 import {ShareDOMSelect} from "../../infoConfig";
 import axios from "axios";
-import dayjs from "dayjs";
-import tz from 'dayjs/plugin/timezone'
-import utc from 'dayjs/plugin/utc'
-//解决时区位图
-dayjs.extend(utc)
-dayjs.extend(tz)
-dayjs().tz("PRC").format('YYYY-MM-DD HH:mm:ss') // 中国
+import { proxy } from "ajax-hook";
+
 export const use123Cloud:Use123Cloud = () => {
     const userOptions = ref<UserOptions>({
         expiration:ExpireTimeEnum.forever,
@@ -36,26 +31,33 @@ export const use123Cloud:Use123Cloud = () => {
         shareProgress:0,
         selectFileInfoList:[],
         shareResultInfoList:[],
+        listData:[],
         shareInfoUserSee:'',
         isSharing:false,
+        lastUrl:'',//上一次数据请求的网站,做缓存使用,发现不一致则清空listData
     })
-    //const handleTransformFormat:HandleTransformFormat = (info) => {
-    //    switch (info.expireTime) {
-    //        case ExpireTimeEnum.oneDay: {
-    //            return `文件名称: ${info.fileName} 分享链接:${info.url} 提取码:${info.accessCode} 分享有效时间: 1天`;
-    //        }
-    //        case ExpireTimeEnum.sevenDay: {
-    //            return `文件名称: ${info.fileName} 分享链接:${info.url} 提取码:${info.accessCode} 分享有效时间: 7天`;
-    //        }
-    //        case ExpireTimeEnum.forever: {
-    //            return `文件名称: ${info.fileName} 分享链接:${info.url} 提取码:${info.accessCode} 分享有效时间: 永久`;
-    //        }
-    //        default: {
-    //            return `文件名称: ${info.fileName} 分享链接:${info.url} 提取码:${info.accessCode} 分享有效时间: 未知`;
-    //        }
-    //    }
-    //}
-    // todo 日期修改下记得
+    const init:Init = () => {
+        proxy({
+            //请求成功后进入
+            onResponse: (response, handler) => {
+                //@ts-ignore
+                if(handler.xhr.config.url.startsWith('/a/api/file/list/new')){
+                    const data = response.response ? JSON.parse(response.response)?.data?.InfoList ?? [] : [];
+                    if(userOptions.value.lastUrl !== window.location.href){
+                        //清空原有listData
+                        userOptions.value.listData = data;
+                    }else{
+                        //否者滚动加载数据
+                        userOptions.value.listData = [...userOptions.value.listData,...data]
+                    }
+                    userOptions.value.lastUrl = window.location.href;
+
+                }
+                handler.next(response)
+            }
+        })
+    }
+    init();
     const transformOptions:TransformOptions = (params:UserOptions) => {
         let sharePwd = '';
         if(params.pwdType === PwdEnum.yes){
@@ -104,32 +106,24 @@ export const use123Cloud:Use123Cloud = () => {
         }
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
-        //获取选中DOM
-        const selectDOM = document.querySelectorAll(ShareDOMSelect['123Cloud'].select);
-        //有bug,选中文件必须要在列表才可以
-        if(!selectDOM.length) {
+        const { selectFileInfoList } = userOptions.value;
+        if(!selectFileInfoList.length) {
             return MessagePlugin.warning('请选择要分享的文件!')
         }
         //开始分享
         userOptions.value.isSharing = true;
-        for(let dom of selectDOM){
-            userOptions.value.selectFileInfoList.push({
-                id:dom.getAttribute(ShareDOMSelect['123Cloud'].idAttribute[0]) ?? '',
-                fileName:dom.querySelector(ShareDOMSelect['123Cloud'].fileNameSelect)?.textContent ?? '(!!$$未知名称!!$$)'
-            })
-        }
         //遍历发送
-        for(let fileInfo of userOptions.value.selectFileInfoList){
+        for(let fileInfo of selectFileInfoList){
             const data:GiveAfter = {
                 ...transformOptions(userOptions.value),
                 driveId:0,
                 event:"shareCreate",
-                fileIdList:fileInfo.id * 1,//文件id
+                fileIdList:fileInfo.FileId * 1,//文件id
                 fileNum:1,//文件数量,
                 operatePlace:1,
                 renameVisible:false,
                 shareModality:2,
-                shareName:fileInfo.fileName,//分享文件名
+                shareName:fileInfo.FileName,//分享文件名
             }
             const randomParams = get123CloudSecret();
             const { data:backData } = await axios({
@@ -148,7 +142,7 @@ export const use123Cloud:Use123Cloud = () => {
             }).catch(() => ({data:{}}))
             const backResult = transformResult(backData);
             let tempData:ShareResultInfoList = {
-                fileName:fileInfo.fileName,
+                fileName:fileInfo.FileName,
                 url:'https://www.123pan.com/s/' + backResult.ShareKey,
                 pwd:data.sharePwd,
                 time:data.expiration,
@@ -168,7 +162,6 @@ export const use123Cloud:Use123Cloud = () => {
             })
         }
         //分享完成
-        userOptions.value.selectFileInfoList = [];
         userOptions.value.shareProgress = 100;//以防万一~
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
@@ -177,10 +170,10 @@ export const use123Cloud:Use123Cloud = () => {
     const handleEnd:HandleEnd = () => {
         //关闭窗口执行操作
         userOptions.value.shareResultInfoList = [];
+        userOptions.value.selectFileInfoList = [];
         userOptions.value.shareInfoUserSee = '';
         userOptions.value.shareProgress = 0;
     }
-
     const copyValue:CopyValue = () => {
         CopyValueToClipBoard(userOptions.value.shareInfoUserSee+"").then(() => {
             MessagePlugin.success('复制成功');
@@ -192,6 +185,7 @@ export const use123Cloud:Use123Cloud = () => {
         DownloadTxt('123盘批量分享' + Date.now(),userOptions.value.shareInfoUserSee)
     }
     return {
+        init,
         userOptions,
         transformOptions,
         transformInfoStyle,

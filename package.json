@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "ajax-hook": "^3.0.3",
     "axios": "^1.5.1",
+    "dayjs": "^1.11.10",
     "tdesign-vue-next": "^1.5.7",
     "vue": "^3.3.4"
   },

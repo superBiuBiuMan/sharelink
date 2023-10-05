@@ -302,6 +302,11 @@ address@^1.0.1:
   resolved "https://registry.npmmirror.com/address/-/address-1.2.2.tgz#2b5248dac5485a6390532c6a517fda2e3faac89e"
   integrity sha512-4B/qKCfeE/ODUaAUpSwfzazo5x29WD4r3vXiWsB7I2mSDAihwEqKO+g8GELZUQSSAo5e1XTYh3ZVfLyxBc12nA==
 
+ajax-hook@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.npmmirror.com/ajax-hook/-/ajax-hook-3.0.3.tgz#ac7f00984073f07ced60630d181be07ca0b69c70"
+  integrity sha512-pcVLNEG1f97++3UQQTIGFxYkBNjUDQS4gIOMIFYSUaTe4HklxjqJinR0WjeJaUD5RTBXvRivrssWO//Io/eaxA==
+
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.npmmirror.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
@@ -375,7 +380,7 @@ csstype@^3.1.1:
   resolved "https://registry.npmmirror.com/csstype/-/csstype-3.1.2.tgz#1d4bf9d572f11c14031f0436e1c10bc1f571f50b"
   integrity sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==
 
-dayjs@^1.11.9:
+dayjs@^1.11.10, dayjs@^1.11.9:
   version "1.11.10"
   resolved "https://registry.npmmirror.com/dayjs/-/dayjs-1.11.10.tgz#68acea85317a6e164457d6d6947564029a6a16a0"
   integrity sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==

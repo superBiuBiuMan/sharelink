@@ -16,15 +16,16 @@
 
 <script lang="ts" setup>
 import {useListModule} from "./methods";
-import {onMounted} from "vue";
+import { watchEffect } from "vue";
+import {ListData} from "./types";
 interface Props {
-  list:any[],//请求过来的原始数据
-  ids:(number | string)[],//选中的文件id信息
-  infos:any[],//选中的文件信息
+  list:any[],//请求过来的文件原始数据
+  ids?:(number | string)[],//选中的文件id信息
+  infos:ListData[],//选中的文件信息
 }
 interface Emits{
   (event: 'update:ids', data: (number | string)[]): void
-  (event: 'update:infos', data: any[]): void
+  (event: 'update:infos', data: ListData[]): void
 }
 const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
@@ -33,9 +34,9 @@ const {
         tableProps,
         listData,
         selectedRowKeys,
-        init,
-      } = useListModule();
-onMounted(() => {
-  init();
+        transformListData,
+      } = useListModule(props,emits);
+watchEffect(() => {
+  listData.value = transformListData(props.list)
 })
 </script>

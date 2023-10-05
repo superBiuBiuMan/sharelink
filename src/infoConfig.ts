@@ -22,9 +22,9 @@ export const ShareDOMSelect:ShareDOMSelectTypes = {
         idAttribute:['data-id'],
         fileNameSelect:'.wp-s-pan-list__file-name-title-text',
     },
-    '123Cloud':{
-        select:'tr.editable-row.ant-table-row-selected',
-        idAttribute:['data-row-key'],
-        fileNameSelect:'tr.editable-row > td:nth-of-type(2) div.ant-dropdown-trigger span',
-    }
+    //'123Cloud':{
+    //    select:'tr.editable-row.ant-table-row-selected',
+    //    idAttribute:['data-row-key'],
+    //    fileNameSelect:'tr.editable-row > td:nth-of-type(2) div.ant-dropdown-trigger span',
+    //}
 }
