@@ -24,7 +24,7 @@ export const useListModule:UseListModule = (props, emits) => {
                 title: '创建时间',
                 cell:(h,{ row }) => {
                     return h('span',{
-                        textContent: dayjs(row.CreateAt)?.format('YYYY/MM/DD HH:mm:ss')
+                        textContent: dayjs(row["CreateAt"])?.format('YYYY/MM/DD HH:mm:ss')
                     })
                 }
             },
@@ -33,12 +33,12 @@ export const useListModule:UseListModule = (props, emits) => {
                 title: '状态',
                 cell:(h,{row}) => {
                     return h('span',{
-                        textContent: row.Status !== 2 ? '正常' : '违规'
+                        textContent: row['Status'] !== 2 ? '正常' : '违规'
                     })
                 }
             },
         ],
-        empty:'暂无数据,请重新进入目录',
+        empty:'暂无数据,请重新进入目录以拦截获取数据',
         onSelectChange:(value, ctx) => {
             selectedRowKeys.value = value;//存储文件id
             selectedRowInfos.value = ctx.selectedRowData as ListData[];//存储已选中文件信息

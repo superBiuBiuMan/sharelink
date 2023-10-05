@@ -30,11 +30,26 @@ const operationRef = ref();
 
 const ShowComponent:ComputedRef = computed(() => {
   switch (cloudInfoStore.currentCloud) {
-    case CloudInfoEnum.cloudLanZou: return LanzouCloud;
-    case CloudInfoEnum.cloudTianyi: return TianyiCloud;
-    case CloudInfoEnum.cloudBaidu: return BaiduCloud;
-    case CloudInfoEnum.cloud115: return Cloud115;
-    case CloudInfoEnum.cloud123: return Cloud123;
+    case CloudInfoEnum.cloudLanZou: {
+      name.value = '蓝奏云';
+      return LanzouCloud;
+    }
+    case CloudInfoEnum.cloudTianyi: {
+      name.value = '天翼云';
+      return TianyiCloud;
+    }
+    case CloudInfoEnum.cloudBaidu: {
+      name.value = '百度云';
+      return BaiduCloud;
+    }
+    case CloudInfoEnum.cloud115: {
+      name.value = '115云';
+      return Cloud115;
+    }
+    case CloudInfoEnum.cloud123: {
+      name.value = '123云';
+      return Cloud123;
+    }
   }
 })
 

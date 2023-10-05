@@ -5,7 +5,7 @@ import {MessagePlugin} from "tdesign-vue-next";
 
 export default () => {
     const app = document.createElement('div');
-    //app.style.textAlign = 'center';
+
     //判断所属网盘
     switch (cloudInfoStore.currentCloud) {
         case CloudInfoEnum.cloudBaidu: {
@@ -24,10 +24,14 @@ export default () => {
             document.querySelector('div.navigation-ceiling ul')?.append(temp);
         }break;
         case CloudInfoEnum.cloud123: {
+            app.style.textAlign = 'center';
             //123云盘
             document.querySelector('.ant-menu-light')?.append(app)
         }break;
         case CloudInfoEnum.cloudLanZou: {
+            app.style.cssText = `
+                padding-top: 2px;
+            `
             //蓝奏云
             document.querySelector('.mydisk_file_bar')?.append(app)
         }break;
