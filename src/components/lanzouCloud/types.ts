@@ -9,8 +9,12 @@ export enum PwdEnum {
 }
 
 export enum TaskEnum {
-    share=22,//获取分享链接
-    code=23,//设置提取码
+    file=18,//获取分享链接(文件夹)
+    share=22,//获取分享链接(普通文件)
+    setCodeFile=23,//设置(取消)文件提取码
+    setCodeFolder=16,//设置(取消)文件夹提取码
+    reqFolderList=47,//请求获取文件夹列表(蓝奏云没对文件夹分页,一次性就返回了)
+    reqFileList=5,//请求获取文件列表(需要带上pg属性);
 }
 
 //用户配置分享参数
@@ -18,8 +22,8 @@ export interface UserOptions{
     //不同网盘变动的
     pwdType:PwdEnum,//是否有提取码
     pwd:string,//自定义密码或随机提取码
-
     listData:any[],//请求过来的文件数据
+    lastFolderData:any[],//上一次的文件夹信息
 
     //固定的
     shareDelay:number,//分享延迟时间
@@ -32,9 +36,16 @@ export interface UserOptions{
 
 //分享链接返回的数据
 export interface ShareReturnInfoTypes {
-    f_id:string,//分享后缀
+    //通用
     is_newd:string,//分享前缀
     pwd:string,//后端默认填充的随机提取码
+
+    //文件分享后返回数据
+    f_id:string,//分享后缀
+
+    //文件夹分享后返回的数据
+    new_url:string,//完整链接
+    name:string,//文件夹名
 }
 
 //整合存储所需信息,后端返回的链接或者提取码等

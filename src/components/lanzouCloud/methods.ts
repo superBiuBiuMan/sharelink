@@ -13,10 +13,11 @@ import {
     UserOptions,
 } from "./types";
 import {MessagePlugin} from 'tdesign-vue-next';
-import {ref} from "vue";
+import {markRaw, ref} from "vue";
 import {bodyParse, CopyValueToClipBoard, DownloadTxt} from "../../utils";
 import {proxy} from "ajax-hook";
 import axios from "axios";
+import {FileTypeEnum} from "../../modules/lanzouCloud/listModule/types";
 
 export const uselanzouCloud:UselanzouCloud = () => {
     const userOptions = ref<UserOptions>({
@@ -27,6 +28,7 @@ export const uselanzouCloud:UselanzouCloud = () => {
         selectFileInfoList:[],
         shareResultInfoList:[],
         listData:[],
+        lastFolderData:[],
         shareInfoUserSee:'',
         isSharing:false,
     })
@@ -38,17 +40,58 @@ export const uselanzouCloud:UselanzouCloud = () => {
                 if(handler.xhr.config.url.startsWith('/doupload.php')){
                     //@ts-ignore
                     const bodyParams = bodyParse(handler.xhr.config.body ?? '');
-                    const data = response.response ? JSON.parse(response.response)?.text ?? [] : [];
-                    //@ts-ignore
-                    if((bodyParams.pg * 1) === 1){
-                        //清空原有listData
-                        userOptions.value.listData = data;
-                    }else{
-                        //否者滚动加载数据
-                        userOptions.value.listData = [...userOptions.value.listData,...data]
+                    const { task,pg } = bodyParams;
+                    let data = [];
+                    //请求文件夹
+                    if(task * 1 === TaskEnum.reqFolderList){
+                        //todo 蓝奏云文件夹到底是info还是text
+                        data = response.response ? JSON.parse(response.response)?.text ?? [] : [];
+                        userOptions.value.lastFolderData = data;//存储文件夹信息
+                        userOptions.value.listData = [...markRaw(userOptions.value.listData),...data];
                     }
+                    else if(task * 1 === TaskEnum.reqFileList){
+                        //请求文件
+                        data = response.response ? JSON.parse(response.response)?.text ?? [] : [];
+                        if(pg *1 === 1){
+                            //清空原有listData,但不清空文件夹
+                            userOptions.value.listData = [...markRaw(userOptions.value.lastFolderData),...data];
+                        }else{
+                            //否者滚动加载数据
+                            userOptions.value.listData = [...markRaw(userOptions.value.listData),...data]
+                        }
+                    }
+                    //userOptions.value.listData = [...userOptions.value.listData,...data];
+                    ////@ts-ignore
+                    //if((bodyParams.pg * 1) === 1){
+                    //    //清空原有listData
+                    //    userOptions.value.listData = data;
+                    //}else{
+                    //    //否者滚动加载数据
+                    //    userOptions.value.listData = [...userOptions.value.listData,...data]
+                    //}
                 }
                 handler.next(response)
+
+
+
+
+
+                ////@ts-ignore
+                //if(handler.xhr.config.url.startsWith('/doupload.php')){
+                //    //@ts-ignore
+                //    const bodyParams = bodyParse(handler.xhr.config.body ?? '');
+                //    const data = response.response ? JSON.parse(response.response)?.text ?? [] : [];
+                //    userOptions.value.listData = [...userOptions.value.listData,...data];
+                //    //@ts-ignore
+                //    if((bodyParams.pg * 1) === 1){
+                //        //清空原有listData
+                //        userOptions.value.listData = data;
+                //    }else{
+                //        //否者滚动加载数据
+                //        userOptions.value.listData = [...userOptions.value.listData,...data]
+                //    }
+                //}
+                //handler.next(response)
             }
         })
     }
@@ -58,9 +101,11 @@ export const uselanzouCloud:UselanzouCloud = () => {
     }
     const transformResult:TransformResult = (result:any) => {
         return {
-            f_id:result?.f_id ?? '',
             is_newd:result?.is_newd ?? '',
             pwd:userOptions.value.pwdType === PwdEnum.self ? userOptions.value.pwd : result?.pwd,
+            f_id:result?.f_id ?? '',
+            new_url:result?.new_url ?? '',
+            name:result?.name ?? '',
         }
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
@@ -73,8 +118,9 @@ export const uselanzouCloud:UselanzouCloud = () => {
         //遍历发送
         for(let fileInfo of selectFileInfoList){
             const formData = new FormData();
-            formData.append('task',TaskEnum.share + '');
-            formData.append('file_id',fileInfo.id + '');
+            formData.append('task',fileInfo.type === FileTypeEnum.file ? TaskEnum.share + '' : TaskEnum.file + '');
+            //根据文件夹设置参数
+            formData.append(fileInfo.type === FileTypeEnum.file ? 'file_id' :  'folder_id',fileInfo.id + '')
             //提取链接
             const { data:shareData } = await axios({
                 method:'post',
@@ -83,15 +129,12 @@ export const uselanzouCloud:UselanzouCloud = () => {
             }).catch(() => ({data:{}}))
             const backResult = transformResult(shareData?.info ?? {});//转换数据
 
-            if(userOptions.value.pwdType !== PwdEnum.no){
+            //需要提取码 todo 文件夹必须有提取码,会员才可以没有提取码
+            if(userOptions.value.pwdType !== PwdEnum.no ){
                 //等待
-                await new Promise<void>(resolve => {
-                    setTimeout(() => {
-                        resolve()
-                    },userOptions.value.shareDelay)
-                })
+                await new Promise<void>(resolve => { setTimeout(() => {  resolve() },userOptions.value.shareDelay)})
                 //设置密码
-                formData.set('task',TaskEnum.code + '');
+                formData.set('task',fileInfo.type === FileTypeEnum.file ? TaskEnum.setCodeFile + '' : TaskEnum.setCodeFolder + '');
                 formData.append('shows','1');
                 formData.append('shownames',backResult.pwd);
                 const { data:codeData } = await axios({
@@ -103,7 +146,7 @@ export const uselanzouCloud:UselanzouCloud = () => {
 
             let tempData:ShareResultInfoList = {
                 fileName:fileInfo.name_all || fileInfo.name,
-                url:backResult.is_newd + '/' + backResult.f_id,
+                url:fileInfo.type === FileTypeEnum.file ?  backResult.is_newd + '/' + backResult.f_id : backResult.new_url ,
                 pwd:userOptions.value.pwdType !== PwdEnum.no ? backResult.pwd : '空',
             }
             //存储分享信息以便计算进度条

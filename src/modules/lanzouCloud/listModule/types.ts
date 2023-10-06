@@ -1,9 +1,15 @@
 import {Ref, UnwrapRef} from "vue";
 import {TdPrimaryTableProps} from "tdesign-vue-next";
 
+//文件类型
+export enum FileTypeEnum {
+    file,
+    folder
+}
 
 //列表数据
 export interface ListData {
+    type:FileTypeEnum,//文件类型
     id:string | number,//文件id
     name_all:string,//文件名
     name:string,//文件名

@@ -1,4 +1,4 @@
-import {ListData, TransformListData, UseListModule} from "./types";
+import {FileTypeEnum, ListData, TransformListData, UseListModule} from "./types";
 import {ref, UnwrapRef} from "vue";
 import {TdPrimaryTableProps} from "tdesign-vue-next";
 
@@ -15,7 +15,17 @@ export const useListModule:UseListModule = (props:any, emits:any) => {
                 width: 50,
             },
             {
-                colKey: 'name_all',
+                colKey: 'type',
+                title: '类型',
+                cell:(h,{row}) => {
+                    return h('img',{
+                        src:row['type'] === FileTypeEnum.file ? 'https://pc.woozooo.com/images/filetype/txt.gif' : 'https://pc.woozooo.com/images/folder_open.gif'
+                    })
+                },
+                width: 50,
+            },
+            {
+                colKey: 'name',
                 title: '文件名',
             },
             {
@@ -40,11 +50,12 @@ export const useListModule:UseListModule = (props:any, emits:any) => {
     const transformListData:TransformListData = (data:any[]) => {
         if(!data || data && !data?.length) return [];
         return data?.map(item => ({
-            id:item?.id ?? '',
-            name_all:item?.name_all ?? '',
+            id:item?.id ? item?.id : item?.fol_id ,
+            name_all:item?.name_all ?? '',//文件才有这个属性
             name:item?.name ?? '',
-            size:item?.size ?? '',
-            time:item?.time ?? '',
+            size:item?.size ?? '-',//文件才有
+            time:item?.time ?? '-',//文件才有
+            type:item?.id ? FileTypeEnum.file : FileTypeEnum.folder,
         })) ?? [];
     }
 
