@@ -22,7 +22,7 @@ import BaiduCloud from "./components/baiduCloud/index.vue";
 import Cloud115 from "./components/115Cloud/index.vue";
 import Cloud123 from "./components/123Cloud/index.vue";
 import LanzouCloud from "./components/lanzouCloud/index.vue";
-
+import QuarkCloud from "./components/quarkCloud/index.vue";
 const visible = ref<boolean>(false);
 const name = ref<string>('未知网盘');
 
@@ -49,6 +49,10 @@ const ShowComponent:ComputedRef = computed(() => {
     case CloudInfoEnum.cloud123: {
       name.value = '123云';
       return Cloud123;
+    }
+    case CloudInfoEnum.cloudQuark:{
+      name.value = '夸克网盘';
+      return QuarkCloud;
     }
   }
 })

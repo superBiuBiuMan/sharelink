@@ -12,7 +12,6 @@
     "ajax-hook": "^3.0.3",
     "axios": "^1.5.1",
     "dayjs": "^1.11.10",
-    "js-cookie": "^3.0.5",
     "pinia": "^2.1.6",
     "tdesign-vue-next": "^1.5.7",
     "vue": "^3.3.4"

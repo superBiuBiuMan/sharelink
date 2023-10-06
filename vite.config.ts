@@ -19,6 +19,7 @@ export default defineConfig({
                 'https://pan.baidu.com/*',
                 'https://115.com/*',
                 'https://www.123pan.com/*',
+                'https://pan.quark.cn/*',
                 //蓝奏云
                 'https://lanzou.com/*',
                 'https://www.lanzou.com/*',
@@ -47,6 +48,7 @@ export default defineConfig({
         iconURL:'https://www.google.com/s2/favicons?domain=dreamlove.top',
         connect:[
             'webapi.115.com',
+            'drive-pc.quark.cn',
         ],
       },
       build: {

@@ -19,7 +19,7 @@ import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../uti
 
 export const useBaiduCloud:UseBaiduCloud = () => {
     const userOptions = ref<UserOptions>({
-        shareDelay:(300),
+        shareDelay:300,
         expireTime:ExpireTimeEnum.forever,
         shareInfo:[],
         shareInfoUserSee:'',

@@ -16,7 +16,7 @@ import {GM_xmlhttpRequest, unsafeWindow} from "$";
 import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../utils";
 import {ShareDOMSelect} from "../../infoConfig";
 export const use115Cloud:Use115Cloud = () => {
-    const shareDelay = ref<number>(1000);
+    const shareDelay = ref<number>(500);
     const expireTime = ref<ExpireTimeEnum>(ExpireTimeEnum.forever);
     const shareInfo = ref<Array<ShareInfoTypes>>([]);
     const shareInfoUserSee = ref<string>('');
@@ -58,10 +58,7 @@ export const use115Cloud:Use115Cloud = () => {
                 method:'post',
                 url:'https://webapi.115.com/share/send',
                 headers:{
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
-                    'Cookie':document.cookie,
                     'Accept':'application/json, text/javascript, */*; q=0.01',
-                    'Referer':'https://115.com/',
                 },
                 data:formData,
                 onload:({response}) => {

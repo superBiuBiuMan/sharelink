@@ -5,6 +5,7 @@ export enum CloudInfoEnum {
     cloudBaidu,//百度网盘
     cloudLanZou,//蓝奏网盘
     cloudTianyi,//天翼网盘
+    cloudQuark,//夸克网盘
 }
 export type ShareDOMSelectTypes =  {
     [cloudName in keyof typeof CloudInfoEnum]?:{
@@ -23,15 +24,15 @@ export const ShareDOMSelect:ShareDOMSelectTypes = {
         idAttribute:['file_id','cate_id'],
     },
     'cloudTianyi':{
+        idAttribute:['data-fileid'],
         select:'li[data-selected=true].c-file-item',
         fileNameSelect:'.file-item-name-fileName-span',
     },
-    ////todo 没有用
-    //'cloudBaidu':{
-    //    select:'tr.wp-s-table-skin-hoc__tr.selected',
-    //    idAttribute:['data-id'],
-    //    fileNameSelect:'.wp-s-pan-list__file-name-title-text',
-    //},
+    'cloudQuark':{
+        idAttribute:['data-row-key'],
+        select:'.ant-table-row-selected',
+        fileNameSelect:'.filename-text',
+    },
 }
 
 
@@ -49,5 +50,6 @@ export const cloudUrlInfo:CloudUrlInfoTypes = {
         'https:\\/\\/.*?\\.lanzou.*?\\.com'
     ],
     cloudTianyi: ['https://cloud.189.cn/web/main/'],
-    cloud115:['https://115.com']
+    cloud115:['https://115.com'],
+    cloudQuark:['https://pan.quark.cn/']
 }

@@ -17,7 +17,7 @@ import {CopyValueToClipBoard, DownloadTxt} from "../../utils";
 import {ShareDOMSelect} from "../../infoConfig";
 export const useTianyiCloud:UseTianyiCloud = () => {
     const userOptions = ref<UserOptions>({
-        shareDelay:1000,
+        shareDelay:500,
         expireTime:ExpireTimeEnum.forever,
         shareInfo:[],
         shareInfoUserSee:'',
@@ -54,7 +54,7 @@ export const useTianyiCloud:UseTianyiCloud = () => {
         //遍历填充选中文件信息
         for(let dom of selectDOM){
             userOptions.value.selectFileInfoList.push({
-                id:dom.getAttribute('data-fileid') ?? '',
+                id:dom.getAttribute(ShareDOMSelect['cloudTianyi']?.idAttribute?.[0] ?? '') ?? '',
                 fileName:dom.querySelector(ShareDOMSelect['cloudTianyi']?.fileNameSelect ?? '')?.textContent ?? '(!!$$未知名称!!$$)',
                 expireTime: userOptions.value.expireTime,
             })

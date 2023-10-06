@@ -39,6 +39,18 @@ export default () => {
             //天翼云
             document.querySelector('ul.nav-menu')?.append(app);
         }break;
+        case CloudInfoEnum.cloudQuark: {
+            //夸克网盘
+                const tempDOM = document.querySelector('.file-search-box');
+                if(tempDOM){
+                    app.style.cssText = `
+                    margin-right:200px;
+                `
+                    tempDOM?.parentNode?.insertBefore(app,tempDOM);
+                }else{
+                    MessagePlugin.error('初始化出错,请刷新重试')
+                }
+        }break;
     }
     return app;
 }

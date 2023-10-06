@@ -60,38 +60,8 @@ export const uselanzouCloud:UselanzouCloud = () => {
                             userOptions.value.listData = [...markRaw(userOptions.value.listData),...data]
                         }
                     }
-                    //userOptions.value.listData = [...userOptions.value.listData,...data];
-                    ////@ts-ignore
-                    //if((bodyParams.pg * 1) === 1){
-                    //    //清空原有listData
-                    //    userOptions.value.listData = data;
-                    //}else{
-                    //    //否者滚动加载数据
-                    //    userOptions.value.listData = [...userOptions.value.listData,...data]
-                    //}
                 }
                 handler.next(response)
-
-
-
-
-
-                ////@ts-ignore
-                //if(handler.xhr.config.url.startsWith('/doupload.php')){
-                //    //@ts-ignore
-                //    const bodyParams = bodyParse(handler.xhr.config.body ?? '');
-                //    const data = response.response ? JSON.parse(response.response)?.text ?? [] : [];
-                //    userOptions.value.listData = [...userOptions.value.listData,...data];
-                //    //@ts-ignore
-                //    if((bodyParams.pg * 1) === 1){
-                //        //清空原有listData
-                //        userOptions.value.listData = data;
-                //    }else{
-                //        //否者滚动加载数据
-                //        userOptions.value.listData = [...userOptions.value.listData,...data]
-                //    }
-                //}
-                //handler.next(response)
             }
         })
     }
