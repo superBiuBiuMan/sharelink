@@ -54,7 +54,9 @@
             </t-radio-group>
           </div>
           <template v-if="userOptions.pwdType === PwdEnum.self">
-            <t-input v-model="userOptions.pwd" placeholder="请输入自定义提取码" maxlength="6"/>
+            <div style="margin-top: 4px">
+              <t-input v-model="userOptions.pwd" placeholder="请输入自定义提取码(只支持数字和英文,最少2位最长6位)" maxlength="6"/>
+            </div>
           </template>
         </t-collapse-panel>
         <!--表格-->
