@@ -2,6 +2,7 @@ import {FileTypeEnum, ListData, TransformListData, UseListModule} from "./types"
 import {ref, UnwrapRef} from "vue";
 import {TdPrimaryTableProps} from "tdesign-vue-next";
 
+//@ts-ignore;
 export const useListModule:UseListModule = (props:any, emits:any) => {
     const selectedRowKeys = ref<(number | string)[]>([])//选中id信息
     const selectedRowInfos = ref<ListData[]>([])//选中的文件信息

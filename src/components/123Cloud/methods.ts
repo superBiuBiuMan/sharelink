@@ -73,10 +73,12 @@ export const use123Cloud:Use123Cloud = () => {
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
         const reactDOM = document.querySelector('.hombody');
-        const key = Object.keys(reactDOM).find(key =>
+        //@ts-ignore;
+        const key = Object.keys(reactDOM)?.find(key =>
             key.startsWith("__reactInternalInstance$")
         );
         //选中数据
+        //@ts-ignore;
         const selectedRows:SelectedRows[] = reactDOM[key].memoizedProps.children[0].props.children._owner.memoizedState.selectedRows ?? [];
 
         if(!selectedRows.length){
