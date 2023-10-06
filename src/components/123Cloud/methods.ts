@@ -5,8 +5,9 @@ import {
     ExpireTimeEnum,
     GiveAfter,
     HandleBatchOperation,
-    HandleEnd, Init,
+    HandleEnd,
     PwdEnum,
+    SelectedRows,
     ShareResultInfoList,
     TransformInfoStyle,
     TransformOptions,
@@ -15,11 +16,9 @@ import {
     UserOptions,
 } from "./types";
 import {MessagePlugin} from 'tdesign-vue-next';
-import {nextTick, ref} from "vue";
+import {ref} from "vue";
 import {CopyValueToClipBoard, DownloadTxt, generateRandomString, get123CloudSecret, getDate123Cloud} from "../../utils";
-import {ShareDOMSelect} from "../../infoConfig";
 import axios from "axios";
-import { proxy } from "ajax-hook";
 
 export const use123Cloud:Use123Cloud = () => {
     const userOptions = ref<UserOptions>({
@@ -29,35 +28,10 @@ export const use123Cloud:Use123Cloud = () => {
         pwd:'',//自定义提取码或随机提取码
         shareDelay:1000,
         shareProgress:0,
-        selectFileInfoList:[],
         shareResultInfoList:[],
-        listData:[],
         shareInfoUserSee:'',
         isSharing:false,
-        lastUrl:'',//上一次数据请求的网站,做缓存使用,发现不一致则清空listData
     })
-    const init:Init = () => {
-        proxy({
-            //请求成功后进入
-            onResponse: (response, handler) => {
-                //@ts-ignore
-                if(handler.xhr.config.url.startsWith('/a/api/file/list/new')){
-                    const data = response.response ? JSON.parse(response.response)?.data?.InfoList ?? [] : [];
-                    if(userOptions.value.lastUrl !== window.location.href){
-                        //清空原有listData
-                        userOptions.value.listData = data;
-                    }else{
-                        //否者滚动加载数据
-                        userOptions.value.listData = [...userOptions.value.listData,...data]
-                    }
-                    userOptions.value.lastUrl = window.location.href;
-
-                }
-                handler.next(response)
-            }
-        })
-    }
-    init();
     const transformOptions:TransformOptions = (params:UserOptions) => {
         let sharePwd = '';
         if(params.pwdType === PwdEnum.yes){
@@ -79,23 +53,15 @@ export const use123Cloud:Use123Cloud = () => {
         }
     }
     const transformInfoStyle:TransformInfoStyle = (info) => {
-        switch (info.timeCode) {
-            case ExpireTimeEnum.oneDay: {
-                return `文件名称: ${info.fileName} 分享链接:${info.url} 提取码:${info.pwd ?? '为空'} 分享有效时间: 1天`;
-            }
-            case ExpireTimeEnum.sevenDay: {
-                return `文件名称: ${info.fileName} 分享链接:${info.url} 提取码:${info.pwd ?? '为空'} 分享有效时间: 7天`;
-            }
-            case ExpireTimeEnum.thirtyDay: {
-                return `文件名称: ${info.fileName} 分享链接:${info.url} 提取码:${info.pwd ?? '为空'} 分享有效时间: 30天`;
-            }
-            case ExpireTimeEnum.forever: {
-                return `文件名称: ${info.fileName} 分享链接:${info.url} 提取码:${info.pwd ?? '为空'} 分享有效时间: 永久`;
-            }
-            default: {
-                return `文件名称: ${info.fileName} 分享链接:${info.url} 提取码:${info.pwd ?? '为空'} 分享有效时间: 未知`;
-            }
+        let time;
+        switch (info.timeCode){
+            case ExpireTimeEnum.oneDay: time = '1天';break;
+            case ExpireTimeEnum.sevenDay: time = '7天';break;
+            case ExpireTimeEnum.thirtyDay: time = '30天';break;
+            case ExpireTimeEnum.forever: time = '永久';break;
+            default: time = '未知';
         }
+        return `文件名称: ${info.fileName} 分享链接:${info.url} 提取码:${info.pwd ?? '为空'} 分享有效时间: ${time}`;
     }
     const transformResult:TransformResult = (result:any) => {
         const { data } = result || {};
@@ -106,29 +72,41 @@ export const use123Cloud:Use123Cloud = () => {
         }
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
-        const { selectFileInfoList } = userOptions.value;
-        if(!selectFileInfoList.length) {
+        const reactDOM = document.querySelector('.hombody');
+        const key = Object.keys(reactDOM).find(key =>
+            key.startsWith("__reactInternalInstance$")
+        );
+        //选中数据
+        const selectedRows:SelectedRows[] = reactDOM[key].memoizedProps.children[0].props.children._owner.memoizedState.selectedRows ?? [];
+
+        if(!selectedRows.length){
             return MessagePlugin.warning('请选择要分享的文件!')
         }
+        if(userOptions.value.pwdType === PwdEnum.self && !userOptions.value.pwd){
+            return MessagePlugin.warning('设置提取码为自定义提取码,请填写自定义提取码')
+        }
+        //选中id数据
+        //const selectedRowKeys:number[] = reactDOM[key].memoizedProps.children[0].props.children._owner.memoizedState.selectedRowKeys
         //开始分享
         userOptions.value.isSharing = true;
         //遍历发送
-        for(let fileInfo of selectFileInfoList){
+        for(let fileInfo of selectedRows){
             const data:GiveAfter = {
                 ...transformOptions(userOptions.value),
                 driveId:0,
                 event:"shareCreate",
-                fileIdList:<number>fileInfo.FileId,//文件id
+                fileIdList:fileInfo.FileId,//文件id
                 fileNum:1,//文件数量,
                 operatePlace:1,
                 renameVisible:false,
                 shareModality:2,
                 shareName:fileInfo.FileName,//分享文件名
             }
+            //123加密
             const randomParams = get123CloudSecret();
             const { data:backData } = await axios({
                 method:'post',
-                url:'https://www.123pan.com/a/api/share/create',
+                url:`${window.location.origin}/a/api/share/create`,
                 params:{
                     [randomParams[0]]:randomParams[1],
                 },
@@ -143,7 +121,7 @@ export const use123Cloud:Use123Cloud = () => {
             const backResult = transformResult(backData);
             let tempData:ShareResultInfoList = {
                 fileName:fileInfo.FileName,
-                url:'https://www.123pan.com/s/' + backResult.ShareKey,
+                url:`${window.location.origin}/s/` + backResult.ShareKey,
                 pwd:data.sharePwd,
                 time:data.expiration,
                 timeCode:userOptions.value.expiration,
@@ -153,7 +131,7 @@ export const use123Cloud:Use123Cloud = () => {
             //生成用户观看数据
             userOptions.value.shareInfoUserSee+= (transformInfoStyle(tempData) + '\n')
             //进度条
-            userOptions.value.shareProgress = Math.floor((userOptions.value.shareResultInfoList.length / userOptions.value.selectFileInfoList.length) * 100 );
+            userOptions.value.shareProgress = Math.floor((userOptions.value.shareResultInfoList.length / selectedRows.length) * 100 );
             //等待时间
             await new Promise<void>(resolve => {
                 setTimeout(() => {
@@ -170,7 +148,6 @@ export const use123Cloud:Use123Cloud = () => {
     const handleEnd:HandleEnd = () => {
         //关闭窗口执行操作
         userOptions.value.shareResultInfoList = [];
-        userOptions.value.selectFileInfoList = [];
         userOptions.value.shareInfoUserSee = '';
         userOptions.value.shareProgress = 0;
     }
@@ -185,7 +162,6 @@ export const use123Cloud:Use123Cloud = () => {
         DownloadTxt('123盘批量分享' + Date.now(),userOptions.value.shareInfoUserSee)
     }
     return {
-        init,
         userOptions,
         transformOptions,
         transformInfoStyle,

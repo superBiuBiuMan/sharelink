@@ -36,7 +36,7 @@
     </div>
     <!--配置栏-->
     <div class="cloud123_option">
-      <t-collapse  expandMutex>
+      <t-collapse expandMutex default-expand-all>
         <!--配置项-->
         <t-collapse-panel value="0" header="分享配置" >
           <!--分享延迟-->
@@ -75,12 +75,6 @@
             <t-input v-model="userOptions.pwd" placeholder="请输入自定义提取码" maxlength="4"/>
           </template>
         </t-collapse-panel>
-        <!--表格-->
-        <t-collapse-panel value="1" header="文件选择">
-          <div style="height: 60vh;overflow-y: scroll">
-            <ListModule :list="userOptions.listData" v-model:infos="userOptions.selectFileInfoList"/>
-          </div>
-        </t-collapse-panel>
       </t-collapse>
     </div>
     <!--分享结果-->
@@ -98,8 +92,6 @@
 <script lang="ts" setup>
 import {DefaultShowEnum, ExpireTimeEnum, PwdEnum} from "./types";
 import { use123Cloud } from "./methods";
-import ListModule from "../../modules/123Cloud/listModule/index.vue";
-
 const {
         userOptions,
         handleBatchOperation,
