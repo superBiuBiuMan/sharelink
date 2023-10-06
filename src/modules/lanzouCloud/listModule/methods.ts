@@ -22,7 +22,7 @@ export const useListModule:UseListModule = (props:any, emits:any) => {
                         src:row['type'] === FileTypeEnum.file ? 'https://pc.woozooo.com/images/filetype/txt.gif' : 'https://pc.woozooo.com/images/folder_open.gif'
                     })
                 },
-                width: 50,
+                width: 60,
             },
             {
                 colKey: 'name',

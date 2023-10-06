@@ -23,7 +23,7 @@ export const uselanzouCloud:UselanzouCloud = () => {
     const userOptions = ref<UserOptions>({
         pwdType:PwdEnum.yes,
         pwd:'',//自定义提取码或随机提取码
-        shareDelay:1000,
+        shareDelay:500,
         shareProgress:0,
         selectFileInfoList:[],
         shareResultInfoList:[],
