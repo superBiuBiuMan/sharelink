@@ -22,6 +22,13 @@ export interface UserOptions {
     pwd:string,//随机提取码或自己提取码
 }
 
+//已选文件信息
+export interface SelectFileInfoList {
+    id:string | number,//文件id
+    fileName:string,//文件名称
+    pwd:string,//自定义提取码或随机提取码
+    expireTime:string | number,//分享有效期
+}
 
 //分享链接返回的数据(只取有用的)
 export interface ShareReturnInfoTypes {
@@ -29,20 +36,13 @@ export interface ShareReturnInfoTypes {
     errorno?:number,//0成功,2失败
     shareid?:number,//-1失败,成功返回分享id
     shorturl:string,
-
 }
 
 
-export type ShareInfoTypes  = Partial<ShareReturnInfoTypes> & {
-        expireTime:string | number,//分享有效时间
-        fileName:string,//文件名
-        pwd:string,//四位提取码
-}
+//todo 删除
+export type ShareInfoTypes  = Partial<ShareReturnInfoTypes> & SelectFileInfoList;
 
-export interface SelectFileInfoList {
-    id:string | number,//文件id
-    fileName:string,//文件名称
-}
+
 
 export type HandleBatchOperation = () => void;
 export type HandleEnd = () => void;

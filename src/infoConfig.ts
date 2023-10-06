@@ -26,11 +26,12 @@ export const ShareDOMSelect:ShareDOMSelectTypes = {
         select:'li[data-selected=true].c-file-item',
         fileNameSelect:'.file-item-name-fileName-span',
     },
-    'cloudBaidu':{
-        select:'tr.wp-s-table-skin-hoc__tr.selected',
-        idAttribute:['data-id'],
-        fileNameSelect:'.wp-s-pan-list__file-name-title-text',
-    },
+    ////todo 没有用
+    //'cloudBaidu':{
+    //    select:'tr.wp-s-table-skin-hoc__tr.selected',
+    //    idAttribute:['data-id'],
+    //    fileNameSelect:'.wp-s-pan-list__file-name-title-text',
+    //},
 }
 
 

@@ -16,7 +16,6 @@ import axios from "axios";
 import {ref} from "vue";
 import {unsafeWindow} from "$";
 import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../utils";
-import {ShareDOMSelect} from "../../infoConfig";
 
 export const useBaiduCloud:UseBaiduCloud = () => {
     const userOptions = ref<UserOptions>({
@@ -42,27 +41,27 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         return `文件名称: ${info.fileName} 分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: ${time}`;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
-        //获取选中DOM
-        const selectDOM = document.querySelectorAll(ShareDOMSelect['cloudBaidu']?.select ?? '');
+        //@ts-ignore;
+        const selectDOM = document.querySelector('tbody').__vue__.$store.state.detail.view.fileMeta;
         if(!selectDOM.length) {
             return MessagePlugin.warning('请选择要分享的文件!')
         }
-        console.warn('获取选中DOM',selectDOM)
+        if(userOptions.value.pwdType === HasPwdEnum.self && !userOptions.value.pwd){
+            return MessagePlugin.warning('选择自定义提取码,请设置提取码!')
+        }
         //开始分享
         userOptions.value.isSharing = true;
-        //遍历存储所选文件信息
-        for(let dom of selectDOM){
-            const id = dom.getAttribute(ShareDOMSelect['cloudBaidu']?.idAttribute?.[0] ?? '') ?? '';
-            const tempDOM = dom.querySelector(ShareDOMSelect['cloudBaidu']?.fileNameSelect ?? '');
-            const title = tempDOM ?  tempDOM.getAttribute('title') ?? '(!!$$未知名称!!$$)' : '获取名称失败';
+        //遍历并生成存储所选文件信息
+        for(let item of selectDOM){
             userOptions.value.selectFileInfoList.push({
-                id,//存储文件id
-                fileName:title,//文件名称
+                id: item.fs_id,//存储文件id
+                fileName:item.formatName,//文件名称
+                pwd:userOptions.value.pwdType === HasPwdEnum.random ? generateRandomString(4) : userOptions.value.pwd,
+                expireTime:userOptions.value.expireTime,
             })
         }
         //遍历发送
         for(let fileInfo of userOptions.value.selectFileInfoList){
-            const pwd = generateRandomString(4);//提取码随机生成
             //@ts-ignore
             const { locals } = unsafeWindow ?? {};
             //@ts-ignore
@@ -78,8 +77,8 @@ export const useBaiduCloud:UseBaiduCloud = () => {
                     //'dp-logid':'96456600647322280113',//未知
                 },
                 data:{
-                    period:userOptions.value.expireTime,
-                    pwd,
+                    period:fileInfo.expireTime,
+                    pwd:fileInfo.pwd,
                     'eflag_disable':true,//不知道是什么参数,好像是分享类型eflag_disable: "personal" === e.shareType
                     channel_list:[],//未知
                     schannel:4,//未知-貌似是一个定制
@@ -90,18 +89,14 @@ export const useBaiduCloud:UseBaiduCloud = () => {
                     'Content-Type':' application/x-www-form-urlencoded'
                 }
             }).catch(() => ({}))
-            //console.warn('返回的数据',data)
             //填充返回结果
             let tempData = {
                 ...data,
-                expireTime: userOptions.value.expireTime,
-                fileName:fileInfo.fileName,
-                pwd,
+                ...fileInfo
             }
             userOptions.value.shareInfo.push(tempData)
             //生成用户观看数据
             userOptions.value.shareInfoUserSee+= (handleTransformFormat(tempData) + '\n')
-            //console.warn('结果',shareInfo.value);
             //进度条
             userOptions.value.shareProgress = Math.floor((userOptions.value.shareInfo.length / userOptions.value.selectFileInfoList.length) * 100 );
             //等待时间
