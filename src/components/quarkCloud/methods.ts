@@ -17,7 +17,7 @@ import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../uti
 import {ShareDOMSelect} from "../../infoConfig";
 import {GM_xmlhttpRequest} from "$";
 
-function getTaskID(data){
+function getTaskID(data:any){
     return new Promise<string>((resolve, reject) => {
         GM_xmlhttpRequest({
             method:'post',
@@ -39,7 +39,7 @@ function getTaskID(data){
     })
 }
 
-function getShareID(task_id,retry_index = 0){
+function getShareID(task_id:string,retry_index = 0){
     return new Promise<string>((resolve, reject) => {
         GM_xmlhttpRequest({
             method:'get',
@@ -56,7 +56,7 @@ function getShareID(task_id,retry_index = 0){
     })
 }
 
-function getShareUrl(share_id){
+function getShareUrl(share_id:string){
     return new Promise<string>((resolve, reject) => {
         GM_xmlhttpRequest({
             method:'post',

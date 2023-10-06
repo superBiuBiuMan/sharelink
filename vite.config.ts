@@ -11,7 +11,7 @@ export default defineConfig({
       userscript: {
         name:'网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,天翼网盘)',
         author:'superBiuBiu',
-        version:'2.0.1',
+        version:'2.0.2',
         namespace: 'dreamlove',
         match:
             [
