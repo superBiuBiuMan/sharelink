@@ -21,6 +21,7 @@ import cloud115 from "./components/115Cloud/index.vue";
 import cloud123 from "./components/123Cloud/index.vue";
 import cloudLanZou from "./components/lanzouCloud/index.vue";
 import cloudQuark from "./components/quarkCloud/index.vue";
+import cloud139 from "./components/139Cloud/index.vue";
 const visible = ref<boolean>(false);
 const operationRef = ref();
 const cloudComponent = shallowRef({
@@ -30,6 +31,7 @@ const cloudComponent = shallowRef({
   cloud123,
   cloudLanZou,
   cloudQuark,
+  cloud139,
 })
 //按钮打开
 const handleOpenDrawerClick = ():void => {

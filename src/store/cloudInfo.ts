@@ -22,7 +22,6 @@ export default defineStore({
             const url = window.location.href;
             //判断所属网盘
             const cloudKey = findCloudProvider(url,cloudUrlInfo) ?? '';
-            console.log('啊',cloudKey)
             if(!cloudKey){
                 throw new Error('初始化网盘信息出错')
             }
@@ -46,6 +45,9 @@ export default defineStore({
                 }break;
                 case CloudInfoEnum.cloudQuark:{
                     this.cloudName = '夸克网盘';
+                }break;
+                case CloudInfoEnum.cloud139:{
+                    this.cloudName = '中国移动(139)网盘'
                 }break;
                 default: this.cloudName = '未知网盘';
             }

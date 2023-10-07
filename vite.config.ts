@@ -20,6 +20,7 @@ export default defineConfig({
                 'https://115.com/*',
                 'https://www.123pan.com/*',
                 'https://pan.quark.cn/*',
+                'https://yun.139.com/*',
                 //蓝奏云
                 'https://lanzou.com/*',
                 'https://www.lanzou.com/*',

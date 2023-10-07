@@ -50,6 +50,16 @@ export default () => {
                     MessagePlugin.error('初始化出错,请刷新重试')
                 }
         }break;
+        case CloudInfoEnum.cloud139: {
+            //139网盘
+            const tempDOM = document.querySelector('.document_top_upload_button');
+            console.log('查看',tempDOM)
+            if(tempDOM){
+                tempDOM?.parentNode?.append(app,tempDOM);
+            }else{
+                MessagePlugin.error('1111初始化出错,请刷新重试')
+            }
+        }break;
     }
     return app;
 }
