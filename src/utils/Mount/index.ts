@@ -5,7 +5,6 @@ import {MessagePlugin} from "tdesign-vue-next";
 
 export default () => {
     const app = document.createElement('div');
-
     //判断所属网盘
     switch (cloudInfoStore.currentCloud) {
         case CloudInfoEnum.cloudBaidu: {
