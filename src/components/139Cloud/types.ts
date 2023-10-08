@@ -30,7 +30,7 @@ export interface UserOptions{
 
 //用户配置分享参数转换后所需要的形式
 export interface TransformUserOptionsObjType{
-    period:number,//分享有效期
+    period:number | null,//分享有效期
 }
 //需要传递给后端参数
 export type GiveAfter = TransformUserOptionsObjType & {
@@ -46,7 +46,7 @@ export type GiveAfter = TransformUserOptionsObjType & {
         isWatermark:0,
         shareChannel?:'3001',
     },
-    period:number,//分享有效期 1为1天 7为7天 不传则永久
+    period:number | null,//分享有效期 1为1天 7为7天 不传则永久
     periodUnit:1,
     pubType:1,
     subLinkType:0,

@@ -5,7 +5,7 @@ import {findCloudProvider} from "../utils";
 export interface CloudInfoStateTypes {
     currentCloud:CloudInfoEnum | string
     cloudName:string,
-    cloudKey:string,
+    cloudKey:keyof typeof CloudInfoEnum | string,
 }
 
 
@@ -25,8 +25,9 @@ export default defineStore({
             if(!cloudKey){
                 throw new Error('初始化网盘信息出错')
             }
-            this.cloudKey = cloudKey;
-            this.currentCloud = CloudInfoEnum[cloudKey];
+            this.cloudKey = cloudKey; //eg:cloudBaidu
+
+            this.currentCloud = CloudInfoEnum[cloudKey as keyof typeof CloudInfoEnum];
             switch (this.currentCloud) {
                 case CloudInfoEnum.cloudLanZou: {
                     this.cloudName = '蓝奏云';

@@ -1,37 +1,39 @@
 //挂载方式
 import {cloudInfoStore} from "../../store";
 import {CloudInfoEnum} from "../../infoConfig";
-import {MessagePlugin} from "tdesign-vue-next";
+import {observeDOMChanges} from "../index";
 
 export default () => {
     const app = document.createElement('div');
     //判断所属网盘
     switch (cloudInfoStore.currentCloud) {
         case CloudInfoEnum.cloudBaidu: {
-            //百度云
-            const tempDOM = document.querySelector('div.wp-s-header__right');
-            if (tempDOM) {
-                tempDOM.insertBefore(app, tempDOM?.firstChild)
-            } else {
-                MessagePlugin.error('初始化出错,请刷新重试')
-            }
+            observeDOMChanges('body',() => {
+                //百度云
+                const tempDOM = document.querySelector('div.wp-s-header__right');
+                tempDOM?.insertBefore(app, tempDOM?.firstChild)
+            })
         }break;
         case CloudInfoEnum.cloud115 : {
             //115云盘
             const temp = document.createElement('li')
+            app.style.cssText = `
+            margin-top: 12px;
+            margin-left: 10px;
+        `
             temp.append(app);
             document.querySelector('div.navigation-ceiling ul')?.append(temp);
         }break;
         case CloudInfoEnum.cloud123: {
-            app.style.textAlign = 'center';
             //123云盘
+            app.style.textAlign = 'center';
             document.querySelector('.ant-menu-light')?.append(app)
         }break;
         case CloudInfoEnum.cloudLanZou: {
-            app.style.cssText = `
-                padding-top: 2px;
-            `
             //蓝奏云
+            app.style.cssText = `
+            padding-top: 2px;
+        `
             document.querySelector('.mydisk_file_bar')?.append(app)
         }break;
         case CloudInfoEnum.cloudTianyi: {
@@ -40,25 +42,23 @@ export default () => {
         }break;
         case CloudInfoEnum.cloudQuark: {
             //夸克网盘
+            observeDOMChanges('body',() => {
                 const tempDOM = document.querySelector('.file-search-box');
-                if(tempDOM){
-                    app.style.cssText = `
+                app.style.cssText = `
                     margin-right:200px;
                 `
-                    tempDOM?.parentNode?.insertBefore(app,tempDOM);
-                }else{
-                    MessagePlugin.error('初始化出错,请刷新重试')
-                }
+                tempDOM?.parentNode?.insertBefore(app,tempDOM);
+            })
         }break;
         case CloudInfoEnum.cloud139: {
-            //139网盘
-            const tempDOM = document.querySelector('.document_top_upload_button');
-            console.log('查看',tempDOM)
-            if(tempDOM){
+            observeDOMChanges('.document_main_warp',(targetDOM) => {
+                const tempDOM = document.querySelector('.document_top_upload_button');
+                app.style.cssText = `
+                    display:inline-block;
+                    margin-top:20px;
+                `
                 tempDOM?.parentNode?.append(app,tempDOM);
-            }else{
-                MessagePlugin.error('1111初始化出错,请刷新重试')
-            }
+            })
         }break;
     }
     return app;

@@ -227,3 +227,38 @@ export function isMatchingUrl(url, pattern) {
         return url.startsWith(pattern);
     }
 }
+
+/**
+ * 监听指定DOM的改变,并执行回调,我用来适当的时机插入元素
+ * @param selector 选择器,参考querySelector传入的参数
+ * @param callback 回调,当监听到DOM按照options改变的时候就执行
+ * @param options 配置项,参考MutationObserver的配置项
+ */
+export function observeDOMChanges(
+    selector: string,
+    callback: (targetDOM: Element) => void,
+    options: {
+        interval?: number;
+        observerOptions?: MutationObserverInit;
+    } = { interval: 300, observerOptions: { childList: true, subtree: true, } }
+): void {
+    if (!selector) {
+        throw new Error("请传入选择器");
+    }
+    let timer;
+    const startObserver = () => {
+        const targetDOM = document.querySelector(selector);
+        if (!targetDOM) return;
+        clearInterval(timer);
+        const observer = new MutationObserver(() => {
+            console.log('执行回调')
+            callback(targetDOM);
+            observer.disconnect();
+        });
+
+        observer.observe(targetDOM, options.observerOptions);
+    };
+
+    timer = setInterval(startObserver, options.interval ?? 300);
+}
+
