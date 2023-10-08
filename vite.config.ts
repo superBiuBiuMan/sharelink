@@ -9,9 +9,9 @@ export default defineConfig({
     monkey({
       entry: 'src/main.ts',
       userscript: {
-        name:'网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,天翼网盘)',
+        name:'网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,天翼网盘,中国移动网盘)',
         author:'superBiuBiu',
-        version:'2.0.2',
+        version:'2.1.2',
         namespace: 'dreamlove',
         match:
             [

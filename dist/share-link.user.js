@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,天翼网盘)
+// @name         网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,天翼网盘,中国移动网盘)
 // @namespace    dreamlove
-// @version      2.0.2
+// @version      2.1.2
 // @author       superBiuBiu
 // @description  网盘文件批量分享,目前支持百度网盘,天翼网盘,115网盘,123网盘,蓝奏云,~
 // @iconURL      https://www.google.com/s2/favicons?domain=dreamlove.top
