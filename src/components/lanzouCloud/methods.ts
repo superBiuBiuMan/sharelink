@@ -18,6 +18,7 @@ import {bodyParse, CopyValueToClipBoard, DownloadTxt} from "../../utils";
 import {proxy} from "ajax-hook";
 import axios from "axios";
 import {FileTypeEnum} from "../../modules/lanzouCloud/listModule/types";
+import {cloudInfoStore} from "../../store";
 
 export const uselanzouCloud:UselanzouCloud = () => {
     const userOptions = ref<UserOptions>({
@@ -153,7 +154,7 @@ export const uselanzouCloud:UselanzouCloud = () => {
         })
     }
     const download:Download = () => {
-        DownloadTxt('123盘批量分享' + Date.now(),userOptions.value.shareInfoUserSee)
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
     }
     return {
         init,

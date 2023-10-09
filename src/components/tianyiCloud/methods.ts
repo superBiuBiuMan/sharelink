@@ -15,6 +15,7 @@ import axios from "axios";
 import {ref} from "vue";
 import {CopyValueToClipBoard, DownloadTxt} from "../../utils";
 import {ShareDOMSelect} from "../../infoConfig";
+import {cloudInfoStore} from "../../store";
 export const useTianyiCloud:UseTianyiCloud = () => {
     const userOptions = ref<UserOptions>({
         shareDelay:500,
@@ -109,7 +110,7 @@ export const useTianyiCloud:UseTianyiCloud = () => {
         })
     }
     const download:Download = () => {
-        DownloadTxt('天翼云盘批量分享' + Date.now(),userOptions.value.shareInfoUserSee)
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
     }
     return {
         userOptions,

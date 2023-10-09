@@ -22,6 +22,7 @@ import cloud123 from "./components/123Cloud/index.vue";
 import cloudLanZou from "./components/lanzouCloud/index.vue";
 import cloudQuark from "./components/quarkCloud/index.vue";
 import cloud139 from "./components/139Cloud/index.vue";
+import cloudXun from "./components/xunCloud/index.vue";
 import {CloudInfoEnum} from "./infoConfig";
 export type CloudComponent = {
   [cloudName in keyof typeof CloudInfoEnum]:Component
@@ -36,6 +37,7 @@ const cloudComponent:Ref<CloudComponent> = shallowRef({
   cloudLanZou,
   cloudQuark,
   cloud139,
+  cloudXun,
 })
 //按钮打开
 const handleOpenDrawerClick = ():void => {

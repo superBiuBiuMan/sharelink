@@ -15,6 +15,7 @@ import {ref} from "vue";
 import {GM_xmlhttpRequest, unsafeWindow} from "$";
 import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../utils";
 import {ShareDOMSelect} from "../../infoConfig";
+import {cloudInfoStore} from "../../store";
 export const use115Cloud:Use115Cloud = () => {
     const shareDelay = ref<number>(500);
     const expireTime = ref<ExpireTimeEnum>(ExpireTimeEnum.forever);
@@ -107,7 +108,7 @@ export const use115Cloud:Use115Cloud = () => {
         })
     }
     const download:Download = () => {
-        DownloadTxt('百度云盘批量分享' + Date.now(),shareInfoUserSee.value)
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,shareInfoUserSee.value)
     }
     return {
         shareDelay,

@@ -16,6 +16,7 @@ import {ref} from "vue";
 import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../utils";
 import {ShareDOMSelect} from "../../infoConfig";
 import {GM_xmlhttpRequest} from "$";
+import {cloudInfoStore} from "../../store";
 
 function getTaskID(data:any){
     return new Promise<string>((resolve, reject) => {
@@ -175,7 +176,7 @@ export const usequarkCloud:UsequarkCloud = () => {
         })
     }
     const download:Download = () => {
-        DownloadTxt('天翼云盘批量分享' + Date.now(),userOptions.value.shareInfoUserSee)
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
     }
     return {
         userOptions,

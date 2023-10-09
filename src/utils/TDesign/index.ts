@@ -7,9 +7,9 @@ import {
     Progress,
     Radio,
     RadioButton,
-    RadioGroup,
+    RadioGroup, Select,
     Space, Table,
-    Textarea, Tooltip
+    Textarea, Tooltip,Option
 } from "tdesign-vue-next";
 
 export default (app:App) => {
@@ -29,4 +29,6 @@ export default (app:App) => {
     .use(CollapsePanel)
     .use(Input)
     .use(Table)
+    .use(Select)
+    .use(Option)
 }

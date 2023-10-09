@@ -9,9 +9,9 @@ export default defineConfig({
     monkey({
       entry: 'src/main.ts',
       userscript: {
-        name:'网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,天翼网盘,中国移动网盘)',
+        name:'网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,天翼网盘,迅雷网盘,中国移动网盘)',
         author:'superBiuBiu',
-        version:'2.1.2',
+        version:'2.2.1',
         namespace: 'dreamlove',
         match:
             [
@@ -21,6 +21,7 @@ export default defineConfig({
                 'https://www.123pan.com/*',
                 'https://pan.quark.cn/*',
                 'https://yun.139.com/*',
+                'https://pan.xunlei.com/*',
                 //蓝奏云
                 'https://lanzou.com/*',
                 'https://www.lanzou.com/*',
@@ -44,12 +45,13 @@ export default defineConfig({
                 'https://*.lanzoux.com/*',
                 'https://*.lanzouy.com/*',
             ],
-        description:'网盘文件批量分享,目前支持百度网盘,天翼网盘,115网盘,123网盘,蓝奏云,~',
+        description:'网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,天翼网盘,迅雷网盘,中国移动网盘~',
         supportURL:'https://github.com/superBiuBiuMan/sharelink/',
         iconURL:'https://www.google.com/s2/favicons?domain=dreamlove.top',
         connect:[
             'webapi.115.com',
             'drive-pc.quark.cn',
+            'api-pan.xunlei.com',
         ],
       },
       build: {

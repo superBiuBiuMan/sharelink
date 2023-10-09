@@ -18,6 +18,7 @@ import {MessagePlugin} from 'tdesign-vue-next';
 import {ref} from "vue";
 import {CopyValueToClipBoard, DownloadTxt, get123CloudSecret} from "../../utils";
 import axios from "axios";
+import {cloudInfoStore} from "../../store";
 
 export const use139Cloud:Use139Cloud = () => {
     const userOptions = ref<UserOptions>({
@@ -156,7 +157,7 @@ export const use139Cloud:Use139Cloud = () => {
         })
     }
     const download:Download = () => {
-        DownloadTxt('123盘批量分享' + Date.now(),userOptions.value.shareInfoUserSee)
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
     }
     return {
         init,

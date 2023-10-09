@@ -262,3 +262,31 @@ export function observeDOMChanges(
     timer = setInterval(startObserver, options.interval ?? 300);
 }
 
+/**
+ * 指定前缀字符串
+ * @param obj
+ * @param prefix
+ * @description
+ *  const myObject = {
+ *   apple: 'red',
+ *   banana: 'yellow',
+ *   cat: 'meow',
+ *   dog: 'bark',
+ *   car: 'vroom',
+ *   elephant: 'trumpet',
+ * };
+ *
+ * const prefix = 'ca'; // 指定前缀
+ * findKeysWithPrefix(myObject,prefix) => {car_xxx:'宝马'}}
+ */
+export function findLocalStorageKeysWithPrefix(prefix) {
+    let result = {};
+
+    for (const key in localStorage) {
+        if (localStorage.hasOwnProperty(key) && key.startsWith(prefix)) {
+            result = JSON.parse(localStorage[key])
+        }
+    }
+
+    return result;
+}

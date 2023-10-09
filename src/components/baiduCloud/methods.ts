@@ -16,6 +16,7 @@ import axios from "axios";
 import {ref} from "vue";
 import {unsafeWindow} from "$";
 import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../utils";
+import {cloudInfoStore} from "../../store";
 
 export const useBaiduCloud:UseBaiduCloud = () => {
     const userOptions = ref<UserOptions>({
@@ -128,7 +129,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         })
     }
     const download:Download = () => {
-        DownloadTxt('百度云盘批量分享' + Date.now(),userOptions.value.shareInfoUserSee)
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
     }
     return {
         userOptions,

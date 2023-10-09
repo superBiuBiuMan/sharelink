@@ -19,6 +19,7 @@ import {MessagePlugin} from 'tdesign-vue-next';
 import {ref} from "vue";
 import {CopyValueToClipBoard, DownloadTxt, generateRandomString, get123CloudSecret, getDate123Cloud} from "../../utils";
 import axios from "axios";
+import {cloudInfoStore} from "../../store";
 
 export const use123Cloud:Use123Cloud = () => {
     const userOptions = ref<UserOptions>({
@@ -161,7 +162,7 @@ export const use123Cloud:Use123Cloud = () => {
         })
     }
     const download:Download = () => {
-        DownloadTxt('123盘批量分享' + Date.now(),userOptions.value.shareInfoUserSee)
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
     }
     return {
         userOptions,

@@ -50,6 +50,9 @@ export default defineStore({
                 case CloudInfoEnum.cloud139:{
                     this.cloudName = '中国移动(139)网盘'
                 }break;
+                case CloudInfoEnum.cloudXun:{
+                    this.cloudName = '迅雷网盘'
+                }break;
                 default: this.cloudName = '未知网盘';
             }
         }
