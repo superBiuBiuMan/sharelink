@@ -53,6 +53,9 @@ export default defineStore({
                 case CloudInfoEnum.cloudXun:{
                     this.cloudName = '迅雷网盘'
                 }break;
+                case CloudInfoEnum.cloudAli:{
+                    this.cloudName = '阿里云盘'
+                }break;
                 default: this.cloudName = '未知网盘';
             }
         }

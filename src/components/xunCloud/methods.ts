@@ -132,7 +132,7 @@ export const useXunCloud:UseXunCloud = () => {
         for(let item of selectRowInfos){
             userOptions.value.selectFileInfoList.push({
                 id:item?.id,
-                fileName:item.name ?? '',
+                fileName:item?.name ?? '',
                 expireTime: userOptions.value.expireTime,
                 extractNumber:userOptions.value.extractNumber,
             })

@@ -8,6 +8,7 @@ export enum CloudInfoEnum {
     cloudQuark,//夸克网盘
     cloud139,//移动网盘
     cloudXun,//迅雷网盘
+    cloudAli,//阿里云盘
 }
 export type ShareDOMSelectTypes =  {
     [cloudName in keyof typeof CloudInfoEnum]?:{
@@ -56,4 +57,5 @@ export const cloudUrlInfo:CloudUrlInfoTypes = {
     cloudQuark:['https://pan.quark.cn/'],
     cloud139:['https://yun.139.com/'],
     cloudXun:['https://pan.xunlei.com/'],
+    cloudAli:['https://www.aliyundrive.com/']
 }

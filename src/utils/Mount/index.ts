@@ -52,7 +52,7 @@ export default () => {
         }break;
         case CloudInfoEnum.cloud139: {
             //中国移动网盘
-            observeDOMChanges('.document_main_warp',(targetDOM) => {
+            observeDOMChanges('.document_main_warp',() => {
                 const tempDOM = document.querySelector('.document_top_upload_button');
                 app.style.cssText = `
                 display:inline-block;
@@ -68,6 +68,15 @@ export default () => {
             margin-left: 10px;
          `
             tempDOM?.append(app);
+        }break;
+        case CloudInfoEnum.cloudAli: {
+            //阿里云盘
+            app.style.cssText = `
+            margin-top: 10px;
+         `
+            observeDOMChanges('body',() => {
+                document.querySelector('.nav-menu--Lm1q6')?.append(app)
+            })
         }break;
     }
     return app;
