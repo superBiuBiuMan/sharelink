@@ -1,7 +1,16 @@
 <style scoped>
 </style>
 <template>
-  <t-button @click="handleOpenDrawerClick">批量分享操作</t-button>
+  <template v-if="cloudInfoStore.currentCloud === CloudInfoEnum.cloudAli">
+    <div @click="handleOpenDrawerClick" style="display: flex;flex-direction: column;align-items: center">
+      <calendar-icon slot="icon" />
+      <span @click="handleOpenDrawerClick">分享</span>
+    </div>
+  </template>
+  <template v-else>
+    <t-button @click="handleOpenDrawerClick">批量分享操作</t-button>
+  </template>
+
   <t-drawer
       v-model:visible="visible" :header="cloudInfoStore.cloudName" size="600px"
 :on-confirm="handleClose" @close="handleClose" placement="right" :closeOnOverlayClick="false">
@@ -12,6 +21,7 @@
 
 <script setup lang="ts">
 //@ts-nocheck
+import { CalendarIcon } from 'tdesign-icons-vue-next';
 import { ref, shallowRef} from "vue";
 import type {Component, Ref,} from "vue"
 import {cloudInfoStore} from "./store";

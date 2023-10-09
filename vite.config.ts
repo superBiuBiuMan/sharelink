@@ -9,7 +9,7 @@ export default defineConfig({
     monkey({
       entry: 'src/main.ts',
       userscript: {
-        name:'网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘)',
+        name:'网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘)',
         author:'superBiuBiu',
         version:'2.3.0',
         namespace: 'dreamlove',
@@ -46,7 +46,7 @@ export default defineConfig({
                 'https://*.lanzoux.com/*',
                 'https://*.lanzouy.com/*',
             ],
-        description:'网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘~',
+        description:'网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘~',
         supportURL:'https://github.com/superBiuBiuMan/sharelink/',
         iconURL:'https://www.google.com/s2/favicons?domain=dreamlove.top',
         connect:[

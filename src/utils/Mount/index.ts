@@ -71,11 +71,20 @@ export default () => {
         }break;
         case CloudInfoEnum.cloudAli: {
             //阿里云盘
-            app.style.cssText = `
-            margin-top: 10px;
-         `
             observeDOMChanges('body',() => {
-                document.querySelector('.nav-menu--Lm1q6')?.append(app)
+                const tempDOM = document.querySelector("div[class^='nav-tab-item--']");
+                const iterator = tempDOM?.classList;
+                let name;
+                //@ts-ignore;
+                for (const value of iterator) {
+                    if(value.startsWith('nav-tab-item')) name = value;
+                }
+                if(name){
+                    app.classList.add(name)
+                    document.querySelector("div[class^='nav-tab-content--']")?.append(app)
+                }else{
+                    document.body.append(app);
+                }
             })
         }break;
     }
