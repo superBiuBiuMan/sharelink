@@ -34,40 +34,43 @@ export const uselanzouCloud:UselanzouCloud = () => {
         isSharing:false,
     })
     const init:Init = () => {
-
-        proxy({
-            //请求成功后进入
-            onResponse: (response, handler) => {
-                //@ts-ignore
-                if(handler.xhr.config.url.startsWith('/doupload.php')){
-                    console.log('拦截是否成功')
+        setTimeout(() => {
+            const abc = document.querySelector('iframe')
+            const iframeWindow = (<HTMLIFrameElement>abc).contentWindow ;
+            proxy({
+                //请求成功后进入0.
+                onResponse: (response, handler) => {
                     //@ts-ignore
-                    const bodyParams = bodyParse(handler.xhr.config.body ?? '');
-                    const { task,pg } = bodyParams;
-                    let data = [];
-                    //请求文件夹
-                    if(task * 1 === TaskEnum.reqFolderList){
-                        //todo 蓝奏云文件夹到底是info还是text
-                        data = response.response ? JSON.parse(response.response)?.text ?? [] : [];
-                        userOptions.value.lastFolderData = data;//存储文件夹信息
-                        userOptions.value.listData = [...markRaw(userOptions.value.listData),...data];
-                    }
-                    //请求文件
-                    else if(task * 1 === TaskEnum.reqFileList){
+                    if(handler.xhr.config.url.startsWith('/doupload.php')){
+                        //@ts-ignore
+                        const bodyParams = bodyParse(handler.xhr.config.body ?? '');
+                        const { task,pg } = bodyParams;
+                        let data = [];
+                        //请求文件夹
+                        if(task * 1 === TaskEnum.reqFolderList){
+                            //todo 蓝奏云文件夹到底是info还是text
+                            data = response.response ? JSON.parse(response.response)?.text ?? [] : [];
+                            userOptions.value.lastFolderData = data;//存储文件夹信息
+                            userOptions.value.listData = [...markRaw(userOptions.value.listData),...data];
+                        }
                         //请求文件
-                        data = response.response ? JSON.parse(response.response)?.text ?? [] : [];
-                        if(pg *1 === 1){
-                            //清空原有listData,但不清空文件夹
-                            userOptions.value.listData = [...markRaw(userOptions.value.lastFolderData),...data];
-                        }else{
-                            //否者滚动加载数据
-                            userOptions.value.listData = [...markRaw(userOptions.value.listData),...data]
+                        else if(task * 1 === TaskEnum.reqFileList){
+                            //请求文件
+                            data = response.response ? JSON.parse(response.response)?.text ?? [] : [];
+                            if(pg *1 === 1){
+                                //清空原有listData,但不清空文件夹
+                                userOptions.value.listData = [...markRaw(userOptions.value.lastFolderData),...data];
+                            }else{
+                                //否者滚动加载数据
+                                userOptions.value.listData = [...markRaw(userOptions.value.listData),...data]
+                            }
                         }
                     }
-                }
-                handler.next(response)
-            },
-        })
+                    handler.next(response)
+                },
+                //@ts-ignore
+            },iframeWindow)
+        },1000)
     }
     init();
     const transformInfoStyle:TransformInfoStyle = (info) => {

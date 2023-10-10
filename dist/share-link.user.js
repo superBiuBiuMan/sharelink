@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘)
 // @namespace    dreamlove
-// @version      2.3.1
+// @version      2.3.2
 // @author       superBiuBiu
 // @description  网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘~
 // @iconURL      https://www.google.com/s2/favicons?domain=dreamlove.top
@@ -35324,31 +35324,35 @@
       isSharing: false
     });
     const init = () => {
-      proxy({
-        //请求成功后进入
-        onResponse: (response, handler) => {
-          var _a, _b;
-          if (handler.xhr.config.url.startsWith("/doupload.php")) {
-            console.log("拦截是否成功");
-            const bodyParams = bodyParse(handler.xhr.config.body ?? "");
-            const { task, pg } = bodyParams;
-            let data2 = [];
-            if (task * 1 === TaskEnum.reqFolderList) {
-              data2 = response.response ? ((_a = JSON.parse(response.response)) == null ? void 0 : _a.text) ?? [] : [];
-              userOptions.value.lastFolderData = data2;
-              userOptions.value.listData = [...vue.markRaw(userOptions.value.listData), ...data2];
-            } else if (task * 1 === TaskEnum.reqFileList) {
-              data2 = response.response ? ((_b = JSON.parse(response.response)) == null ? void 0 : _b.text) ?? [] : [];
-              if (pg * 1 === 1) {
-                userOptions.value.listData = [...vue.markRaw(userOptions.value.lastFolderData), ...data2];
-              } else {
+      setTimeout(() => {
+        const abc = document.querySelector("iframe");
+        const iframeWindow = abc.contentWindow;
+        proxy({
+          //请求成功后进入0.
+          onResponse: (response, handler) => {
+            var _a, _b;
+            if (handler.xhr.config.url.startsWith("/doupload.php")) {
+              const bodyParams = bodyParse(handler.xhr.config.body ?? "");
+              const { task, pg } = bodyParams;
+              let data2 = [];
+              if (task * 1 === TaskEnum.reqFolderList) {
+                data2 = response.response ? ((_a = JSON.parse(response.response)) == null ? void 0 : _a.text) ?? [] : [];
+                userOptions.value.lastFolderData = data2;
                 userOptions.value.listData = [...vue.markRaw(userOptions.value.listData), ...data2];
+              } else if (task * 1 === TaskEnum.reqFileList) {
+                data2 = response.response ? ((_b = JSON.parse(response.response)) == null ? void 0 : _b.text) ?? [] : [];
+                if (pg * 1 === 1) {
+                  userOptions.value.listData = [...vue.markRaw(userOptions.value.lastFolderData), ...data2];
+                } else {
+                  userOptions.value.listData = [...vue.markRaw(userOptions.value.listData), ...data2];
+                }
               }
             }
+            handler.next(response);
           }
-          handler.next(response);
-        }
-      });
+          //@ts-ignore
+        }, iframeWindow);
+      }, 1e3);
     };
     init();
     const transformInfoStyle = (info3) => {
