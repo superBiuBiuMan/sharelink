@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import {CloudInfoEnum, cloudUrlInfo} from "../infoConfig";
 import {findCloudProvider} from "../utils";
+import {unsafeWindow} from "$";
 
 export interface CloudInfoStateTypes {
     currentCloud:CloudInfoEnum | string
@@ -19,13 +20,9 @@ export default defineStore({
     actions:{
         //初始化网盘信息
         initCloudInfo(){
-            const url = window.location.href;
+            const url = window.location.href
             console.log('当前网址',url)
-            //if(url.startsWith('https://pc.woozooo.com/mydisk.php?item=files')){
-            //    //蓝奏云二次加载避免
-            //    return;
-            //}
-            //判断所属网盘
+            //判断所属网盘,并存储信息,以此来决定应该挂载哪一个网盘组件
             const cloudKey = findCloudProvider(url,cloudUrlInfo) ?? '';
             console.log('所属网盘',cloudKey)
             if(!cloudKey){

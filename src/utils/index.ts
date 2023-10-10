@@ -207,6 +207,7 @@ export function bodyParse(body:string){
  * }
  * js实现根据url来遍历cloudUrlInfos,如果找到对应的链接,则返回所属的键值
  *  findCloudProvider('https://www.123pan.com/',cloudUrlInfo); //返回cloud123
+ *  并使用正则来匹配(因为有的网站居多域名,比如蓝奏云!!!!)
  */
 export function findCloudProvider(url, cloudUrlInfos) {
     for (const provider in cloudUrlInfos) {
@@ -221,9 +222,12 @@ export function findCloudProvider(url, cloudUrlInfos) {
 }
 
 export function isMatchingUrl(url, pattern) {
+    //包含了* 就以正则来判断
     if (pattern.includes('*')) {
         return new RegExp(pattern,'g').test(url);
-    } else {
+    }
+    //否则就以普通方式来判断
+    else {
         return url.startsWith(pattern);
     }
 }

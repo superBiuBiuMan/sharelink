@@ -63,6 +63,8 @@ export const useAliCloud:UseAliCloud = () => {
         }
         //开始分享
         userOptions.value.isSharing = true;
+        //清空之前的
+        userOptions.value.selectFileInfoList = [];
         const token:{token_type:string,access_token:string} = JSON.parse(localStorage.getItem('token') ?? `{}`) ?? {}
         //遍历填充选中文件信息
         for(let item of selectedRowInfos){
@@ -120,7 +122,6 @@ export const useAliCloud:UseAliCloud = () => {
             })
         }
         //分享完成
-        userOptions.value.selectFileInfoList = [];
         userOptions.value.shareProgress = 100;//以防万一~
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
@@ -128,6 +129,7 @@ export const useAliCloud:UseAliCloud = () => {
 
     const handleEnd:HandleEnd = () => {
         //关闭窗口执行操作
+        userOptions.value.selectFileInfoList = [];
         userOptions.value.shareInfo = [];
         userOptions.value.shareInfoUserSee = '';
         userOptions.value.shareProgress = 0;

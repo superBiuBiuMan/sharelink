@@ -37,6 +37,7 @@ export const use115Cloud:Use115Cloud = () => {
         }
         //开始分享
         isSharing.value = true;
+        shareInfo.value = [];//清空之前的
         for(let dom of selectDOM){
             const id =( dom.getAttribute(ShareDOMSelect["cloud115"]?.idAttribute?.[0] ?? '') || dom.getAttribute(ShareDOMSelect["cloud115"]?.idAttribute?.[1] ?? '') ) ?? '';
             const title = dom.getAttribute('title');
@@ -73,7 +74,6 @@ export const use115Cloud:Use115Cloud = () => {
                     //生成用户观看数据
                     shareInfoUserSee.value+= (handleTransformFormat(tempData) + '\n')
                     //进度条
-                    console.log('查看',shareInfo.value.length , selectFileInfoList.value.length)
                     shareProgress.value = Math.floor((shareInfo.value.length / selectFileInfoList.value.length) * 100 );
                 },
                 onerror:(res) => {

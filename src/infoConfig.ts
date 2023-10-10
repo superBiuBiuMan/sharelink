@@ -40,17 +40,17 @@ export const ShareDOMSelect:ShareDOMSelectTypes = {
 
 
 
-//所属网盘链接
+//所属网盘链接(根据提供的链接判断所属的网盘,并存储所属网盘和网盘名称在pinia,以此来决定应该挂载哪一个网盘组件)
 export const cloudUrlInfo:CloudUrlInfoTypes = {
     cloud123: ['https://www.123pan.com/'],
     cloudBaidu: ['https://pan.baidu.com/disk/main'],
     cloudLanZou: [
         'https://pc.woozooo.com/mydisk.php',
-        'https://www.lanzou.com/',
-        'https://pan.lanzou.com/',
-        'https://lanzou.com',
-        'https:\\/\\/..*?\\.woozooo\\.com',
-        'https:\\/\\/.*?\\.lanzou.*?\\.com'
+        //'https://www.lanzou.com/',
+        //'https://pan.lanzou.com/',
+        //'https://lanzou.com',
+        //'https:\\/\\/..*?\\.woozooo\\.com',
+        //'https:\\/\\/.*?\\.lanzou.*?\\.com'
     ],
     cloudTianyi: ['https://cloud.189.cn/web/main/'],
     cloud115:['https://115.com'],

@@ -56,7 +56,6 @@
 </template>
 
 <script lang="ts" setup>
-import {ExpireTimeEnum} from "./types";
 import { use115Cloud } from "./methods";
 const {
         expireTime,

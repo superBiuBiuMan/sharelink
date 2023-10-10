@@ -52,6 +52,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         }
         //开始分享
         userOptions.value.isSharing = true;
+        userOptions.value.selectFileInfoList = [];
         //遍历并生成存储所选文件信息
         for(let item of selectDOM){
             userOptions.value.selectFileInfoList.push({
@@ -108,7 +109,6 @@ export const useBaiduCloud:UseBaiduCloud = () => {
             })
         }
         //分享完成
-        userOptions.value.selectFileInfoList = [];
         userOptions.value.shareProgress = 100;//以防万一~
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
@@ -117,6 +117,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
     const handleEnd:HandleEnd = () => {
         //关闭窗口执行操作
         userOptions.value.shareInfo = [];
+        userOptions.value.selectFileInfoList = [];
         userOptions.value.shareInfoUserSee = '';
         userOptions.value.shareProgress = 0;
     }

@@ -127,7 +127,7 @@ export const useXunCloud:UseXunCloud = () => {
         }
         //开始分享
         userOptions.value.isSharing = true;
-
+        userOptions.value.selectFileInfoList = [];
         //遍历填充选中文件信息
         for(let item of selectRowInfos){
             userOptions.value.selectFileInfoList.push({
@@ -174,7 +174,7 @@ export const useXunCloud:UseXunCloud = () => {
             })
         }
         //分享完成
-        userOptions.value.selectFileInfoList = [];
+
         userOptions.value.shareProgress = 100;//以防万一~
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
@@ -183,6 +183,7 @@ export const useXunCloud:UseXunCloud = () => {
     const handleEnd:HandleEnd = () => {
         //关闭窗口执行操作
         userOptions.value.shareInfo = [];
+        userOptions.value.selectFileInfoList = [];
         userOptions.value.shareInfoUserSee = '';
         userOptions.value.shareProgress = 0;
     }
