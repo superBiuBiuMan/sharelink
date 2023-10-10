@@ -20,8 +20,14 @@ export default defineStore({
         //初始化网盘信息
         initCloudInfo(){
             const url = window.location.href;
+            console.log('当前网址',url)
+            //if(url.startsWith('https://pc.woozooo.com/mydisk.php?item=files')){
+            //    //蓝奏云二次加载避免
+            //    return;
+            //}
             //判断所属网盘
             const cloudKey = findCloudProvider(url,cloudUrlInfo) ?? '';
+            console.log('所属网盘',cloudKey)
             if(!cloudKey){
                 throw new Error('初始化网盘信息出错')
             }

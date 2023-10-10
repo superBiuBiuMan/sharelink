@@ -23,10 +23,8 @@
     <div class="cloud115_option">
         <span>有效期:</span>
         <!--分享时间-->
-        <t-radio-group  v-model="expireTime" >
-          <!--<t-radio-button :value="ExpireTimeEnum.oneDay">1天</t-radio-button>-->
-          <!--<t-radio-button :value="ExpireTimeEnum.sevenDay">7天</t-radio-button>-->
-          <t-radio-button :value="ExpireTimeEnum.forever">永久</t-radio-button>
+        <t-radio-group  >
+          <t-radio-button >永久</t-radio-button>
         </t-radio-group>
       <div class="cloud115_option_time">
         <t-tooltip content="分享一次后等待下一次分享的时间(避免请求频率过高)">延迟(毫秒):</t-tooltip>

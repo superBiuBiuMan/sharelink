@@ -24,6 +24,7 @@ export default defineConfig({
                 'https://pan.xunlei.com/*',
                 'https://www.aliyundrive.com/*',
                 //蓝奏云
+                //'*://pc.woozooo.com/mydisk.php*',
                 'https://lanzou.com/*',
                 'https://www.lanzou.com/*',
                 'https://pan.lanzou.com/*',
@@ -55,6 +56,8 @@ export default defineConfig({
             'api-pan.xunlei.com',
             'api.aliyundrive.com',
         ],
+       //"run-at":'document-start', //可能出现输入框高度计算出错问题这个时候注入
+       "run-at":'document-body',
       },
       build: {
         externalGlobals: {

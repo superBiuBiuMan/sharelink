@@ -16,29 +16,48 @@ export default () => {
         }break;
         case CloudInfoEnum.cloud115 : {
             //115云盘
-            const temp = document.createElement('li')
-            app.style.cssText = `
+            //todo 更改新形势
+            observeDOMChanges('body',() => {
+                const temp = document.createElement('li')
+                app.style.cssText = `
         margin-top: 12px;
         margin-left: 10px;
     `
-            temp.append(app);
-            document.querySelector('div.navigation-ceiling ul')?.append(temp);
+                temp.append(app);
+                document.querySelector('div.navigation-ceiling ul')?.append(temp);
+            })
+    //        const temp = document.createElement('li')
+    //        app.style.cssText = `
+    //    margin-top: 12px;
+    //    margin-left: 10px;
+    //`
+    //        temp.append(app);
+    //        document.querySelector('div.navigation-ceiling ul')?.append(temp);
         }break;
         case CloudInfoEnum.cloud123: {
             //123云盘
-            app.style.textAlign = 'center';
-            document.querySelector('.ant-menu-light')?.append(app)
+            //todo 更改新形势
+            observeDOMChanges('body',() => {
+                app.style.textAlign = 'center';
+                document.querySelector('.ant-menu-light')?.append(app)
+            })
+            //app.style.textAlign = 'center';
+            //document.querySelector('.ant-menu-light')?.append(app)
         }break;
         case CloudInfoEnum.cloudLanZou: {
             //蓝奏云
             app.style.cssText = `
-        padding-top: 2px;
-    `
+                padding-top: 2px;
+            `
             document.querySelector('.mydisk_file_bar')?.append(app)
         }break;
         case CloudInfoEnum.cloudTianyi: {
             //天翼云
-            document.querySelector('ul.nav-menu')?.append(app);
+            //todo 更改新形势
+            observeDOMChanges('body',() => {
+                document.querySelector('ul.nav-menu')?.append(app);
+            })
+            //document.querySelector('ul.nav-menu')?.append(app);
         }break;
         case CloudInfoEnum.cloudQuark: {
             //夸克网盘
@@ -62,12 +81,14 @@ export default () => {
             })
         }break;
         case CloudInfoEnum.cloudXun:{
-            //迅雷网盘
-            const tempDOM = document.querySelector('.pan-list-menu');
-            app.style.cssText = `
+            observeDOMChanges('body',() => {
+                //迅雷网盘
+                const tempDOM = document.querySelector('.pan-list-menu');
+                app.style.cssText = `
             margin-left: 10px;
          `
-            tempDOM?.append(app);
+                tempDOM.append(app);
+            })
         }break;
         case CloudInfoEnum.cloudAli: {
             //阿里云盘

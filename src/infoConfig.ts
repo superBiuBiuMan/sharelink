@@ -45,7 +45,7 @@ export const cloudUrlInfo:CloudUrlInfoTypes = {
     cloud123: ['https://www.123pan.com/'],
     cloudBaidu: ['https://pan.baidu.com/disk/main'],
     cloudLanZou: [
-        'https://pc.woozooo.com/',
+        'https://pc.woozooo.com/mydisk.php',
         'https://www.lanzou.com/',
         'https://pan.lanzou.com/',
         'https://lanzou.com',

@@ -49,8 +49,9 @@ export const useListModule:UseListModule = (props:any, emits:any) => {
     })
     const listData = ref<ListData[]>([])
     const transformListData:TransformListData = (data:any[]) => {
+        console.log('转换数据',data)
         if(!data || data && !data?.length) return [];
-        return data?.map(item => ({
+        const aaa = data?.map(item => ({
             id:item?.id ? item?.id : item?.fol_id ,
             name_all:item?.name_all ?? '',//文件才有这个属性
             name:item?.name ?? '',
@@ -58,6 +59,8 @@ export const useListModule:UseListModule = (props:any, emits:any) => {
             time:item?.time ?? '-',//文件才有
             type:item?.id ? FileTypeEnum.file : FileTypeEnum.folder,
         })) ?? [];
+        console.log('返回的数据',aaa)
+        return aaa;
     }
 
     return {

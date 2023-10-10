@@ -11,7 +11,7 @@ import {
 import { MessagePlugin } from 'tdesign-vue-next';
 
 import axios from "axios";
-import {ref} from "vue";
+import {nextTick, ref} from "vue";
 import {GM_xmlhttpRequest, unsafeWindow} from "$";
 import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../utils";
 import {ShareDOMSelect} from "../../infoConfig";
@@ -73,6 +73,7 @@ export const use115Cloud:Use115Cloud = () => {
                     //生成用户观看数据
                     shareInfoUserSee.value+= (handleTransformFormat(tempData) + '\n')
                     //进度条
+                    console.log('查看',shareInfo.value.length , selectFileInfoList.value.length)
                     shareProgress.value = Math.floor((shareInfo.value.length / selectFileInfoList.value.length) * 100 );
                 },
                 onerror:(res) => {
@@ -87,10 +88,9 @@ export const use115Cloud:Use115Cloud = () => {
             })
         }
         //分享完成
-        selectFileInfoList.value = [];
         shareProgress.value = 100;//以防万一~
         isSharing.value = false;
-        await MessagePlugin.success('批量分享成功,请自行查看结果');
+        MessagePlugin.success('批量分享成功,请自行查看结果');
     }
 
     const handleEnd:HandleEnd = () => {

@@ -19,6 +19,7 @@ import {proxy} from "ajax-hook";
 import axios from "axios";
 import {FileTypeEnum} from "../../modules/lanzouCloud/listModule/types";
 import {cloudInfoStore} from "../../store";
+import {unsafeWindow} from "$";
 
 export const uselanzouCloud:UselanzouCloud = () => {
     const userOptions = ref<UserOptions>({
@@ -34,9 +35,11 @@ export const uselanzouCloud:UselanzouCloud = () => {
         isSharing:false,
     })
     const init:Init = () => {
+        let winIframe = unsafeWindow.frames['mainframe'];//获取文件夹的iframe对象中的window
         proxy({
             //请求成功后进入
             onResponse: (response, handler) => {
+                console.log('查看啊啊',handler.xhr.config.url)
                 //@ts-ignore
                 if(handler.xhr.config.url.startsWith('/doupload.php')){
                     //@ts-ignore
@@ -47,12 +50,15 @@ export const uselanzouCloud:UselanzouCloud = () => {
                     if(task * 1 === TaskEnum.reqFolderList){
                         //todo 蓝奏云文件夹到底是info还是text
                         data = response.response ? JSON.parse(response.response)?.text ?? [] : [];
+                        console.log('查看请求数据1',data)
                         userOptions.value.lastFolderData = data;//存储文件夹信息
                         userOptions.value.listData = [...markRaw(userOptions.value.listData),...data];
                     }
+                    //请求文件
                     else if(task * 1 === TaskEnum.reqFileList){
                         //请求文件
                         data = response.response ? JSON.parse(response.response)?.text ?? [] : [];
+                        console.log('查看请求数据2',data)
                         if(pg *1 === 1){
                             //清空原有listData,但不清空文件夹
                             userOptions.value.listData = [...markRaw(userOptions.value.lastFolderData),...data];
@@ -63,8 +69,13 @@ export const uselanzouCloud:UselanzouCloud = () => {
                     }
                 }
                 handler.next(response)
-            }
-        })
+            },
+            //请求发生错误时进入，比如超时；注意，不包括http状态码错误，如404仍然会认为请求成功
+            onError: (err, handler) => {
+                console.dir(err.type)
+                handler.next(err)
+            },
+        },winIframe)
     }
     init();
     const transformInfoStyle:TransformInfoStyle = (info) => {

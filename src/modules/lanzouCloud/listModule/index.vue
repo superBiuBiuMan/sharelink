@@ -37,6 +37,8 @@ const {
         transformListData,
       } = useListModule(props,emits);
 watchEffect(() => {
-  listData.value = transformListData(props.list)
+  const temp = transformListData(props.list);
+  console.log('数据响应',temp)
+  listData.value = temp;
 })
 </script>
