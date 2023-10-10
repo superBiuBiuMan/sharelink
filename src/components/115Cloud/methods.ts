@@ -88,6 +88,7 @@ export const use115Cloud:Use115Cloud = () => {
             })
         }
         //分享完成
+        shareInfo.value = [];
         shareProgress.value = 100;//以防万一~
         isSharing.value = false;
         MessagePlugin.success('批量分享成功,请自行查看结果');

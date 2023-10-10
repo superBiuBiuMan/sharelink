@@ -109,6 +109,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
             })
         }
         //分享完成
+        userOptions.value.shareInfo = [];
         userOptions.value.shareProgress = 100;//以防万一~
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');

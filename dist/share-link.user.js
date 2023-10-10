@@ -33843,6 +33843,7 @@
           }, userOptions.value.shareDelay);
         });
       }
+      userOptions.value.shareInfo = [];
       userOptions.value.shareProgress = 100;
       userOptions.value.isSharing = false;
       await MessagePlugin.success("批量分享成功,请自行查看结果");
@@ -34123,6 +34124,7 @@
           }, userOptions.value.shareDelay);
         });
       }
+      userOptions.value.shareInfo = [];
       userOptions.value.shareProgress = 100;
       userOptions.value.isSharing = false;
       await MessagePlugin.success("批量分享成功,请自行查看结果");
@@ -34406,6 +34408,7 @@
           }, shareDelay.value);
         });
       }
+      shareInfo.value = [];
       shareProgress.value = 100;
       isSharing.value = false;
       MessagePlugin.success("批量分享成功,请自行查看结果");
@@ -34703,6 +34706,7 @@
           }, userOptions.value.shareDelay);
         });
       }
+      userOptions.value.shareResultInfoList = [];
       userOptions.value.shareProgress = 100;
       userOptions.value.isSharing = false;
       await MessagePlugin.success("批量分享成功,请自行查看结果");
@@ -35373,7 +35377,6 @@
         return MessagePlugin.warning("请选择要分享的文件!");
       }
       userOptions.value.isSharing = true;
-      userOptions.value.selectFileInfoList = [];
       for (let fileInfo of selectFileInfoList) {
         const formData = new FormData();
         formData.append("task", fileInfo.type === FileTypeEnum.file ? TaskEnum.share + "" : TaskEnum.file + "");
@@ -35413,6 +35416,7 @@
           }, userOptions.value.shareDelay);
         });
       }
+      userOptions.value.shareResultInfoList = [];
       userOptions.value.shareProgress = 100;
       userOptions.value.isSharing = false;
       await MessagePlugin.success("批量分享成功,请自行查看结果");
@@ -35871,6 +35875,7 @@
           }, userOptions.value.shareDelay);
         });
       }
+      userOptions.value.shareInfo = [];
       userOptions.value.shareProgress = 100;
       userOptions.value.isSharing = false;
       await MessagePlugin.success("批量分享成功,请自行查看结果");
@@ -36216,6 +36221,7 @@
           }, userOptions.value.shareDelay);
         });
       }
+      userOptions.value.shareResultInfoList = [];
       userOptions.value.shareProgress = 100;
       userOptions.value.isSharing = false;
       await MessagePlugin.success("批量分享成功,请自行查看结果");
@@ -36643,6 +36649,7 @@
           }, userOptions.value.shareDelay);
         });
       }
+      userOptions.value.shareInfo = [];
       userOptions.value.shareProgress = 100;
       userOptions.value.isSharing = false;
       await MessagePlugin.success("批量分享成功,请自行查看结果");
@@ -37217,6 +37224,7 @@
           }, userOptions.value.shareDelay);
         });
       }
+      userOptions.value.shareInfo = [];
       userOptions.value.shareProgress = 100;
       userOptions.value.isSharing = false;
       await MessagePlugin.success("批量分享成功,请自行查看结果");

@@ -143,6 +143,7 @@ export const use123Cloud:Use123Cloud = () => {
             })
         }
         //分享完成
+        userOptions.value.shareResultInfoList = [];
         userOptions.value.shareProgress = 100;//以防万一~
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');

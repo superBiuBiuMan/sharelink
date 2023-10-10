@@ -92,7 +92,6 @@ export const uselanzouCloud:UselanzouCloud = () => {
         }
         //开始分享
         userOptions.value.isSharing = true;
-        userOptions.value.selectFileInfoList = [];
         //遍历发送
         for(let fileInfo of selectFileInfoList){
             const formData = new FormData();
@@ -141,6 +140,7 @@ export const uselanzouCloud:UselanzouCloud = () => {
             })
         }
         //分享完成
+        userOptions.value.shareResultInfoList = []
         userOptions.value.shareProgress = 100;//以防万一~
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
