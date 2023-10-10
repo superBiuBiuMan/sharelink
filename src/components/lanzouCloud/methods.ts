@@ -19,7 +19,6 @@ import {proxy} from "ajax-hook";
 import axios from "axios";
 import {FileTypeEnum} from "../../modules/lanzouCloud/listModule/types";
 import {cloudInfoStore} from "../../store";
-import {unsafeWindow} from "$";
 
 export const uselanzouCloud:UselanzouCloud = () => {
     const userOptions = ref<UserOptions>({
@@ -35,13 +34,13 @@ export const uselanzouCloud:UselanzouCloud = () => {
         isSharing:false,
     })
     const init:Init = () => {
-        //@ts-ignore
-        let winIframe= unsafeWindow.frames['mainframe'];//获取文件夹的iframe对象中的window
+
         proxy({
             //请求成功后进入
             onResponse: (response, handler) => {
                 //@ts-ignore
                 if(handler.xhr.config.url.startsWith('/doupload.php')){
+                    console.log('拦截是否成功')
                     //@ts-ignore
                     const bodyParams = bodyParse(handler.xhr.config.body ?? '');
                     const { task,pg } = bodyParams;
@@ -68,7 +67,7 @@ export const uselanzouCloud:UselanzouCloud = () => {
                 }
                 handler.next(response)
             },
-        },winIframe)
+        })
     }
     init();
     const transformInfoStyle:TransformInfoStyle = (info) => {

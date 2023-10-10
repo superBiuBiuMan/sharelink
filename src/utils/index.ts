@@ -244,7 +244,7 @@ export function observeDOMChanges(
     options: {
         interval?: number;
         observerOptions?: MutationObserverInit;
-    } = { interval: 300, observerOptions: { childList: true, subtree: true, } }
+    } = { interval: 300, observerOptions: { childList: true, subtree: true,attributes: true } }
 ): void {
     if (!selector) {
         throw new Error("请传入选择器");
