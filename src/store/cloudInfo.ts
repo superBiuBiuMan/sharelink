@@ -1,7 +1,6 @@
 import {defineStore} from "pinia";
 import {CloudInfoEnum, cloudUrlInfo} from "../infoConfig";
 import {findCloudProvider} from "../utils";
-import {unsafeWindow} from "$";
 
 export interface CloudInfoStateTypes {
     currentCloud:CloudInfoEnum | string

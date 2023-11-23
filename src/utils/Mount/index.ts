@@ -75,10 +75,9 @@ export default () => {
             //迅雷网盘
             setTimeout(() => {
                 //迅雷网盘
-                const tempDOM = document.querySelector('.pan-list-menu');
+                const tempDOM = document.querySelector('.pan-wrapper-asider');
                 app.style.cssText = `
-                    margin-left: 10px;  
-                    margin-top: -2px;
+                    text-align:center;
                  `
                 tempDOM?.append(app);
             },1000)
