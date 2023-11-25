@@ -9,14 +9,64 @@ import {
     ShareInfoTypes,
     UserOptions,
     UseXunCloud,
+    DownloadExcel,
+    TransformExcelInfoData,
 } from "./types";
 import {MessagePlugin} from 'tdesign-vue-next';
 
 import axios from "axios";
 import {ref} from "vue";
-import {CopyValueToClipBoard, DownloadTxt,  findLocalStorageKeysWithPrefix} from "../../utils";
+import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile, findLocalStorageKeysWithPrefix} from "../../utils";
 import {cloudInfoStore} from "../../store";
 
+const transformExcelInfoData:TransformExcelInfoData = (data) => {
+    return data?.map(item => {
+        let time;
+        switch (item.expireTime) {
+            case ExpireTimeEnum.forever: time = '永久';break;
+            case ExpireTimeEnum.oneDay: time = '1天';break;
+            case ExpireTimeEnum.twoDay: time = '2天';break;
+            case ExpireTimeEnum.threeDay: time = '3天';break;
+            case ExpireTimeEnum.fourDay: time = '4天';break;
+            case ExpireTimeEnum.fiveDay: time = '5天';break;
+            case ExpireTimeEnum.sixDay: time = '6天';break;
+            case ExpireTimeEnum.sevenDay: time = '7天';break;
+            default: time = '未知';
+        }
+        let codeNumber;
+        switch (item.extractNumber) {
+            case ExtractEnum.forever: codeNumber = '无限'; break;
+            case ExtractEnum.One: codeNumber = '1次'; break;
+            case ExtractEnum.Two: codeNumber = '2次'; break;
+            case ExtractEnum.Three: codeNumber = '3次'; break;
+            case ExtractEnum.Four: codeNumber = '4次'; break;
+            case ExtractEnum.Five: codeNumber = '5次'; break;
+            case ExtractEnum.Six: codeNumber = '6次'; break;
+            case ExtractEnum.Seven: codeNumber = '7次'; break;
+            case ExtractEnum.Eight: codeNumber = '8次'; break;
+            case ExtractEnum.Nine: codeNumber = '9次'; break;
+            case ExtractEnum.Ten: codeNumber = '10次'; break;
+            case ExtractEnum.Eleven: codeNumber = '11次'; break;
+            case ExtractEnum.Twelve: codeNumber = '12次'; break;
+            case ExtractEnum.Thirteen: codeNumber = '13次'; break;
+            case ExtractEnum.Fourteen: codeNumber = '14次'; break;
+            case ExtractEnum.Fifteen: codeNumber = '15次'; break;
+            case ExtractEnum.Sixteen: codeNumber = '16次'; break;
+            case ExtractEnum.Seventeen: codeNumber = '17次'; break;
+            case ExtractEnum.Eighteen: codeNumber = '18次'; break;
+            case ExtractEnum.Nineteen: codeNumber = '19次'; break;
+            case ExtractEnum.Twenty: codeNumber = '20次'; break;
+            default: codeNumber = '未知';
+        }
+        return  {
+            "文件名称":item?.fileName ?? "",
+            "分享链接":item?.share_url ?? "",
+            "提取码":item?.pass_code ?? "",
+            "有效期":time,
+            "有效次数":codeNumber,
+        }
+    }) ?? []
+}
 export const useXunCloud:UseXunCloud = () => {
     const userOptions = ref<UserOptions>({
         expireTimeOptions:[
@@ -101,7 +151,7 @@ export const useXunCloud:UseXunCloud = () => {
                 case ExtractEnum.Twenty: codeNumber = '20次'; break;
                 default: codeNumber = '未知';
             }
-            return `文件名称: ${info.fileName} ${info.share_text} 有效期: ${time} 有效次数:${codeNumber}`;
+            return `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.pass_code} 有效期: ${time} 有效次数:${codeNumber}`;
         }
         else{
             return `文件名称: ${info.fileName} 分享错误信息: ${info.error_description}`;
@@ -127,7 +177,8 @@ export const useXunCloud:UseXunCloud = () => {
         }
         //开始分享
         userOptions.value.isSharing = true;
-        userOptions.value.selectFileInfoList = [];
+        const currentShareInfo = [];//本次分享操作分享的文件信息
+
         //遍历填充选中文件信息
         for(let item of selectRowInfos){
             userOptions.value.selectFileInfoList.push({
@@ -158,14 +209,16 @@ export const useXunCloud:UseXunCloud = () => {
                 ...fileInfo,
                 share_text:data?.share_text ?? '',
                 share_url:data?.share_url ?? '',
+                pass_code:data?.pass_code ?? '',
                 error_description:data?.error_description ?? '',
             }
-            //存储分享信息
-            userOptions.value.shareInfo.push(tempData)
+            //存储总分享信息
+            userOptions.value.shareInfo.push(tempData);
+            currentShareInfo.push(tempData);//本次分享操作分享的文件信息
             //生成用户观看数据
             userOptions.value.shareInfoUserSee+= (handleTransformFormat(tempData) + '\n')
             //进度条
-            userOptions.value.shareProgress = Math.floor((userOptions.value.shareInfo.length / userOptions.value.selectFileInfoList.length) * 100 );
+            userOptions.value.shareProgress = Math.floor((currentShareInfo.length / userOptions.value.selectFileInfoList.length) * 100 );
             //等待时间
             await new Promise<void>(resolve => {
                 setTimeout(() => {
@@ -174,7 +227,7 @@ export const useXunCloud:UseXunCloud = () => {
             })
         }
         //分享完成
-        userOptions.value.shareInfo = [];
+        userOptions.value.selectFileInfoList = [];
         userOptions.value.shareProgress = 100;//以防万一~
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
@@ -198,6 +251,9 @@ export const useXunCloud:UseXunCloud = () => {
     const download:Download = () => {
         DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
     }
+    const downloadExcel:DownloadExcel = () => {
+        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`,transformExcelInfoData(userOptions.value.shareInfo))
+    }
     return {
         userOptions,
         handleBatchOperation,
@@ -205,5 +261,6 @@ export const useXunCloud:UseXunCloud = () => {
         handleEnd,
         copyValue,
         download,
+        downloadExcel
     }
 }

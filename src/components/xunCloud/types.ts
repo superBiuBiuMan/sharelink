@@ -64,6 +64,7 @@ export interface SelectFileInfoList {
 export interface ShareReturnInfoTypes {
    share_text:string,//链接:xxxx 提取码:xxx
    share_url:string,//分享链接
+   pass_code:string,//提取码
    error_description:string,//错误信息描述
 }
 
@@ -75,6 +76,9 @@ export type HandleEnd = () => void;
 export type CopyValue = () => void;
 export type Download = () => void;
 export type HandleTransformFormat = (info:ShareInfoTypes) => string;
+export type TransformExcelInfoData = (data:Array<ShareInfoTypes>) => Array<{ [key in string]: any }>;
+
+export type DownloadExcel = () => void;
 
 export type UseXunCloud = () => {
     userOptions:Ref<UserOptions>
@@ -83,4 +87,5 @@ export type UseXunCloud = () => {
     handleEnd:HandleEnd,//终止操作
     copyValue:CopyValue,//复制
     download:Download,//下载
+    downloadExcel:DownloadExcel,
 }
