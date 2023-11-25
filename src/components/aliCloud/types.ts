@@ -48,7 +48,9 @@ export type HandleEnd = () => void;
 export type CopyValue = () => void;
 export type Download = () => void;
 export type HandleTransformFormat = (info:ShareInfoTypes) => string;
+export type TransformExcelInfoData = (data:Array<ShareInfoTypes>) => Array<{ [key in string]: any }>;
 
+export type DownloadExcel = () => void;
 export type UseAliCloud = () => {
     userOptions:Ref<UserOptions>
     handleBatchOperation:HandleBatchOperation,//批量分享
@@ -56,4 +58,5 @@ export type UseAliCloud = () => {
     handleEnd:HandleEnd,//终止操作
     copyValue:CopyValue,//复制
     download:Download,//下载
+    downloadExcel:DownloadExcel,
 }
