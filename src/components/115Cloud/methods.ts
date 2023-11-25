@@ -6,16 +6,27 @@ import {
     HandleTransformFormat,
     SelectFileInfoList,
     HandleEnd,
-    CopyValue, Download, Use115Cloud,
+    CopyValue, Download, Use115Cloud,TransformExcelInfoData
 } from "./types";
 import { MessagePlugin } from 'tdesign-vue-next';
 
-import axios from "axios";
-import {nextTick, ref} from "vue";
+import { ref} from "vue";
 import {GM_xmlhttpRequest, unsafeWindow} from "$";
-import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../utils";
+import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile, generateRandomString} from "../../utils";
 import {ShareDOMSelect} from "../../infoConfig";
 import {cloudInfoStore} from "../../store";
+import {DownloadExcel} from "../ucCloud/types";
+
+const transformExcelInfoData:TransformExcelInfoData = (data) => {
+    return data?.map(item => {
+        return  {
+            "文件名称":item?.fileName ?? "",
+            "分享链接":item?.share_url ?? "",
+            "提取码":item?.receive_code ?? "",
+            "有效期":item?.share_ex_duration ?? "",
+        }
+    }) ?? []
+}
 export const use115Cloud:Use115Cloud = () => {
     const shareDelay = ref<number>(500);
     const expireTime = ref<ExpireTimeEnum>(ExpireTimeEnum.forever);
@@ -37,7 +48,7 @@ export const use115Cloud:Use115Cloud = () => {
         }
         //开始分享
         isSharing.value = true;
-        shareInfo.value = [];//清空之前的
+        selectFileInfoList.value = [];
         for(let dom of selectDOM){
             const id =( dom.getAttribute(ShareDOMSelect["cloud115"]?.idAttribute?.[0] ?? '') || dom.getAttribute(ShareDOMSelect["cloud115"]?.idAttribute?.[1] ?? '') ) ?? '';
             const title = dom.getAttribute('title');
@@ -88,7 +99,6 @@ export const use115Cloud:Use115Cloud = () => {
             })
         }
         //分享完成
-        shareInfo.value = [];
         shareProgress.value = 100;//以防万一~
         isSharing.value = false;
         MessagePlugin.success('批量分享成功,请自行查看结果');
@@ -99,6 +109,7 @@ export const use115Cloud:Use115Cloud = () => {
         shareInfo.value = [];
         shareInfoUserSee.value = '';
         shareProgress.value = 0;
+        selectFileInfoList.value = [];
     }
 
     const copyValue:CopyValue =  () => {
@@ -110,6 +121,9 @@ export const use115Cloud:Use115Cloud = () => {
     }
     const download:Download = () => {
         DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,shareInfoUserSee.value)
+    }
+    const downloadExcel:DownloadExcel = () => {
+        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`,transformExcelInfoData(shareInfo.value))
     }
     return {
         shareDelay,
@@ -123,6 +137,7 @@ export const use115Cloud:Use115Cloud = () => {
 
         handleBatchOperation,
         handleTransformFormat,
+        downloadExcel,
         handleEnd,
         copyValue,
         download,

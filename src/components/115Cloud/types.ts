@@ -33,7 +33,8 @@ export type HandleEnd = () => void;
 export type CopyValue = () => void;
 export type Download = () => void;
 export type HandleTransformFormat = (info:ShareInfoTypes) => string;
-
+export type DownloadExcel = () => void;
+export type TransformExcelInfoData = (data:Array<ShareInfoTypes>) => Array<{ [key in string]: any }>;
 export type Use115Cloud = () => {
     expireTime:Ref<ExpireTimeEnum>,//过期时间
     shareDelay:Ref<number>,//分享延迟时间
@@ -49,4 +50,5 @@ export type Use115Cloud = () => {
     handleEnd:HandleEnd,//终止操作
     copyValue:CopyValue,//复制
     download:Download,//下载
+    downloadExcel:DownloadExcel
 }
