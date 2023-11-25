@@ -9,6 +9,7 @@ export enum CloudInfoEnum {
     cloud139,//移动网盘
     cloudXun,//迅雷网盘
     cloudAli,//阿里云盘
+    cloudUC,//UC网盘
 }
 export type ShareDOMSelectTypes =  {
     [cloudName in keyof typeof CloudInfoEnum]?:{
@@ -20,7 +21,7 @@ export type ShareDOMSelectTypes =  {
 export type CloudUrlInfoTypes  = {
     [cloudName in keyof typeof CloudInfoEnum] : string[]
 }
-//分享DOM获取
+//分享DOM获取(有些是脚手架渲染数据,就从脚手架那边获取选中列表的数据,如果网站找不到就可以通过DOM身上的属性数据来获取选中项的,这个就是这个作用的配置项)
 export const ShareDOMSelect:ShareDOMSelectTypes = {
     'cloud115':{
         select:'div.list-contents > ul li.selected',
@@ -54,5 +55,6 @@ export const cloudUrlInfo:CloudUrlInfoTypes = {
     cloudQuark:['https://pan.quark.cn/'],
     cloud139:['https://yun.139.com/'],
     cloudXun:['https://pan.xunlei.com/'],
-    cloudAli:['https://www.aliyundrive.com/']
+    cloudAli:['https://www.aliyundrive.com/'],
+    cloudUC:['https://drive.uc.cn/'],
 }

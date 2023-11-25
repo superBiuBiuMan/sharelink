@@ -4,7 +4,7 @@
  * @param numDigits 生成的位数
  * @return 生成的提取码
  */
-export function generateRandomString(numDigits: number): string {
+export function generateRandomString(numDigits: number = 4): string {
     const numbers: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     const letters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     let result: string = '';
@@ -247,6 +247,7 @@ export function observeDOMChanges(
     } = { interval: 300, observerOptions: { childList: true, subtree: true,attributes: true } }
 ): void {
     if (!selector) {
+        console.error("请传入选择器")
         throw new Error("请传入选择器");
     }
     let timer;

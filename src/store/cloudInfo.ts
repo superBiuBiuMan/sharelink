@@ -25,6 +25,7 @@ export default defineStore({
             const cloudKey = findCloudProvider(url,cloudUrlInfo) ?? '';
             console.log('所属网盘',cloudKey)
             if(!cloudKey){
+                console.error("初始化网盘信息出错")
                 throw new Error('初始化网盘信息出错')
             }
             this.cloudKey = cloudKey; //eg:cloudBaidu
@@ -57,6 +58,9 @@ export default defineStore({
                 }break;
                 case CloudInfoEnum.cloudAli:{
                     this.cloudName = '阿里云盘'
+                }break;
+                case CloudInfoEnum.cloudUC:{
+                    this.cloudName = 'UC网盘'
                 }break;
                 default: this.cloudName = '未知网盘';
             }

@@ -54,6 +54,7 @@ export const useAliCloud:UseAliCloud = () => {
             key.startsWith("__reactFiber$")
         );
         if(!key){
+            console.error("初始化阿里云盘失败,key未找到")
             throw new Error('初始化阿里云盘失败,key未找到')
         }
         const selectedRowInfos = reactDOM?.[key]?.['return']?.pendingProps?.listModel?.selectedItems ?? []

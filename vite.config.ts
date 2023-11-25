@@ -24,6 +24,7 @@ export default defineConfig({
                 'https://yun.139.com/*',
                 'https://pan.xunlei.com/*',
                 'https://www.aliyundrive.com/*',
+                'https://drive.uc.cn/*',
                 //蓝奏云
                 'https://lanzou.com/u',
                 'https://www.lanzou.com/u',
@@ -44,6 +45,7 @@ export default defineConfig({
             'drive-pc.quark.cn',
             'api-pan.xunlei.com',
             'api.aliyundrive.com',
+            'pc-api.uc.cn'
         ],
        "run-at":'document-body',
       },

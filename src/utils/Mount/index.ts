@@ -100,6 +100,17 @@ export default () => {
                 }
             })
         }break;
+        case CloudInfoEnum.cloudUC: {
+            //UC云盘
+            observeDOMChanges('body',() => {
+               const tempDOM = document.querySelector('.file-search-box');
+               app.style.cssText = `
+                margin-right:16px;
+                margin-bottom:4px;
+               `
+               tempDOM?.parentNode?.insertBefore(app,tempDOM);
+            })
+        }break;
     }
     return app;
 }
