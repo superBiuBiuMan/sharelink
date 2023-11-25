@@ -62,6 +62,9 @@ export type CopyValue = () => void;
 export type Download = () => void;
 export type TransformInfoStyle = (info:ShareResultInfoList) => string;
 export type TransformResult = (result:any) => ShareReturnInfoTypes;
+export type TransformExcelInfoData = (data:Array<ShareResultInfoList>) => Array<{ [key in string]: any }>;
+
+export type DownloadExcel = () => void;
 export type Init = () => void;
 export type UselanzouCloud = () => {
     userOptions:Ref<UserOptions>,//分享相关配置,比如提取码,选中的文件信息
@@ -75,4 +78,5 @@ export type UselanzouCloud = () => {
     handleEnd:HandleEnd,//结束后操作
     copyValue:CopyValue,//复制
     download:Download,//下载
+    downloadExcel:DownloadExcel,
 }

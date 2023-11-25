@@ -62,7 +62,6 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         return `文件名称: ${info.fileName} 分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: ${time}`;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
-        userOptions.value.shareInfo = [];
         //@ts-ignore;
         const selectDOM = document.querySelector('tbody').__vue__.$store.state.detail.view.fileMeta;
         if(!selectDOM.length) {
@@ -73,7 +72,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         }
         //开始分享
         userOptions.value.isSharing = true;
-        userOptions.value.selectFileInfoList = [];
+        const currentShareInfo = [];//本次分享操作分享的文件信息
         //遍历并生成存储所选文件信息
         for(let item of selectDOM){
             userOptions.value.selectFileInfoList.push({
@@ -117,11 +116,12 @@ export const useBaiduCloud:UseBaiduCloud = () => {
                 ...data,
                 ...fileInfo
             }
-            userOptions.value.shareInfo.push(tempData)
+            userOptions.value.shareInfo.push(tempData);//总的分享信息
+            currentShareInfo.push(tempData);//本次分享操作分享的文件信息
             //生成用户观看数据
             userOptions.value.shareInfoUserSee+= (handleTransformFormat(tempData) + '\n')
             //进度条
-            userOptions.value.shareProgress = Math.floor((userOptions.value.shareInfo.length / userOptions.value.selectFileInfoList.length) * 100 );
+            userOptions.value.shareProgress = Math.floor((currentShareInfo.length / userOptions.value.selectFileInfoList.length) * 100 );
             //等待时间
             await new Promise<void>(resolve => {
                 setTimeout(() => {
@@ -131,6 +131,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         }
         //分享完成
         userOptions.value.shareProgress = 100;//以防万一~
+        userOptions.value.selectFileInfoList = [];
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
     }

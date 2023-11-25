@@ -173,7 +173,6 @@ export const useUcCloud:UseUcCloud = () => {
             : `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.passcode ?? "为空"} 有效期: ${time} 可下载次数:${codeNumber}`;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
-        userOptions.value.shareInfo = [];
         const tempDOM = document.querySelector('.file-list');
         if(!tempDOM){
             throw new Error('初始化UC云盘失败,DOM未找到')
@@ -195,10 +194,9 @@ export const useUcCloud:UseUcCloud = () => {
         }
         //获取选中列表的详细信息(这里只获取文件名和id)
         const selectRowInfos:{name:string,id:string}[] = allRowInfos?.filter(item1 => selectedRowKeys?.some(key => key === item1.fid))?.map(item => ({name:item.file_name,id:item.fid})) ?? [];
-
         //开始分享
         userOptions.value.isSharing = true;
-        userOptions.value.selectFileInfoList = [];
+        const currentShareInfo = [];//本次分享操作分享的文件信息
         //遍历填充选中文件信息
         for(let item of selectRowInfos){
             userOptions.value.selectFileInfoList.push({
@@ -229,11 +227,12 @@ export const useUcCloud:UseUcCloud = () => {
                 share_url:share_url ?? '',
             }
             //存储分享信息
-            userOptions.value.shareInfo.push(tempData)
+            userOptions.value.shareInfo.push(tempData);//总的分享信息
+            currentShareInfo.push(tempData);//本次分享操作分享的文件信息
             //生成用户观看数据
             userOptions.value.shareInfoUserSee+= (handleTransformFormat(tempData) + '\n')
             //进度条
-            userOptions.value.shareProgress = Math.floor((userOptions.value.shareInfo.length / userOptions.value.selectFileInfoList.length) * 100 );
+            userOptions.value.shareProgress = Math.floor((currentShareInfo.length / userOptions.value.selectFileInfoList.length) * 100 );
             //等待时间
             await new Promise<void>(resolve => {
                 setTimeout(() => {
@@ -241,8 +240,8 @@ export const useUcCloud:UseUcCloud = () => {
                 },userOptions.value.shareDelay)
             })
         }
-
         userOptions.value.shareProgress = 100;//以防万一~
+        userOptions.value.selectFileInfoList = [];
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
     }
