@@ -39,7 +39,6 @@ export interface ShareReturnInfoTypes {
 }
 
 
-//todo 删除
 export type ShareInfoTypes  = Partial<ShareReturnInfoTypes> & SelectFileInfoList;
 
 
@@ -48,8 +47,9 @@ export type HandleBatchOperation = () => void;
 export type HandleEnd = () => void;
 export type CopyValue = () => void;
 export type Download = () => void;
+export type DownloadExcel = () => void;
 export type HandleTransformFormat = (info:ShareInfoTypes) => string;
-
+export type TransformExcelInfoData = (data:Array<ShareInfoTypes>) => Array<{ [key in string]: any }>;
 export type UseBaiduCloud = () => {
     userOptions:Ref<UserOptions>,//用户配置项
 
@@ -58,4 +58,5 @@ export type UseBaiduCloud = () => {
     handleEnd:HandleEnd,//终止操作
     copyValue:CopyValue,//复制
     download:Download,//下载
+    downloadExcel:DownloadExcel
 }

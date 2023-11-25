@@ -9,14 +9,34 @@ import {
     ShareReturnInfoTypes,
     UseBaiduCloud,
     UserOptions,
+    TransformExcelInfoData,
 } from "./types";
 import {MessagePlugin} from 'tdesign-vue-next';
 
 import axios from "axios";
 import {ref} from "vue";
 import {unsafeWindow} from "$";
-import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../utils";
+import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile, generateRandomString} from "../../utils";
 import {cloudInfoStore} from "../../store";
+import {DownloadExcel} from "../ucCloud/types";
+const transformExcelInfoData:TransformExcelInfoData = (data) => {
+    return data?.map(item => {
+        let time = '';
+        switch (item.expireTime) {
+            case ExpireTimeEnum.oneDay: time = '1天';break;
+            case ExpireTimeEnum.sevenDay: time = '7天';break;
+            case ExpireTimeEnum.thirtyDay: time = '30天';break;
+            case ExpireTimeEnum.forever: time= '永久';break;
+            default: time = '未知';
+        }
+        return  {
+            "文件名称":item?.fileName ?? "",
+            "分享链接":item?.link ?? "",
+            "提取码":item?.pwd ?? "",
+            "有效期":time,
+        }
+    }) ?? []
+}
 
 export const useBaiduCloud:UseBaiduCloud = () => {
     const userOptions = ref<UserOptions>({
@@ -42,6 +62,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         return `文件名称: ${info.fileName} 分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: ${time}`;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
+        userOptions.value.shareInfo = [];
         //@ts-ignore;
         const selectDOM = document.querySelector('tbody').__vue__.$store.state.detail.view.fileMeta;
         if(!selectDOM.length) {
@@ -109,7 +130,6 @@ export const useBaiduCloud:UseBaiduCloud = () => {
             })
         }
         //分享完成
-        userOptions.value.shareInfo = [];
         userOptions.value.shareProgress = 100;//以防万一~
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
@@ -133,6 +153,9 @@ export const useBaiduCloud:UseBaiduCloud = () => {
     const download:Download = () => {
         DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
     }
+    const downloadExcel:DownloadExcel = () => {
+        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`,transformExcelInfoData(userOptions.value.shareInfo))
+    }
     return {
         userOptions,
         handleBatchOperation,
@@ -140,5 +163,6 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         handleEnd,
         copyValue,
         download,
+        downloadExcel,
     }
 }
