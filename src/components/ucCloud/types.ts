@@ -54,15 +54,16 @@ export interface ShareReturnInfoTypes {
    share_url:string,//分享链接
 }
 
-export type ShareInfoTypes  = Partial<ShareReturnInfoTypes> & SelectFileInfoList;
+export type ShareInfoTypes  = ShareReturnInfoTypes & SelectFileInfoList;
 
 
 export type HandleBatchOperation = () => void;
 export type HandleEnd = () => void;
 export type CopyValue = () => void;
 export type Download = () => void;
+export type DownloadExcel = () => void;
 export type HandleTransformFormat = (info:ShareInfoTypes) => string;
-
+export type TransformExcelInfoData = (data:Array<ShareInfoTypes>) => Array<{ [key in string]: any }>;
 export type UseUcCloud = () => {
     userOptions:Ref<UserOptions>
     handleBatchOperation:HandleBatchOperation,//批量分享
@@ -70,4 +71,5 @@ export type UseUcCloud = () => {
     handleEnd:HandleEnd,//终止操作
     copyValue:CopyValue,//复制
     download:Download,//下载
+    downloadExcel:DownloadExcel,//下载为Excel
 }

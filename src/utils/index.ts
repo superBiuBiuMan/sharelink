@@ -1,4 +1,6 @@
 //@ts-nocheck
+import FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 /**
  * 随机生成指定位数提取码从数字和字母中
  * @param numDigits 生成的位数
@@ -294,4 +296,14 @@ export function findLocalStorageKeysWithPrefix(prefix) {
     }
 
     return result;
+}
+
+
+export function exportXlsxFile(filename:string,data:any){
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    // 写入文件
+    const wb_out = XLSX.write(workbook, { type:'buffer' });
+    FileSaver.saveAs(new Blob([wb_out],{ type: "application/octet-stream" }),filename);
 }

@@ -13,9 +13,11 @@
     "ajax-hook": "^3.0.3",
     "axios": "^1.5.1",
     "dayjs": "^1.11.10",
+    "file-saver": "^2.0.5",
     "pinia": "^2.1.6",
     "tdesign-vue-next": "^1.5.7",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

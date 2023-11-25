@@ -9,10 +9,12 @@ import {
     ShareInfoTypes,
     UserOptions,
     UseUcCloud,
+    DownloadExcel,
+    TransformExcelInfoData,
 } from "./types";
 import {MessagePlugin} from 'tdesign-vue-next';
 import {ref} from "vue";
-import {CopyValueToClipBoard, DownloadTxt, generateRandomString} from "../../utils";
+import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile, generateRandomString} from "../../utils";
 import {GM_xmlhttpRequest} from "$";
 import {cloudInfoStore} from "../../store";
 
@@ -70,6 +72,46 @@ function getShareInfo(share_id:string){
     })
 }
 
+
+/**
+ * 格式化输出Excel数据
+ * @param data
+ */
+const transformExcelInfoData:TransformExcelInfoData = (data) => {
+    return data?.map(item => {
+        let time:string;
+        switch (item.expireTime) {
+            //有效期
+            case ExpireTimeEnum.forever: time = '永久';break;
+            case ExpireTimeEnum.oneDay: time = '1天';break;
+            case ExpireTimeEnum.sevenDay: time = '7天';break;
+            case ExpireTimeEnum.thirty: time = '30天';break;
+            case ExpireTimeEnum.sixty: time = '60天';break;
+            case ExpireTimeEnum.halfYear: time = '180天';break;
+            default: time = '未知';
+        }
+        let codeNumber:string;
+        switch (item.extractNumber) {
+            //可下载次数
+            case ExtractEnum.forever: codeNumber = '无限'; break;
+            case null: codeNumber = '无限'; break;
+            case ExtractEnum.one: codeNumber = '1次'; break;
+            case ExtractEnum.five: codeNumber = '5次'; break;
+            case ExtractEnum.ten: codeNumber = '10次'; break;
+            case ExtractEnum.fifty: codeNumber = '50次'; break;
+            case ExtractEnum.hundred: codeNumber = '100次'; break;
+            default: codeNumber = '未知';
+        }
+        return  {
+            "文件名称":item?.fileName ?? "",
+            "分享链接":item?.share_url ?? "",
+            "提取码":item?.passcode ?? "",
+            "有效期":time,
+            "可下载次数":codeNumber,
+            "分享主题":item?.title ?? "",
+        }
+    }) ?? []
+}
 export const useUcCloud:UseUcCloud = () => {
     const userOptions = ref<UserOptions>({
         //有效期
@@ -131,6 +173,7 @@ export const useUcCloud:UseUcCloud = () => {
             : `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.passcode ?? "为空"} 有效期: ${time} 可下载次数:${codeNumber}`;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
+        userOptions.value.shareInfo = [];
         const tempDOM = document.querySelector('.file-list');
         if(!tempDOM){
             throw new Error('初始化UC云盘失败,DOM未找到')
@@ -198,8 +241,7 @@ export const useUcCloud:UseUcCloud = () => {
                 },userOptions.value.shareDelay)
             })
         }
-        //分享完成
-        userOptions.value.shareInfo = [];
+
         userOptions.value.shareProgress = 100;//以防万一~
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
@@ -223,6 +265,9 @@ export const useUcCloud:UseUcCloud = () => {
     const download:Download = () => {
         DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
     }
+    const downloadExcel:DownloadExcel = () => {
+        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`,transformExcelInfoData(userOptions.value.shareInfo))
+    }
     return {
         userOptions,
         handleBatchOperation,
@@ -230,5 +275,6 @@ export const useUcCloud:UseUcCloud = () => {
         handleEnd,
         copyValue,
         download,
+        downloadExcel,
     }
 }
