@@ -13,12 +13,30 @@ import {
     Use139Cloud,
     UserOptions,
     Init,
+    TransformExcelInfoData,DownloadExcel
 } from "./types";
 import {MessagePlugin} from 'tdesign-vue-next';
 import {ref} from "vue";
-import {CopyValueToClipBoard, DownloadTxt, get123CloudSecret} from "../../utils";
+import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile, get123CloudSecret} from "../../utils";
 import axios from "axios";
 import {cloudInfoStore} from "../../store";
+const transformExcelInfoData:TransformExcelInfoData = (data) => {
+    return data?.map(item => {
+        let time;
+        switch (item.timeCode){
+            case ExpireTimeEnum.oneDay: time = '1天';break;
+            case ExpireTimeEnum.sevenDay: time = '7天';break;
+            case ExpireTimeEnum.forever: time = '永久';break;
+            default: time = '未知';
+        }
+        return  {
+            "文件名称":item?.fileName ?? "",
+            "分享链接":item?.url ?? "",
+            "提取码":item?.pwd ?? "",
+            "有效期":time,
+        }
+    }) ?? []
+}
 
 export const use139Cloud:Use139Cloud = () => {
     const userOptions = ref<UserOptions>({
@@ -85,6 +103,7 @@ export const use139Cloud:Use139Cloud = () => {
         }
         //开始分享
         userOptions.value.isSharing = true;
+        const currentShareInfo = [];//本次分享操作分享的文件信息
         //遍历发送
         for(let fileInfo of selectFileInfoList){
             const data:GiveAfter = {
@@ -125,11 +144,12 @@ export const use139Cloud:Use139Cloud = () => {
                 timeCode:userOptions.value.expiration,
             }
             //存储分享信息以便计算进度条
-            userOptions.value.shareResultInfoList.push(tempData)
+            userOptions.value.shareResultInfoList.push(tempData);
+            currentShareInfo.push(tempData);//本次分享操作分享的文件信息
             //生成用户观看数据
             userOptions.value.shareInfoUserSee+= (transformInfoStyle(tempData) + '\n')
             //进度条
-            userOptions.value.shareProgress = Math.floor((userOptions.value.shareResultInfoList.length / selectFileInfoList.length) * 100 );
+            userOptions.value.shareProgress = Math.floor((currentShareInfo.length / selectFileInfoList.length) * 100 );
             //等待时间
             await new Promise<void>(resolve => {
                 setTimeout(() => {
@@ -138,7 +158,6 @@ export const use139Cloud:Use139Cloud = () => {
             })
         }
         //分享完成
-        userOptions.value.shareResultInfoList = [];
         userOptions.value.shareProgress = 100;//以防万一~
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
@@ -160,6 +179,9 @@ export const use139Cloud:Use139Cloud = () => {
     const download:Download = () => {
         DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
     }
+    const downloadExcel:DownloadExcel = () => {
+        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`,transformExcelInfoData(userOptions.value.shareResultInfoList))
+    }
     return {
         init,
         userOptions,
@@ -170,5 +192,6 @@ export const use139Cloud:Use139Cloud = () => {
         handleEnd,
         copyValue,
         download,
+        downloadExcel
     }
 }
