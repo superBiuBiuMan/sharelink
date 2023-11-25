@@ -7,15 +7,33 @@ import {
     HandleTransformShareParams,
     HandleEnd,
     CopyValue, Download,
-    UserOptions,
+    UserOptions,DownloadExcel,TransformExcelInfoData
 } from "./types";
 import { MessagePlugin } from 'tdesign-vue-next';
 
 import axios from "axios";
 import {ref} from "vue";
-import {CopyValueToClipBoard, DownloadTxt} from "../../utils";
+import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile} from "../../utils";
 import {ShareDOMSelect} from "../../infoConfig";
 import {cloudInfoStore} from "../../store";
+const transformExcelInfoData:TransformExcelInfoData = (data) => {
+    return data?.map(item => {
+        let time = '';
+        switch (item.expireTime) {
+            case ExpireTimeEnum.oneDay: time = '1天';break;
+            case ExpireTimeEnum.sevenDay: time = '7天';break;
+            case ExpireTimeEnum.forever: time = '永久';break;
+            default: time = '未知';
+        }
+        return  {
+            "文件名称":item?.fileName ?? "",
+            "分享链接":item?.url ?? "",
+            "提取码":item?.accessCode ?? "",
+            "有效期":time,
+        }
+    }) ?? []
+}
+
 export const useTianyiCloud:UseTianyiCloud = () => {
     const userOptions = ref<UserOptions>({
         shareDelay:500,
@@ -52,7 +70,7 @@ export const useTianyiCloud:UseTianyiCloud = () => {
         }
         //开始分享
         userOptions.value.isSharing = true;
-        userOptions.value.selectFileInfoList = [];
+        const currentShareInfo = [];//本次分享操作分享的文件信息
         //遍历填充选中文件信息
         for(let dom of selectDOM){
             userOptions.value.selectFileInfoList.push({
@@ -76,12 +94,13 @@ export const useTianyiCloud:UseTianyiCloud = () => {
                 ...shareLinkList[0],
                 ...fileInfo,
             }
-            //存储分享信息
-            userOptions.value.shareInfo.push(tempData)
+            //存储总分享信息
+            userOptions.value.shareInfo.push(tempData);
+            currentShareInfo.push(tempData);//本次分享操作分享的文件信息
             //生成用户观看数据
             userOptions.value.shareInfoUserSee+= (handleTransformFormat(tempData) + '\n')
             //进度条
-            userOptions.value.shareProgress = Math.floor((userOptions.value.shareInfo.length / userOptions.value.selectFileInfoList.length) * 100 );
+            userOptions.value.shareProgress = Math.floor((currentShareInfo.length / userOptions.value.selectFileInfoList.length) * 100 );
             //等待时间
             await new Promise<void>(resolve => {
                 setTimeout(() => {
@@ -90,7 +109,7 @@ export const useTianyiCloud:UseTianyiCloud = () => {
             })
         }
         //分享完成
-        userOptions.value.shareInfo = [];
+        userOptions.value.selectFileInfoList = [];
         userOptions.value.shareProgress = 100;//以防万一~
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
@@ -114,6 +133,9 @@ export const useTianyiCloud:UseTianyiCloud = () => {
     const download:Download = () => {
         DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
     }
+    const downloadExcel:DownloadExcel = () => {
+        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`,transformExcelInfoData(userOptions.value.shareInfo))
+    }
     return {
         userOptions,
         handleBatchOperation,
@@ -122,5 +144,6 @@ export const useTianyiCloud:UseTianyiCloud = () => {
         handleEnd,
         copyValue,
         download,
+        downloadExcel,
     }
 }

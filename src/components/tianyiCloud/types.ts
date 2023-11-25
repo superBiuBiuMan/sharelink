@@ -50,7 +50,8 @@ export type CopyValue = () => void;
 export type Download = () => void;
 export type HandleTransformFormat = (info:ShareInfoTypes) => string;
 export type HandleTransformShareParams = (params:SelectFileInfoList) => BackNeedParamsTypes;
-
+export type TransformExcelInfoData = (data:Array<ShareInfoTypes>) => Array<{ [key in string]: any }>;
+export type DownloadExcel = () => void;
 export type UseTianyiCloud = () => {
     userOptions:Ref<UserOptions>
     handleBatchOperation:HandleBatchOperation,//批量分享
@@ -59,4 +60,5 @@ export type UseTianyiCloud = () => {
     handleEnd:HandleEnd,//终止操作
     copyValue:CopyValue,//复制
     download:Download,//下载
+    downloadExcel:DownloadExcel
 }
