@@ -23,6 +23,7 @@ export default () => {
                     margin-left: 10px;
                 `
                 temp.append(app);
+
                 document.querySelector('div.navigation-ceiling ul')?.append(temp);
             },1000)
         }break;
