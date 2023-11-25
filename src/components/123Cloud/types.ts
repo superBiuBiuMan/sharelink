@@ -107,6 +107,9 @@ export type Download = () => void;
 export type TransformInfoStyle = (info:ShareResultInfoList) => string;
 export type TransformOptions = (params:UserOptions) => TransformUserOptionsObjType;
 export type TransformResult = (result:any) => ShareReturnInfoTypes;
+export type TransformExcelInfoData = (data:Array<ShareResultInfoList>) => Array<{ [key in string]: any }>;
+
+export type DownloadExcel = () => void;
 export type Use123Cloud = () => {
     userOptions:Ref<UserOptions>,//分享相关配置,比如提取码,选中的文件信息
     handleBatchOperation:HandleBatchOperation,//点击批量分享
@@ -118,4 +121,5 @@ export type Use123Cloud = () => {
     handleEnd:HandleEnd,//结束后操作
     copyValue:CopyValue,//复制
     download:Download,//下载
+    downloadExcel:DownloadExcel,
 }
