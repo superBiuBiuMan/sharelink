@@ -26,7 +26,7 @@
 // @match        https://www.lanzou.com/*
 // @match        https://pan.lanzou.com/*
 // @require      https://cdn.bootcdn.net/ajax/libs/vue/3.3.4/vue.global.prod.min.js
-// @require      https://cdn.jsdelivr.net/npm/vue-demi@latest/lib/index.iife.js
+// @require      https://cdn.bootcdn.net/ajax/libs/vue-demi/0.14.6/index.iife.min.js
 // @require      data:application/javascript,window.Vue%3DVue%3B
 // @require      https://lib.baomitu.com/pinia/2.1.6/pinia.iife.prod.min.js
 // @require      https://lib.baomitu.com/xlsx/0.18.5/xlsx.mini.min.js

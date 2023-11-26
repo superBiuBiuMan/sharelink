@@ -55,7 +55,7 @@ export default defineConfig({
                   "vue",
                   cdn
                   .bootcdn('Vue',"vue.global.prod.min.js")
-                  .concat('https://cdn.jsdelivr.net/npm/vue-demi@latest/lib/index.iife.js')
+                  .concat('https://cdn.bootcdn.net/ajax/libs/vue-demi/0.14.6/index.iife.min.js')
                   .concat(
                       await util.fn2dataUrl(() => {
                           // @ts-ignore
