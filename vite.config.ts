@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import monkey, { cdn } from 'vite-plugin-monkey';
+import monkey, {cdn, util} from 'vite-plugin-monkey';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,7 +11,7 @@ export default defineConfig({
       userscript: {
         name:'网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)',
         author:'superBiuBiu',
-        version:'2.4.0',
+        version:'2.4.1',
         namespace: 'dreamlove',
           //这里的信息是决定油猴在什么网站规则下运行
         match:
@@ -50,9 +50,27 @@ export default defineConfig({
        "run-at":'document-body',
       },
       build: {
-        externalGlobals: {
-          vue: cdn.bootcdn('Vue', 'vue.global.prod.js'),
-        },
+          externalGlobals: [
+              [
+                  "vue",
+                  cdn
+                  .bootcdn('Vue',"vue.global.prod.min.js")
+                  .concat('https://cdn.jsdelivr.net/npm/vue-demi@latest/lib/index.iife.js')
+                  .concat(
+                      await util.fn2dataUrl(() => {
+                          // @ts-ignore
+                          window.Vue = Vue; // work with Tdesign
+                      }),
+                  ),
+              ],
+              ["pinia",cdn.baomitu('Pinia', 'pinia.iife.prod.min.js')],
+              ["xlsx",cdn.baomitu('XLSX', 'xlsx.mini.min.js'),],
+              ['tdesign-vue-next',cdn.unpkg("TDesign",'dist/tdesign.min.js')],
+              ['axios',cdn.baomitu('axios','axios.min.js')]
+          ],
+          externalResource: {
+              'tdesign-vue-next/es/style/index.css': "https://unpkg.com/tdesign-vue-next@1.5.7/dist/tdesign.min.css",
+          },
       },
     }),
   ],
