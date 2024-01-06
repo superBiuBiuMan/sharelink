@@ -1,21 +1,23 @@
 import {
     CopyValue,
+    CopyValueEnum,
     DefaultShowEnum,
     Download,
+    DownloadExcel,
     ExpireTimeEnum,
     GiveAfter,
     HandleBatchOperation,
     HandleEnd,
     PwdEnum,
     SelectedRows,
-    ShareResultInfoList,
+    ShareResultInfoList, TransformExcelExtraLinkData,
+    TransformExcelInfoData,
     TransformInfoStyle,
+    TransformLinkResult,
     TransformOptions,
     TransformResult,
     Use123Cloud,
     UserOptions,
-    DownloadExcel,
-    TransformExcelInfoData
 } from "./types";
 import {MessagePlugin} from 'tdesign-vue-next';
 import {ref} from "vue";
@@ -29,6 +31,7 @@ import {
 } from "../../utils";
 import axios from "axios";
 import {cloudInfoStore} from "../../store";
+
 const transformExcelInfoData:TransformExcelInfoData = (data) => {
     return data?.map(item => {
         let time;
@@ -47,6 +50,21 @@ const transformExcelInfoData:TransformExcelInfoData = (data) => {
         }
     }) ?? []
 }
+const transformExcelExtraLinkData:TransformExcelExtraLinkData = (data) => {
+    return data?.map(item => ({
+        "文件名称":item?.fileName ?? "",
+        "直链地址": item?.link ?? "",
+    })) ?? [];
+}
+const getSelectInfoList = () => {
+    const reactDOM = document.querySelector('.hombody');
+    //@ts-ignore;
+    const key = Object.keys(reactDOM)?.find(key =>
+      key.startsWith("__reactInternalInstance$")
+    );
+    //@ts-ignore;
+    return reactDOM[key].memoizedProps.children[0].props.children._owner.memoizedState.selectedRows ?? [];
+}
 export const use123Cloud:Use123Cloud = () => {
     const userOptions = ref<UserOptions>({
         expiration:ExpireTimeEnum.forever,
@@ -58,6 +76,8 @@ export const use123Cloud:Use123Cloud = () => {
         shareResultInfoList:[],
         shareInfoUserSee:'',
         isSharing:false,
+        extraLinkInfoList:[],
+        extraLinkUserSee:"",
     })
     const transformOptions:TransformOptions = (params:UserOptions) => {
         let sharePwd = '';
@@ -98,15 +118,12 @@ export const use123Cloud:Use123Cloud = () => {
             code:result.code,
         }
     }
+    const transformLinkResult:TransformLinkResult = (info) => {
+        return `文件名称:${info.fileName} 直链地址:${info.link}`;
+    }
     const handleBatchOperation:HandleBatchOperation = async () => {
-        const reactDOM = document.querySelector('.hombody');
-        //@ts-ignore;
-        const key = Object.keys(reactDOM)?.find(key =>
-            key.startsWith("__reactInternalInstance$")
-        );
         //选中数据
-        //@ts-ignore;
-        const selectedRows:SelectedRows[] = reactDOM[key].memoizedProps.children[0].props.children._owner.memoizedState.selectedRows ?? [];
+        const selectedRows:SelectedRows[] = getSelectInfoList();
 
         if(!selectedRows.length){
             return MessagePlugin.warning('请选择要分享的文件!')
@@ -175,32 +192,102 @@ export const use123Cloud:Use123Cloud = () => {
         userOptions.value.isSharing = false;
         await MessagePlugin.success('批量分享成功,请自行查看结果');
     }
-
+    const handleBatchExtraLink = async() => {
+        //选中数据
+        const selectedRows:SelectedRows[] = getSelectInfoList();
+        if(!selectedRows.length){
+            return MessagePlugin.warning('请选择要提取直链的文件!')
+        }
+        //开始分享
+        userOptions.value.isSharing = true;
+        const currentShareInfo = [];//本次分享操作分享的文件信息
+        for(let fileInfo of selectedRows){
+            const randomParams = get123CloudSecret();
+            const { data } : any= await axios({
+                method:'get',
+                url:`${window.location.origin}/a/api/cdn-link/url`,
+                params:{
+                    [randomParams[0]]:randomParams[1],
+                    fileID: 4719284,
+                },
+                headers:{
+                    'Content-Type':'application/json;charset=UTF-8',
+                    'Authorization': 'Bearer ' + localStorage.getItem('authorToken')?.slice(1,-1),
+                    'LoginUuid':localStorage.getItem('LoginUuid')?.slice(1,-1),
+                    'platform':'web',
+                }
+            }).catch(() => ({ data:{ } }))
+            const tempData = {
+                fileName:fileInfo.FileName,//文件名
+                link:data?.data?.url ?? '',
+            }
+            //存储总分享信息
+            userOptions.value.extraLinkInfoList.push(tempData);
+            currentShareInfo.push(tempData);//本次分享操作分享的文件信息
+            //生成用户观看数据
+            userOptions.value.extraLinkUserSee+= (transformLinkResult(tempData) + '\n')
+            //进度条
+            userOptions.value.shareProgress = Math.floor((currentShareInfo.length / selectedRows.length) * 100 );
+            //等待时间
+            await new Promise<void>(resolve => {
+                setTimeout(() => {
+                    resolve()
+                },userOptions.value.shareDelay)
+            })
+        }
+        //分享完成
+        userOptions.value.shareProgress = 100;//以防万一~
+        userOptions.value.isSharing = false;
+        await MessagePlugin.success('批量获取直链成功,请自行查看结果');
+    }
     const handleEnd:HandleEnd = () => {
         //关闭窗口执行操作
         userOptions.value.shareResultInfoList = [];
+        userOptions.value.extraLinkInfoList = [];
         userOptions.value.shareInfoUserSee = '';
+        userOptions.value.extraLinkUserSee = '';
         userOptions.value.shareProgress = 0;
     }
-    const copyValue:CopyValue = () => {
-        CopyValueToClipBoard(userOptions.value.shareInfoUserSee+"").then(() => {
-            MessagePlugin.success('复制成功');
-        }).catch(() => {
-            MessagePlugin.warning('复制到剪贴板失败,可能是浏览器不支持该操作');
-        })
+    const copyValue:CopyValue = (type= CopyValueEnum.shareLink) => {
+        if(type === CopyValueEnum.shareLink) {
+            CopyValueToClipBoard(userOptions.value.shareInfoUserSee + "").then(() => {
+                MessagePlugin.success('复制成功');
+            }).catch(() => {
+                MessagePlugin.warning('复制到剪贴板失败,可能是浏览器不支持该操作');
+            })
+        }else if(type === CopyValueEnum.extraLink){
+            CopyValueToClipBoard(userOptions.value.extraLinkUserSee + "").then(() => {
+                MessagePlugin.success('复制成功');
+            }).catch(() => {
+                MessagePlugin.warning('复制到剪贴板失败,可能是浏览器不支持该操作');
+            })
+        }
     }
-    const download:Download = () => {
-        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
+    const download:Download = (type= CopyValueEnum.shareLink) => {
+        if(type === CopyValueEnum.shareLink) {
+            DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee);
+        }
+        else if(type === CopyValueEnum.extraLink){
+            DownloadTxt(`${cloudInfoStore.cloudName}直链地址${Date.now()}` ,userOptions.value.extraLinkUserSee);
+        }
+
     }
-    const downloadExcel:DownloadExcel = () => {
-        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`,transformExcelInfoData(userOptions.value.shareResultInfoList))
+    const downloadExcel:DownloadExcel = (type = CopyValueEnum.shareLink) => {
+        if(type === CopyValueEnum.shareLink) {
+            exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`,transformExcelInfoData(userOptions.value.shareResultInfoList));
+        }
+        else if(type === CopyValueEnum.extraLink){
+            exportXlsxFile(`${cloudInfoStore.cloudName}直链${Date.now()}.xlsx`,transformExcelExtraLinkData(userOptions.value.extraLinkInfoList));
+        }
     }
     return {
         userOptions,
         transformOptions,
         transformInfoStyle,
         transformResult,
+        transformLinkResult,
         handleBatchOperation,
+        handleBatchExtraLink,
         handleEnd,
         copyValue,
         download,

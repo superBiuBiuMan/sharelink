@@ -61,6 +61,8 @@ export interface UserOptions{
     //固定的
     shareDelay:number,//分享延迟时间
     shareResultInfoList:ShareResultInfoList[],//分享结果信息
+    extraLinkInfoList:ExtraLinkInfoList[],//直链信息
+    extraLinkUserSee:string,//直链用户看得懂的信息
     shareProgress:number,//分享进度
     shareInfoUserSee:string,//用户看得懂的分享信息
     isSharing:boolean,//是否正在分享
@@ -100,21 +102,35 @@ export interface ShareResultInfoList  {
     timeCode:ExpireTimeEnum,//有效期代码
 }
 
+export interface ExtraLinkInfoList {
+    fileName:string,//文件
+    link:string,//直链地址
+}
+
+export enum CopyValueEnum {
+    shareLink,//分享链接
+    extraLink,//直链
+}
+
 export type HandleBatchOperation = () => void;
+export type HandleBatchExtraLink = () => void;
 export type HandleEnd = () => void;
-export type CopyValue = () => void;
-export type Download = () => void;
+export type CopyValue = (type:CopyValueEnum) => void;
+export type Download = (type:CopyValueEnum) => void;
+export type DownloadExcel = (type:CopyValueEnum) => void;
 export type TransformInfoStyle = (info:ShareResultInfoList) => string;
+export type TransformLinkResult = (info:ExtraLinkInfoList) => string;
 export type TransformOptions = (params:UserOptions) => TransformUserOptionsObjType;
 export type TransformResult = (result:any) => ShareReturnInfoTypes;
 export type TransformExcelInfoData = (data:Array<ShareResultInfoList>) => Array<{ [key in string]: any }>;
-
-export type DownloadExcel = () => void;
+export type TransformExcelExtraLinkData = (data:Array<ExtraLinkInfoList>) => Array<{[key in string] : any}>
 export type Use123Cloud = () => {
     userOptions:Ref<UserOptions>,//分享相关配置,比如提取码,选中的文件信息
     handleBatchOperation:HandleBatchOperation,//点击批量分享
+    handleBatchExtraLink:HandleBatchExtraLink,//批量获取直链
 
-    transformResult:TransformResult,//转换后端返回的数据
+    transformResult:TransformResult,//转换后端返回的数据(批量分享)
+    transformLinkResult:TransformLinkResult,//转换后端返回的数据(直链)
     transformInfoStyle:TransformInfoStyle,//分享展示信息转换为用户看的懂的信息
     transformOptions:TransformOptions,//用户配置转换为网盘对应的配置
 
