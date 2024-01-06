@@ -45,7 +45,7 @@
 // @run-at       document-body
 // ==/UserScript==
 
-(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const e=document.createElement("style");e.textContent=t,document.head.append(e)})(" @keyframes t-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.t-icon{display:inline-block;vertical-align:middle;width:1em;height:1em}.t-icon:before{font-family:unset}.t-icon-loading{animation:t-spin 1s linear infinite}.t-icon{fill:currentColor}.t-icon.t-size-s,i.t-size-s{font-size:14px}.t-icon.t-size-m,i.t-size-m{font-size:16px}.t-icon.t-size-l,i.t-size-l{font-size:18px}.tianyiCloud[data-v-ce767d83]{height:100%;display:flex;flex-direction:column}.tianyiCloud_option[data-v-ce767d83]{display:flex;align-items:center;margin:0 0 20px}.tianyiCloud_option_time[data-v-ce767d83]{margin-left:10px}.tianyiCloud_result[data-v-ce767d83]{flex:1;overflow:auto}.baiduCloud[data-v-eb86a8a4]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-eb86a8a4]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-eb86a8a4]{flex:1;overflow:auto}.cloud115[data-v-b1c14897]{height:100%;display:flex;flex-direction:column}.cloud115_option[data-v-b1c14897]{display:flex;align-items:center;margin:0 0 20px}.cloud115_option_time[data-v-b1c14897]{margin-left:10px}.cloud115_result[data-v-b1c14897]{flex:1;overflow:auto}.cloud123[data-v-5c3664de]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-5c3664de]{margin:0 0 10px}.cloud123_option_item[data-v-5c3664de]{display:flex;align-items:center}.cloud123_option_item_title[data-v-5c3664de]{display:inline-block;width:100px}.cloud123_result[data-v-5c3664de]{flex:1;overflow:auto}.lanzouCloud[data-v-98dce44d]{height:100%;display:flex;flex-direction:column}.lanzouCloud_option[data-v-98dce44d]{margin:0 0 10px}.lanzouCloud_option_item[data-v-98dce44d]{display:flex;align-items:center}.lanzouCloud_option_item_title[data-v-98dce44d]{display:inline-block;width:100px}.lanzouCloud_result[data-v-98dce44d]{flex:1;overflow:auto}.quarkCloud[data-v-7ddcaef9]{height:100%;display:flex;flex-direction:column}.quarkCloud_option_item[data-v-7ddcaef9]{display:flex;align-items:center}.quarkCloud_result[data-v-7ddcaef9]{flex:1;overflow:auto}.cloud139[data-v-e4f9dac0]{height:100%;display:flex;flex-direction:column}.cloud139_option[data-v-e4f9dac0]{margin:0 0 10px}.cloud139_option_item[data-v-e4f9dac0]{display:flex;align-items:center}.cloud139_option_item_title[data-v-e4f9dac0]{display:inline-block;width:100px}.cloud139_result[data-v-e4f9dac0]{flex:1;overflow:auto}.xunCloud[data-v-3dbd7c07]{height:100%;display:flex;flex-direction:column}.xunCloud[data-v-3dbd7c07] .t-input--auto-width{min-width:120px}.xunCloud_option_item[data-v-3dbd7c07]{display:flex;align-items:center}.xunCloud_option_item_title[data-v-3dbd7c07]{min-width:70px}.xunCloud_result[data-v-3dbd7c07]{flex:1;overflow:auto}.aliCloud[data-v-973cb799]{height:100%;display:flex;flex-direction:column}.aliCloud_option_item[data-v-973cb799]{display:flex;align-items:center}.aliCloud_option_item_title[data-v-973cb799]{min-width:70px}.aliCloud_result[data-v-973cb799]{flex:1;overflow:auto}.ucCloud[data-v-95aac119]{height:100%;display:flex;flex-direction:column}.ucCloud[data-v-95aac119] .t-input--auto-width{min-width:120px}.ucCloud_option_item[data-v-95aac119]{display:flex;align-items:center}.ucCloud_option_item_title[data-v-95aac119]{min-width:70px}.ucCloud_result[data-v-95aac119]{flex:1;overflow:auto} ");
+(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const e=document.createElement("style");e.textContent=t,document.head.append(e)})(" @keyframes t-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.t-icon{display:inline-block;vertical-align:middle;width:1em;height:1em}.t-icon:before{font-family:unset}.t-icon-loading{animation:t-spin 1s linear infinite}.t-icon{fill:currentColor}.t-icon.t-size-s,i.t-size-s{font-size:14px}.t-icon.t-size-m,i.t-size-m{font-size:16px}.t-icon.t-size-l,i.t-size-l{font-size:18px}.tianyiCloud[data-v-ce767d83]{height:100%;display:flex;flex-direction:column}.tianyiCloud_option[data-v-ce767d83]{display:flex;align-items:center;margin:0 0 20px}.tianyiCloud_option_time[data-v-ce767d83]{margin-left:10px}.tianyiCloud_result[data-v-ce767d83]{flex:1;overflow:auto}.baiduCloud[data-v-eb86a8a4]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-eb86a8a4]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-eb86a8a4]{flex:1;overflow:auto}.cloud115[data-v-b1c14897]{height:100%;display:flex;flex-direction:column}.cloud115_option[data-v-b1c14897]{display:flex;align-items:center;margin:0 0 20px}.cloud115_option_time[data-v-b1c14897]{margin-left:10px}.cloud115_result[data-v-b1c14897]{flex:1;overflow:auto}.cloud123[data-v-ef2f7e14]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-ef2f7e14]{margin:0 0 10px}.cloud123_option_item[data-v-ef2f7e14]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-ef2f7e14]{display:inline-block;width:100px}.cloud123_result[data-v-ef2f7e14]{flex:1;overflow:auto}.lanzouCloud[data-v-98dce44d]{height:100%;display:flex;flex-direction:column}.lanzouCloud_option[data-v-98dce44d]{margin:0 0 10px}.lanzouCloud_option_item[data-v-98dce44d]{display:flex;align-items:center}.lanzouCloud_option_item_title[data-v-98dce44d]{display:inline-block;width:100px}.lanzouCloud_result[data-v-98dce44d]{flex:1;overflow:auto}.quarkCloud[data-v-7ddcaef9]{height:100%;display:flex;flex-direction:column}.quarkCloud_option_item[data-v-7ddcaef9]{display:flex;align-items:center}.quarkCloud_result[data-v-7ddcaef9]{flex:1;overflow:auto}.cloud139[data-v-e4f9dac0]{height:100%;display:flex;flex-direction:column}.cloud139_option[data-v-e4f9dac0]{margin:0 0 10px}.cloud139_option_item[data-v-e4f9dac0]{display:flex;align-items:center}.cloud139_option_item_title[data-v-e4f9dac0]{display:inline-block;width:100px}.cloud139_result[data-v-e4f9dac0]{flex:1;overflow:auto}.xunCloud[data-v-3dbd7c07]{height:100%;display:flex;flex-direction:column}.xunCloud[data-v-3dbd7c07] .t-input--auto-width{min-width:120px}.xunCloud_option_item[data-v-3dbd7c07]{display:flex;align-items:center}.xunCloud_option_item_title[data-v-3dbd7c07]{min-width:70px}.xunCloud_result[data-v-3dbd7c07]{flex:1;overflow:auto}.aliCloud[data-v-973cb799]{height:100%;display:flex;flex-direction:column}.aliCloud_option_item[data-v-973cb799]{display:flex;align-items:center}.aliCloud_option_item_title[data-v-973cb799]{min-width:70px}.aliCloud_result[data-v-973cb799]{flex:1;overflow:auto}.ucCloud[data-v-95aac119]{height:100%;display:flex;flex-direction:column}.ucCloud[data-v-95aac119] .t-input--auto-width{min-width:120px}.ucCloud_option_item[data-v-95aac119]{display:flex;align-items:center}.ucCloud_option_item_title[data-v-95aac119]{min-width:70px}.ucCloud_result[data-v-95aac119]{flex:1;overflow:auto} ");
 
 (function (vue, pinia, XLSX, tdesignVueNext, axios) {
   'use strict';
@@ -1566,6 +1566,11 @@
     PwdEnum2[PwdEnum2["self"] = 2] = "self";
     return PwdEnum2;
   })(PwdEnum$2 || {});
+  var CopyValueEnum = /* @__PURE__ */ ((CopyValueEnum2) => {
+    CopyValueEnum2[CopyValueEnum2["shareLink"] = 0] = "shareLink";
+    CopyValueEnum2[CopyValueEnum2["extraLink"] = 1] = "extraLink";
+    return CopyValueEnum2;
+  })(CopyValueEnum || {});
   const transformExcelInfoData$6 = (data) => {
     return (data == null ? void 0 : data.map((item) => {
       let time;
@@ -1593,6 +1598,20 @@
       };
     })) ?? [];
   };
+  const transformExcelExtraLinkData = (data) => {
+    return (data == null ? void 0 : data.map((item) => ({
+      "文件名称": (item == null ? void 0 : item.fileName) ?? "",
+      "直链地址": (item == null ? void 0 : item.link) ?? ""
+    }))) ?? [];
+  };
+  const getSelectInfoList = () => {
+    var _a;
+    const reactDOM = document.querySelector(".hombody");
+    const key = (_a = Object.keys(reactDOM)) == null ? void 0 : _a.find(
+      (key2) => key2.startsWith("__reactInternalInstance$")
+    );
+    return reactDOM[key].memoizedProps.children[0].props.children._owner.memoizedState.selectedRows ?? [];
+  };
   const use123Cloud = () => {
     const userOptions = vue.ref({
       expiration: ExpireTimeEnum$5.forever,
@@ -1604,7 +1623,9 @@
       shareProgress: 0,
       shareResultInfoList: [],
       shareInfoUserSee: "",
-      isSharing: false
+      isSharing: false,
+      extraLinkInfoList: [],
+      extraLinkUserSee: ""
     });
     const transformOptions = (params) => {
       let sharePwd = "";
@@ -1662,13 +1683,12 @@
         code: result.code
       };
     };
+    const transformLinkResult = (info) => {
+      return `文件名称:${info.fileName} 直链地址:${info.link}`;
+    };
     const handleBatchOperation = async () => {
-      var _a, _b, _c;
-      const reactDOM = document.querySelector(".hombody");
-      const key = (_a = Object.keys(reactDOM)) == null ? void 0 : _a.find(
-        (key2) => key2.startsWith("__reactInternalInstance$")
-      );
-      const selectedRows = reactDOM[key].memoizedProps.children[0].props.children._owner.memoizedState.selectedRows ?? [];
+      var _a, _b;
+      const selectedRows = getSelectInfoList();
       if (!selectedRows.length) {
         return tdesignVueNext.MessagePlugin.warning("请选择要分享的文件!");
       }
@@ -1702,8 +1722,8 @@
           data,
           headers: {
             "Content-Type": "application/json;charset=UTF-8",
-            "Authorization": "Bearer " + ((_b = localStorage.getItem("authorToken")) == null ? void 0 : _b.slice(1, -1)),
-            "LoginUuid": (_c = localStorage.getItem("LoginUuid")) == null ? void 0 : _c.slice(1, -1),
+            "Authorization": "Bearer " + ((_a = localStorage.getItem("authorToken")) == null ? void 0 : _a.slice(1, -1)),
+            "LoginUuid": (_b = localStorage.getItem("LoginUuid")) == null ? void 0 : _b.slice(1, -1),
             "platform": "web"
           }
         }).catch(() => ({ data: {} }));
@@ -1729,56 +1749,124 @@
       userOptions.value.isSharing = false;
       await tdesignVueNext.MessagePlugin.success("批量分享成功,请自行查看结果");
     };
+    const handleBatchExtraLink = async () => {
+      var _a, _b, _c;
+      const selectedRows = getSelectInfoList();
+      if (!selectedRows.length) {
+        return tdesignVueNext.MessagePlugin.warning("请选择要提取直链的文件!");
+      }
+      userOptions.value.isSharing = true;
+      const currentShareInfo = [];
+      for (let fileInfo of selectedRows) {
+        const randomParams = get123CloudSecret();
+        const { data } = await axios({
+          method: "get",
+          url: `${window.location.origin}/a/api/cdn-link/url`,
+          params: {
+            [randomParams[0]]: randomParams[1],
+            fileID: 4719284
+          },
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+            "Authorization": "Bearer " + ((_a = localStorage.getItem("authorToken")) == null ? void 0 : _a.slice(1, -1)),
+            "LoginUuid": (_b = localStorage.getItem("LoginUuid")) == null ? void 0 : _b.slice(1, -1),
+            "platform": "web"
+          }
+        }).catch(() => ({ data: {} }));
+        const tempData = {
+          fileName: fileInfo.FileName,
+          //文件名
+          link: ((_c = data == null ? void 0 : data.data) == null ? void 0 : _c.url) ?? ""
+        };
+        userOptions.value.extraLinkInfoList.push(tempData);
+        currentShareInfo.push(tempData);
+        userOptions.value.extraLinkUserSee += transformLinkResult(tempData) + "\n";
+        userOptions.value.shareProgress = Math.floor(currentShareInfo.length / selectedRows.length * 100);
+        await new Promise((resolve2) => {
+          setTimeout(() => {
+            resolve2();
+          }, userOptions.value.shareDelay);
+        });
+      }
+      userOptions.value.shareProgress = 100;
+      userOptions.value.isSharing = false;
+      await tdesignVueNext.MessagePlugin.success("批量获取直链成功,请自行查看结果");
+    };
     const handleEnd = () => {
       userOptions.value.shareResultInfoList = [];
+      userOptions.value.extraLinkInfoList = [];
       userOptions.value.shareInfoUserSee = "";
+      userOptions.value.extraLinkUserSee = "";
       userOptions.value.shareProgress = 0;
     };
-    const copyValue = () => {
-      CopyValueToClipBoard(userOptions.value.shareInfoUserSee + "").then(() => {
-        tdesignVueNext.MessagePlugin.success("复制成功");
-      }).catch(() => {
-        tdesignVueNext.MessagePlugin.warning("复制到剪贴板失败,可能是浏览器不支持该操作");
-      });
+    const copyValue = (type = CopyValueEnum.shareLink) => {
+      if (type === CopyValueEnum.shareLink) {
+        CopyValueToClipBoard(userOptions.value.shareInfoUserSee + "").then(() => {
+          tdesignVueNext.MessagePlugin.success("复制成功");
+        }).catch(() => {
+          tdesignVueNext.MessagePlugin.warning("复制到剪贴板失败,可能是浏览器不支持该操作");
+        });
+      } else if (type === CopyValueEnum.extraLink) {
+        CopyValueToClipBoard(userOptions.value.extraLinkUserSee + "").then(() => {
+          tdesignVueNext.MessagePlugin.success("复制成功");
+        }).catch(() => {
+          tdesignVueNext.MessagePlugin.warning("复制到剪贴板失败,可能是浏览器不支持该操作");
+        });
+      }
     };
-    const download = () => {
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+    const download = (type = CopyValueEnum.shareLink) => {
+      if (type === CopyValueEnum.shareLink) {
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+      } else if (type === CopyValueEnum.extraLink) {
+        DownloadTxt(`${cloudInfoStore.cloudName}直链地址${Date.now()}`, userOptions.value.extraLinkUserSee);
+      }
     };
-    const downloadExcel = () => {
-      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`, transformExcelInfoData$6(userOptions.value.shareResultInfoList));
+    const downloadExcel = (type = CopyValueEnum.shareLink) => {
+      if (type === CopyValueEnum.shareLink) {
+        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`, transformExcelInfoData$6(userOptions.value.shareResultInfoList));
+      } else if (type === CopyValueEnum.extraLink) {
+        exportXlsxFile(`${cloudInfoStore.cloudName}直链${Date.now()}.xlsx`, transformExcelExtraLinkData(userOptions.value.extraLinkInfoList));
+      }
     };
     return {
       userOptions,
       transformOptions,
       transformInfoStyle,
       transformResult,
+      transformLinkResult,
       handleBatchOperation,
+      handleBatchExtraLink,
       handleEnd,
       copyValue,
       download,
       downloadExcel
     };
   };
-  const _withScopeId$6 = (n) => (vue.pushScopeId("data-v-5c3664de"), n = n(), vue.popScopeId(), n);
+  const _withScopeId$6 = (n) => (vue.pushScopeId("data-v-ef2f7e14"), n = n(), vue.popScopeId(), n);
   const _hoisted_1$7 = { class: "cloud123" };
-  const _hoisted_2$6 = { class: "cloud123_operation" };
-  const _hoisted_3$6 = { class: "cloud123_progress" };
-  const _hoisted_4$6 = { class: "cloud123_option" };
-  const _hoisted_5$6 = { class: "cloud123_option_item" };
-  const _hoisted_6$6 = /* @__PURE__ */ _withScopeId$6(() => /* @__PURE__ */ vue.createElementVNode("span", { class: "cloud123_option_item_title" }, "延迟(毫秒):", -1));
-  const _hoisted_7$6 = { class: "cloud123_option_item" };
-  const _hoisted_8$6 = /* @__PURE__ */ _withScopeId$6(() => /* @__PURE__ */ vue.createElementVNode("span", { class: "cloud123_option_item_title" }, "有效期:", -1));
-  const _hoisted_9$6 = { class: "cloud123_option_item" };
-  const _hoisted_10$4 = /* @__PURE__ */ _withScopeId$6(() => /* @__PURE__ */ vue.createElementVNode("span", { class: "cloud123_option_item_title" }, "默认展示:", -1));
-  const _hoisted_11$4 = { class: "cloud123_option_item" };
-  const _hoisted_12$1 = /* @__PURE__ */ _withScopeId$6(() => /* @__PURE__ */ vue.createElementVNode("span", { class: "cloud123_option_item_title" }, "分享形式:", -1));
-  const _hoisted_13$1 = { class: "cloud123_result" };
+  const _hoisted_2$6 = { class: "cloud123_progress" };
+  const _hoisted_3$6 = { class: "cloud123_option" };
+  const _hoisted_4$6 = { class: "cloud123_option_item" };
+  const _hoisted_5$6 = /* @__PURE__ */ _withScopeId$6(() => /* @__PURE__ */ vue.createElementVNode("span", { class: "cloud123_option_item_title" }, "延迟(毫秒):", -1));
+  const _hoisted_6$6 = { class: "cloud123_option_item" };
+  const _hoisted_7$6 = /* @__PURE__ */ _withScopeId$6(() => /* @__PURE__ */ vue.createElementVNode("span", { class: "cloud123_option_item_title" }, "有效期:", -1));
+  const _hoisted_8$6 = { class: "cloud123_option_item" };
+  const _hoisted_9$6 = /* @__PURE__ */ _withScopeId$6(() => /* @__PURE__ */ vue.createElementVNode("span", { class: "cloud123_option_item_title" }, "默认展示:", -1));
+  const _hoisted_10$4 = { class: "cloud123_option_item" };
+  const _hoisted_11$4 = /* @__PURE__ */ _withScopeId$6(() => /* @__PURE__ */ vue.createElementVNode("span", { class: "cloud123_option_item_title" }, "分享形式:", -1));
+  const _hoisted_12$1 = {
+    key: 0,
+    class: "cloud123_option_item"
+  };
+  const _hoisted_13$1 = /* @__PURE__ */ _withScopeId$6(() => /* @__PURE__ */ vue.createElementVNode("span", { class: "cloud123_option_item_title" }, "分享形式:", -1));
+  const _hoisted_14 = { style: { "margin-top": "10px" } };
   const _sfc_main$8 = /* @__PURE__ */ vue.defineComponent({
     __name: "index",
     setup(__props, { expose: __expose }) {
       const {
         userOptions,
         handleBatchOperation,
+        handleBatchExtraLink,
         handleEnd,
         copyValue,
         download,
@@ -1788,82 +1876,79 @@
         handleEnd
       });
       return (_ctx, _cache) => {
+        const _component_t_progress = vue.resolveComponent("t-progress");
         const _component_t_button = vue.resolveComponent("t-button");
         const _component_t_space = vue.resolveComponent("t-space");
-        const _component_t_progress = vue.resolveComponent("t-progress");
         const _component_t_tooltip = vue.resolveComponent("t-tooltip");
         const _component_t_input_number = vue.resolveComponent("t-input-number");
         const _component_t_radio_button = vue.resolveComponent("t-radio-button");
         const _component_t_radio_group = vue.resolveComponent("t-radio-group");
         const _component_t_input = vue.resolveComponent("t-input");
+        const _component_t_textarea = vue.resolveComponent("t-textarea");
         const _component_t_collapse_panel = vue.resolveComponent("t-collapse-panel");
         const _component_t_collapse = vue.resolveComponent("t-collapse");
-        const _component_t_textarea = vue.resolveComponent("t-textarea");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$7, [
           vue.createElementVNode("div", _hoisted_2$6, [
-            vue.createVNode(_component_t_space, null, {
-              default: vue.withCtx(() => [
-                vue.createVNode(_component_t_button, {
-                  onClick: vue.unref(handleBatchOperation),
-                  loading: vue.unref(userOptions).isSharing
-                }, {
-                  default: vue.withCtx(() => [
-                    vue.createTextVNode("批量分享")
-                  ]),
-                  _: 1
-                }, 8, ["onClick", "loading"]),
-                vue.createVNode(_component_t_button, {
-                  theme: "default",
-                  onClick: vue.unref(copyValue)
-                }, {
-                  default: vue.withCtx(() => [
-                    vue.createTextVNode("复制到剪贴板")
-                  ]),
-                  _: 1
-                }, 8, ["onClick"]),
-                vue.createVNode(_component_t_button, {
-                  theme: "default",
-                  onClick: vue.unref(download)
-                }, {
-                  default: vue.withCtx(() => [
-                    vue.createTextVNode("下载分享链接")
-                  ]),
-                  _: 1
-                }, 8, ["onClick"]),
-                vue.createVNode(_component_t_button, {
-                  theme: "default",
-                  onClick: vue.unref(downloadExcel)
-                }, {
-                  default: vue.withCtx(() => [
-                    vue.createTextVNode("下载信息为Excel")
-                  ]),
-                  _: 1
-                }, 8, ["onClick"])
-              ]),
-              _: 1
-            })
-          ]),
-          vue.createElementVNode("div", _hoisted_3$6, [
             vue.createVNode(_component_t_progress, {
               percentage: vue.unref(userOptions).shareProgress,
               color: { from: " #84fab0", to: "#00A870" }
             }, null, 8, ["percentage"])
           ]),
-          vue.createElementVNode("div", _hoisted_4$6, [
-            vue.createVNode(_component_t_collapse, {
-              expandMutex: "",
-              "default-expand-all": ""
-            }, {
+          vue.createElementVNode("div", _hoisted_3$6, [
+            vue.createVNode(_component_t_collapse, null, {
               default: vue.withCtx(() => [
                 vue.createVNode(_component_t_collapse_panel, {
-                  value: "0",
+                  value: vue.unref(CopyValueEnum).shareLink,
                   header: "分享配置"
                 }, {
                   default: vue.withCtx(() => [
-                    vue.createElementVNode("div", _hoisted_5$6, [
+                    vue.createElementVNode("div", null, [
+                      vue.createVNode(_component_t_space, null, {
+                        default: vue.withCtx(() => [
+                          vue.createVNode(_component_t_button, {
+                            onClick: vue.unref(handleBatchOperation),
+                            loading: vue.unref(userOptions).isSharing
+                          }, {
+                            default: vue.withCtx(() => [
+                              vue.createTextVNode("批量分享")
+                            ]),
+                            _: 1
+                          }, 8, ["onClick", "loading"]),
+                          vue.createVNode(_component_t_button, {
+                            theme: "default",
+                            onClick: vue.unref(copyValue)
+                          }, {
+                            default: vue.withCtx(() => [
+                              vue.createTextVNode("复制到剪贴板")
+                            ]),
+                            _: 1
+                          }, 8, ["onClick"]),
+                          vue.createVNode(_component_t_button, {
+                            theme: "default",
+                            onClick: vue.unref(download)
+                          }, {
+                            default: vue.withCtx(() => [
+                              vue.createTextVNode("下载分享链接")
+                            ]),
+                            _: 1
+                          }, 8, ["onClick"]),
+                          vue.createVNode(_component_t_button, {
+                            theme: "default",
+                            onClick: vue.unref(downloadExcel)
+                          }, {
+                            default: vue.withCtx(() => [
+                              vue.createTextVNode("下载信息为Excel")
+                            ]),
+                            _: 1
+                          }, 8, ["onClick"])
+                        ]),
+                        _: 1
+                      })
+                    ]),
+                    vue.createElementVNode("div", _hoisted_4$6, [
                       vue.createVNode(_component_t_tooltip, { content: "分享一次后等待下一次分享的时间(避免请求频率过高)" }, {
                         default: vue.withCtx(() => [
-                          _hoisted_6$6
+                          _hoisted_5$6
                         ]),
                         _: 1
                       }),
@@ -1873,8 +1958,8 @@
                         step: "100"
                       }, null, 8, ["modelValue"])
                     ]),
-                    vue.createElementVNode("div", _hoisted_7$6, [
-                      _hoisted_8$6,
+                    vue.createElementVNode("div", _hoisted_6$6, [
+                      _hoisted_7$6,
                       vue.createVNode(_component_t_radio_group, {
                         modelValue: vue.unref(userOptions).expiration,
                         "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => vue.unref(userOptions).expiration = $event)
@@ -1916,8 +2001,8 @@
                         _: 1
                       }, 8, ["modelValue"])
                     ]),
-                    vue.createElementVNode("div", _hoisted_9$6, [
-                      _hoisted_10$4,
+                    vue.createElementVNode("div", _hoisted_8$6, [
+                      _hoisted_9$6,
                       vue.createVNode(_component_t_radio_group, {
                         modelValue: vue.unref(userOptions).displayStatus,
                         "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => vue.unref(userOptions).displayStatus = $event)
@@ -1943,8 +2028,8 @@
                         _: 1
                       }, 8, ["modelValue"])
                     ]),
-                    vue.createElementVNode("div", _hoisted_11$4, [
-                      _hoisted_12$1,
+                    vue.createElementVNode("div", _hoisted_10$4, [
+                      _hoisted_11$4,
                       vue.createVNode(_component_t_radio_group, {
                         modelValue: vue.unref(userOptions).pwdType,
                         "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => vue.unref(userOptions).pwdType = $event)
@@ -1978,33 +2063,94 @@
                         _: 1
                       }, 8, ["modelValue"])
                     ]),
-                    vue.unref(userOptions).pwdType === vue.unref(PwdEnum$2).self ? (vue.openBlock(), vue.createBlock(_component_t_input, {
-                      key: 0,
-                      modelValue: vue.unref(userOptions).pwd,
-                      "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => vue.unref(userOptions).pwd = $event),
-                      placeholder: "请输入自定义提取码",
-                      maxlength: "4"
-                    }, null, 8, ["modelValue"])) : vue.createCommentVNode("", true)
+                    vue.unref(userOptions).pwdType === vue.unref(PwdEnum$2).self ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_12$1, [
+                      _hoisted_13$1,
+                      vue.createVNode(_component_t_input, {
+                        modelValue: vue.unref(userOptions).pwd,
+                        "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => vue.unref(userOptions).pwd = $event),
+                        placeholder: "请输入自定义提取码",
+                        maxlength: "4"
+                      }, null, 8, ["modelValue"])
+                    ])) : vue.createCommentVNode("", true),
+                    vue.createElementVNode("div", null, [
+                      vue.createVNode(_component_t_textarea, {
+                        readonly: "",
+                        autosize: { minRows: 10 },
+                        value: vue.unref(userOptions).shareInfoUserSee,
+                        placeholder: "分享结果(格式为文件名称: xxxx 分享链接: xxxx 提取码:xxxx 分享有效时间: xxxx)"
+                      }, null, 8, ["value"])
+                    ])
                   ]),
                   _: 1
-                })
+                }, 8, ["value"]),
+                vue.createVNode(_component_t_collapse_panel, {
+                  value: vue.unref(CopyValueEnum).extraLink,
+                  header: "获取直链(123云盘VIP才可以用)"
+                }, {
+                  default: vue.withCtx(() => [
+                    vue.createElementVNode("div", null, [
+                      vue.createVNode(_component_t_space, null, {
+                        default: vue.withCtx(() => [
+                          vue.createVNode(_component_t_button, {
+                            onClick: vue.unref(handleBatchExtraLink),
+                            loading: vue.unref(userOptions).isSharing
+                          }, {
+                            default: vue.withCtx(() => [
+                              vue.createTextVNode("批量提取直链")
+                            ]),
+                            _: 1
+                          }, 8, ["onClick", "loading"]),
+                          vue.createVNode(_component_t_button, {
+                            theme: "default",
+                            onClick: _cache[5] || (_cache[5] = ($event) => vue.unref(copyValue)(vue.unref(CopyValueEnum).extraLink))
+                          }, {
+                            default: vue.withCtx(() => [
+                              vue.createTextVNode("复制到剪贴板")
+                            ]),
+                            _: 1
+                          }),
+                          vue.createVNode(_component_t_button, {
+                            theme: "default",
+                            onClick: _cache[6] || (_cache[6] = ($event) => vue.unref(download)(vue.unref(CopyValueEnum).extraLink))
+                          }, {
+                            default: vue.withCtx(() => [
+                              vue.createTextVNode("下载直链")
+                            ]),
+                            _: 1
+                          }),
+                          vue.createVNode(_component_t_button, {
+                            theme: "default",
+                            onClick: _cache[7] || (_cache[7] = ($event) => vue.unref(downloadExcel)(vue.unref(CopyValueEnum).extraLink))
+                          }, {
+                            default: vue.withCtx(() => [
+                              vue.createTextVNode("下载信息为Excel")
+                            ]),
+                            _: 1
+                          })
+                        ]),
+                        _: 1
+                      })
+                    ]),
+                    vue.createElementVNode("div", _hoisted_14, [
+                      vue.createVNode(_component_t_textarea, {
+                        readonly: "",
+                        autosize: { minRows: 10 },
+                        value: vue.unref(userOptions).extraLinkUserSee,
+                        placeholder: "直链(格式为文件名称: xxxx 直链地址: xxxx)"
+                      }, null, 8, ["value"])
+                    ])
+                  ]),
+                  _: 1
+                }, 8, ["value"])
               ]),
               _: 1
             })
-          ]),
-          vue.createElementVNode("div", _hoisted_13$1, [
-            vue.createVNode(_component_t_textarea, {
-              readonly: "",
-              autosize: { minRows: 10 },
-              value: vue.unref(userOptions).shareInfoUserSee,
-              placeholder: "分享结果(格式为文件名称: xxxx 分享链接: xxxx 提取码:xxxx 分享有效时间: xxxx)"
-            }, null, 8, ["value"])
           ])
         ]);
       };
     }
   });
-  const cloud123 = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["__scopeId", "data-v-5c3664de"]]);
+  const cloud123 = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["__scopeId", "data-v-ef2f7e14"]]);
   var PwdEnum$1 = /* @__PURE__ */ ((PwdEnum2) => {
     PwdEnum2[PwdEnum2["no"] = 0] = "no";
     PwdEnum2[PwdEnum2["yes"] = 1] = "yes";
