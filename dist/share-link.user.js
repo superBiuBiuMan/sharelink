@@ -1764,7 +1764,7 @@
           url: `${window.location.origin}/a/api/cdn-link/url`,
           params: {
             [randomParams[0]]: randomParams[1],
-            fileID: 4719284
+            fileID: fileInfo.FileId
           },
           headers: {
             "Content-Type": "application/json;charset=UTF-8",
