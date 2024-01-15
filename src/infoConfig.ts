@@ -10,6 +10,7 @@ export enum CloudInfoEnum {
     cloudXun,//迅雷网盘
     cloudAli,//阿里云盘
     cloudUC,//UC网盘
+    cloudOnedrive,//Onedrive云盘
 }
 export type ShareDOMSelectTypes =  {
     [cloudName in keyof typeof CloudInfoEnum]?:{
@@ -57,4 +58,5 @@ export const cloudUrlInfo:CloudUrlInfoTypes = {
     cloudXun:['https://pan.xunlei.com/'],
     cloudAli:['https://www.aliyundrive.com/'],
     cloudUC:['https://drive.uc.cn/'],
+    cloudOnedrive:['https://onedrive.live.com/']
 }

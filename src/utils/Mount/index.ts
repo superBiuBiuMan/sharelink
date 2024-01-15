@@ -112,6 +112,17 @@ export default () => {
                tempDOM?.parentNode?.insertBefore(app,tempDOM);
             })
         }break;
+        case CloudInfoEnum.cloudOnedrive: {
+            //Onedrive网盘
+            // observeDOMChanges('body',() => {
+            //     const tempDOM = document.querySelector('.ms-Nav-navItems.navItems-106');
+            //     app.style.cssText = `
+            //     margin-right:16px;
+            //     margin-bottom:4px;
+            //    `
+            //     tempDOM?.parentNode?.insertBefore(app,tempDOM);
+            // })
+        }break;
     }
     return app;
 }

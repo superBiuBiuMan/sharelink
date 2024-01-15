@@ -62,6 +62,9 @@ export default defineStore({
                 case CloudInfoEnum.cloudUC:{
                     this.cloudName = 'UC网盘'
                 }break;
+                case CloudInfoEnum.cloudOnedrive:{
+                    this.cloudName = 'Onedrive云盘';
+                }break;
                 default: this.cloudName = '未知网盘';
             }
         }

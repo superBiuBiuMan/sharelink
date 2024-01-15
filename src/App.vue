@@ -35,6 +35,7 @@ import cloud139 from "./components/139Cloud/index.vue";
 import cloudXun from "./components/xunCloud/index.vue";
 import cloudAli from "./components/aliCloud/index.vue";
 import cloudUC from "./components/ucCloud/index.vue";
+import cloudOnedrive from "./components/onedriveCloud/index.vue";
 import {CloudInfoEnum} from "./infoConfig";
 export type CloudComponent = {
   [cloudName in keyof typeof CloudInfoEnum]:Component
@@ -52,6 +53,7 @@ const cloudComponent:Ref<CloudComponent> = shallowRef({
   cloudXun,
   cloudAli,
   cloudUC,
+  cloudOnedrive,
 })
 //按钮打开
 const handleOpenDrawerClick = ():void => {
