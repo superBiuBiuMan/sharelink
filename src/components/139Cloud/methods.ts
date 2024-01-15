@@ -49,6 +49,7 @@ export const use139Cloud:Use139Cloud = () => {
         shareInfoUserSee:'',
         isSharing:false,
         auth:'',//分享的Authorization
+        userPhone:"",
     })
     const init:Init = () => {
         let t = "authorization";
@@ -106,12 +107,14 @@ export const use139Cloud:Use139Cloud = () => {
         const currentShareInfo = [];//本次分享操作分享的文件信息
         //遍历发送
         for(let fileInfo of selectFileInfoList){
+            console.log(fileInfo);
             const data:GiveAfter = {
                 ...transformOptions(userOptions.value),
-                caIDLst:fileInfo.catalogType === 0 ? [] : [fileInfo.id],//分享的文件夹
+                caIDLst:fileInfo.catalogType === 1 ? [fileInfo.id] : [],//分享的文件夹
                 coIDLst:fileInfo.catalogType === 0 ? [fileInfo.id] : [],//分享的文件
                 commonAccountInfo:{
-                    account:fileInfo.owner,//账户名,一般是手机号
+                    //新建文件夹可能无法获取,就存储了下用户的手机,无法获取再从用户那边读取
+                    account:fileInfo.owner ? fileInfo.owner : userOptions.value.userPhone,//账户名,一般是手机号
                     accountType:1,
                 },
                 dedicatedName:fileInfo.fileName,//文件或文件夹名称

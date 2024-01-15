@@ -72,6 +72,7 @@
 <script lang="ts" setup>
 import { ExpireTimeEnum} from "./types";
 import { use139Cloud } from "./methods";
+import {onMounted} from "vue";
 const {
         userOptions,
         handleBatchOperation,
@@ -82,5 +83,9 @@ const {
       } = use139Cloud();
 defineExpose({
   handleEnd,
+})
+onMounted(() => {
+  //@ts-ignore;
+  userOptions.value.userPhone = document.querySelector('.body_main')?.__vue__?.$store?.state?.auth?.accountPhone ?? '';
 })
 </script>

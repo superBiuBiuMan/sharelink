@@ -26,6 +26,9 @@ export interface UserOptions{
 
     //存储计算的Basic值
     auth:string,
+
+    //手机信息(新建的文件夹无法获取到所有者)
+    userPhone:string,
 }
 
 //用户配置分享参数转换后所需要的形式
