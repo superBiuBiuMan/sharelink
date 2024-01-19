@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)
 // @namespace    dreamlove
-// @version      2.5.2
+// @version      2.5.3
 // @author       superBiuBiu
 // @description  网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘~
 // @iconURL      https://www.google.com/s2/favicons?domain=dreamlove.top
@@ -4893,7 +4893,7 @@
     ExtractEnum2[ExtractEnum2["hundred"] = 100] = "hundred";
     return ExtractEnum2;
   })(ExtractEnum || {});
-  function getShareIdAndTaskId(data) {
+  function getTaskId(data) {
     return new Promise((resolve2, reject2) => {
       _GM_xmlhttpRequest({
         method: "post",
@@ -4908,6 +4908,26 @@
           resolve2({
             task_id: (data2 == null ? void 0 : data2.task_id) ? data2 == null ? void 0 : data2.task_id : (_b = (_a = data2 == null ? void 0 : data2.task_resp) == null ? void 0 : _a.data) == null ? void 0 : _b.task_id,
             share_id: ((_d = (_c = data2 == null ? void 0 : data2.task_resp) == null ? void 0 : _c.data) == null ? void 0 : _d.share_id) ?? ""
+          });
+        },
+        onerror: (res) => {
+          reject2(res);
+        }
+      });
+    });
+  }
+  function getShareId(taskId, time = 0) {
+    return new Promise((resolve2, reject2) => {
+      _GM_xmlhttpRequest({
+        method: "get",
+        url: `https://pc-api.uc.cn/1/clouddrive/task?pr=UCBrowser&fr=pc&task_id=${taskId}&retry_index=${time}`,
+        headers: {
+          "accept": "application/json, text/plain, */*"
+        },
+        onload: ({ response }) => {
+          const { data = {} } = JSON.parse(response) || {};
+          resolve2({
+            share_id: (data == null ? void 0 : data.share_id) ?? ""
           });
         },
         onerror: (res) => {
@@ -5129,8 +5149,12 @@
           fid_list: [fileInfo.id]
           //文件id
         };
-        const { task_id, share_id } = await getShareIdAndTaskId(sendData);
-        const { share_url, passcode } = await getShareInfo(share_id).catch(() => ({ share_url: "", passcode: "" }));
+        const { task_id } = await getTaskId(sendData);
+        let tempShareID = await getShareId(task_id);
+        if (!tempShareID.share_id) {
+          tempShareID = await getShareId(task_id, 1);
+        }
+        const { share_url, passcode } = await getShareInfo(tempShareID.share_id).catch(() => ({ share_url: "", passcode: "" }));
         let tempData = {
           ...fileInfo,
           share_url: share_url ?? ""

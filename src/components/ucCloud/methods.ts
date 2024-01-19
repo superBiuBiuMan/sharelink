@@ -19,10 +19,10 @@ import {GM_xmlhttpRequest} from "$";
 import {cloudInfoStore} from "../../store";
 
 /**
- * 获取task_id和share_id
+ * 获取task_id
  * @param data
  */
-function getShareIdAndTaskId(data:any){
+function getTaskId(data:any){
     return new Promise<{task_id:string,share_id:string}>((resolve, reject) => {
         GM_xmlhttpRequest({
             method:'post',
@@ -44,6 +44,31 @@ function getShareIdAndTaskId(data:any){
         })
     })
 }
+
+/**
+ * 获取share_id
+ */
+function getShareId(taskId:string,time:number = 0){
+    return new Promise<{share_id:string}>((resolve, reject) => {
+        GM_xmlhttpRequest({
+            method:'get',
+            url:`https://pc-api.uc.cn/1/clouddrive/task?pr=UCBrowser&fr=pc&task_id=${taskId}&retry_index=${time}`,
+            headers:{
+                'accept':'application/json, text/plain, */*',
+            },
+            onload: ({response}) => {
+                const { data = {} } = JSON.parse(response) || {};
+                resolve({
+                    share_id:data?.share_id ?? "",
+                });
+            },
+            onerror:(res:any) => {
+                reject(res)
+            }
+        })
+    })
+}
+
 
 /**
  * 获取分享信息(链接啥的)
@@ -219,8 +244,12 @@ export const useUcCloud:UseUcCloud = () => {
                 title:fileInfo.title,//标题
                 fid_list:[fileInfo.id],//文件id
             }
-            const { task_id,share_id } = await getShareIdAndTaskId(sendData);
-            const { share_url,passcode } = await getShareInfo(share_id).catch(() => ({share_url:"",passcode:""}));
+            const { task_id } = await getTaskId(sendData);
+            let tempShareID = await getShareId(task_id);
+            if(!tempShareID.share_id){
+                tempShareID = await getShareId(task_id,1);
+            }
+            const { share_url,passcode } = await getShareInfo(tempShareID.share_id).catch(() => ({share_url:"",passcode:""}));
 
             let tempData:ShareInfoTypes = {
                 ...fileInfo,

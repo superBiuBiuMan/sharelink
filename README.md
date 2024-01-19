@@ -56,7 +56,8 @@
 * 使用`vite-plugin-monkey`开发
   * https://github.com/lisonge/vite-plugin-monkey
 
-# 部分展示
+
+# 部分展示(如果想参与,可以拉到最底下查看开发过程)
 
 * 当然,界面大同小异
 
@@ -123,3 +124,28 @@
 ![](https://s2.loli.net/2023/12/10/KIOcdYCSpZQuXyH.png)
 
 ![](https://s2.loli.net/2023/12/10/qambuEHvdytZKDc.png)
+# 开发过程
+
+## 1.infoConfig.ts当中的CloudInfoEnum添加网盘的枚举属性,默认格式如下,以添加UC网盘为例
+
+![](https://s2.loli.net/2023/11/25/mxZMPlAjeiLGFKS.png)
+
+### 1.1在次文件变量cloudUrlInfo下添加匹配的url,名称和枚举字段保持一致
+
+![](https://s2.loli.net/2023/11/25/SneGP1WsEfw2AhT.png)
+
+## 2.在vite.config.ts添加对应的网站,比如uc网盘的网站为`https://drive.uc.cn/*`,注意带`*`号,上面作用为xxx  这里为xxxx
+
+![](https://s2.loli.net/2023/11/25/EJe8qxovQaDdAnI.png)
+
+## 3.App.vue引入建立好的网盘目录,并在对应当中添加
+
+![](https://s2.loli.net/2023/11/25/pCZEbfdDM36hlAJ.png)
+
+## 4.store/cloudInfo.ts添加新增加的网盘信息
+
+![](https://s2.loli.net/2023/11/25/Q1deRwTtnzXPuWr.png)
+
+## 5.utils/Mount/index.ts添加网盘挂载逻辑
+
+![](https://s2.loli.net/2023/11/25/D2gavBwXLr8mRNu.png)
