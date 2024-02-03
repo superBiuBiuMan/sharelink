@@ -37,9 +37,9 @@
           <div >
             <t-space>
               <t-button @click="handleBatchOperation" :loading="userOptions.isSharing">批量分享</t-button>
-              <t-button theme="default" @click="copyValue">复制到剪贴板</t-button>
-              <t-button theme="default" @click="download">下载分享链接</t-button>
-              <t-button theme="default" @click="downloadExcel">下载信息为Excel</t-button>
+              <t-button theme="default" @click="copyValue(CopyValueEnum.shareLink)">复制到剪贴板</t-button>
+              <t-button theme="default" @click="download(CopyValueEnum.shareLink)">下载分享链接</t-button>
+              <t-button theme="default" @click="downloadExcel(CopyValueEnum.shareLink)">下载信息为Excel</t-button>
             </t-space>
           </div>
           <!--分享延迟-->
