@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)
 // @namespace    dreamlove
-// @version      2.5.3
+// @version      2.5.4
 // @author       superBiuBiu
 // @description  网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘~
 // @iconURL      https://www.google.com/s2/favicons?domain=dreamlove.top
@@ -46,7 +46,7 @@
 // @run-at       document-body
 // ==/UserScript==
 
-(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const i=document.createElement("style");i.textContent=t,document.head.append(i)})(" @keyframes t-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.t-icon{display:inline-block;vertical-align:middle;width:1em;height:1em}.t-icon:before{font-family:unset}.t-icon-loading{animation:t-spin 1s linear infinite}.t-icon{fill:currentColor}.t-icon.t-size-s,i.t-size-s{font-size:14px}.t-icon.t-size-m,i.t-size-m{font-size:16px}.t-icon.t-size-l,i.t-size-l{font-size:18px}.tianyiCloud[data-v-ce767d83]{height:100%;display:flex;flex-direction:column}.tianyiCloud_option[data-v-ce767d83]{display:flex;align-items:center;margin:0 0 20px}.tianyiCloud_option_time[data-v-ce767d83]{margin-left:10px}.tianyiCloud_result[data-v-ce767d83]{flex:1;overflow:auto}.baiduCloud[data-v-eb86a8a4]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-eb86a8a4]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-eb86a8a4]{flex:1;overflow:auto}.cloud115[data-v-b1c14897]{height:100%;display:flex;flex-direction:column}.cloud115_option[data-v-b1c14897]{display:flex;align-items:center;margin:0 0 20px}.cloud115_option_time[data-v-b1c14897]{margin-left:10px}.cloud115_result[data-v-b1c14897]{flex:1;overflow:auto}.cloud123[data-v-ef2f7e14]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-ef2f7e14]{margin:0 0 10px}.cloud123_option_item[data-v-ef2f7e14]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-ef2f7e14]{display:inline-block;width:100px}.cloud123_result[data-v-ef2f7e14]{flex:1;overflow:auto}.lanzouCloud[data-v-98dce44d]{height:100%;display:flex;flex-direction:column}.lanzouCloud_option[data-v-98dce44d]{margin:0 0 10px}.lanzouCloud_option_item[data-v-98dce44d]{display:flex;align-items:center}.lanzouCloud_option_item_title[data-v-98dce44d]{display:inline-block;width:100px}.lanzouCloud_result[data-v-98dce44d]{flex:1;overflow:auto}.quarkCloud[data-v-7ddcaef9]{height:100%;display:flex;flex-direction:column}.quarkCloud_option_item[data-v-7ddcaef9]{display:flex;align-items:center}.quarkCloud_result[data-v-7ddcaef9]{flex:1;overflow:auto}.cloud139[data-v-f1489390]{height:100%;display:flex;flex-direction:column}.cloud139_option[data-v-f1489390]{margin:0 0 10px}.cloud139_option_item[data-v-f1489390]{display:flex;align-items:center}.cloud139_option_item_title[data-v-f1489390]{display:inline-block;width:100px}.cloud139_result[data-v-f1489390]{flex:1;overflow:auto}.xunCloud[data-v-3dbd7c07]{height:100%;display:flex;flex-direction:column}.xunCloud[data-v-3dbd7c07] .t-input--auto-width{min-width:120px}.xunCloud_option_item[data-v-3dbd7c07]{display:flex;align-items:center}.xunCloud_option_item_title[data-v-3dbd7c07]{min-width:70px}.xunCloud_result[data-v-3dbd7c07]{flex:1;overflow:auto}.aliCloud[data-v-973cb799]{height:100%;display:flex;flex-direction:column}.aliCloud_option_item[data-v-973cb799]{display:flex;align-items:center}.aliCloud_option_item_title[data-v-973cb799]{min-width:70px}.aliCloud_result[data-v-973cb799]{flex:1;overflow:auto}.ucCloud[data-v-95aac119]{height:100%;display:flex;flex-direction:column}.ucCloud[data-v-95aac119] .t-input--auto-width{min-width:120px}.ucCloud_option_item[data-v-95aac119]{display:flex;align-items:center}.ucCloud_option_item_title[data-v-95aac119]{min-width:70px}.ucCloud_result[data-v-95aac119]{flex:1;overflow:auto}.cloud123[data-v-3551589d]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-3551589d]{margin:0 0 10px}.cloud123_option_item[data-v-3551589d]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-3551589d]{display:inline-block;width:100px}.cloud123_result[data-v-3551589d]{flex:1;overflow:auto} ");
+(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const i=document.createElement("style");i.textContent=t,document.head.append(i)})(" @keyframes t-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.t-icon{display:inline-block;vertical-align:middle;width:1em;height:1em}.t-icon:before{font-family:unset}.t-icon-loading{animation:t-spin 1s linear infinite}.t-icon{fill:currentColor}.t-icon.t-size-s,i.t-size-s{font-size:14px}.t-icon.t-size-m,i.t-size-m{font-size:16px}.t-icon.t-size-l,i.t-size-l{font-size:18px}.tianyiCloud[data-v-ce767d83]{height:100%;display:flex;flex-direction:column}.tianyiCloud_option[data-v-ce767d83]{display:flex;align-items:center;margin:0 0 20px}.tianyiCloud_option_time[data-v-ce767d83]{margin-left:10px}.tianyiCloud_result[data-v-ce767d83]{flex:1;overflow:auto}.baiduCloud[data-v-eb86a8a4]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-eb86a8a4]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-eb86a8a4]{flex:1;overflow:auto}.cloud115[data-v-b1c14897]{height:100%;display:flex;flex-direction:column}.cloud115_option[data-v-b1c14897]{display:flex;align-items:center;margin:0 0 20px}.cloud115_option_time[data-v-b1c14897]{margin-left:10px}.cloud115_result[data-v-b1c14897]{flex:1;overflow:auto}.cloud123[data-v-d65c6fd0]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-d65c6fd0]{margin:0 0 10px}.cloud123_option_item[data-v-d65c6fd0]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-d65c6fd0]{display:inline-block;width:100px}.cloud123_result[data-v-d65c6fd0]{flex:1;overflow:auto}.lanzouCloud[data-v-98dce44d]{height:100%;display:flex;flex-direction:column}.lanzouCloud_option[data-v-98dce44d]{margin:0 0 10px}.lanzouCloud_option_item[data-v-98dce44d]{display:flex;align-items:center}.lanzouCloud_option_item_title[data-v-98dce44d]{display:inline-block;width:100px}.lanzouCloud_result[data-v-98dce44d]{flex:1;overflow:auto}.quarkCloud[data-v-7ddcaef9]{height:100%;display:flex;flex-direction:column}.quarkCloud_option_item[data-v-7ddcaef9]{display:flex;align-items:center}.quarkCloud_result[data-v-7ddcaef9]{flex:1;overflow:auto}.cloud139[data-v-f1489390]{height:100%;display:flex;flex-direction:column}.cloud139_option[data-v-f1489390]{margin:0 0 10px}.cloud139_option_item[data-v-f1489390]{display:flex;align-items:center}.cloud139_option_item_title[data-v-f1489390]{display:inline-block;width:100px}.cloud139_result[data-v-f1489390]{flex:1;overflow:auto}.xunCloud[data-v-3dbd7c07]{height:100%;display:flex;flex-direction:column}.xunCloud[data-v-3dbd7c07] .t-input--auto-width{min-width:120px}.xunCloud_option_item[data-v-3dbd7c07]{display:flex;align-items:center}.xunCloud_option_item_title[data-v-3dbd7c07]{min-width:70px}.xunCloud_result[data-v-3dbd7c07]{flex:1;overflow:auto}.aliCloud[data-v-973cb799]{height:100%;display:flex;flex-direction:column}.aliCloud_option_item[data-v-973cb799]{display:flex;align-items:center}.aliCloud_option_item_title[data-v-973cb799]{min-width:70px}.aliCloud_result[data-v-973cb799]{flex:1;overflow:auto}.ucCloud[data-v-95aac119]{height:100%;display:flex;flex-direction:column}.ucCloud[data-v-95aac119] .t-input--auto-width{min-width:120px}.ucCloud_option_item[data-v-95aac119]{display:flex;align-items:center}.ucCloud_option_item_title[data-v-95aac119]{min-width:70px}.ucCloud_result[data-v-95aac119]{flex:1;overflow:auto}.cloud123[data-v-3551589d]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-3551589d]{margin:0 0 10px}.cloud123_option_item[data-v-3551589d]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-3551589d]{display:inline-block;width:100px}.cloud123_result[data-v-3551589d]{flex:1;overflow:auto} ");
 
 (function (vue, pinia, XLSX, tdesignVueNext, axios) {
   'use strict';
@@ -1850,7 +1850,7 @@
       downloadExcel
     };
   };
-  const _withScopeId$7 = (n) => (vue.pushScopeId("data-v-ef2f7e14"), n = n(), vue.popScopeId(), n);
+  const _withScopeId$7 = (n) => (vue.pushScopeId("data-v-d65c6fd0"), n = n(), vue.popScopeId(), n);
   const _hoisted_1$8 = { class: "cloud123" };
   const _hoisted_2$7 = { class: "cloud123_progress" };
   const _hoisted_3$7 = { class: "cloud123_option" };
@@ -1924,31 +1924,31 @@
                           }, 8, ["onClick", "loading"]),
                           vue.createVNode(_component_t_button, {
                             theme: "default",
-                            onClick: vue.unref(copyValue)
+                            onClick: _cache[0] || (_cache[0] = ($event) => vue.unref(copyValue)(vue.unref(CopyValueEnum$1).shareLink))
                           }, {
                             default: vue.withCtx(() => [
                               vue.createTextVNode("复制到剪贴板")
                             ]),
                             _: 1
-                          }, 8, ["onClick"]),
+                          }),
                           vue.createVNode(_component_t_button, {
                             theme: "default",
-                            onClick: vue.unref(download)
+                            onClick: _cache[1] || (_cache[1] = ($event) => vue.unref(download)(vue.unref(CopyValueEnum$1).shareLink))
                           }, {
                             default: vue.withCtx(() => [
                               vue.createTextVNode("下载分享链接")
                             ]),
                             _: 1
-                          }, 8, ["onClick"]),
+                          }),
                           vue.createVNode(_component_t_button, {
                             theme: "default",
-                            onClick: vue.unref(downloadExcel)
+                            onClick: _cache[2] || (_cache[2] = ($event) => vue.unref(downloadExcel)(vue.unref(CopyValueEnum$1).shareLink))
                           }, {
                             default: vue.withCtx(() => [
                               vue.createTextVNode("下载信息为Excel")
                             ]),
                             _: 1
-                          }, 8, ["onClick"])
+                          })
                         ]),
                         _: 1
                       })
@@ -1962,7 +1962,7 @@
                       }),
                       vue.createVNode(_component_t_input_number, {
                         modelValue: vue.unref(userOptions).shareDelay,
-                        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => vue.unref(userOptions).shareDelay = $event),
+                        "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => vue.unref(userOptions).shareDelay = $event),
                         step: "100"
                       }, null, 8, ["modelValue"])
                     ]),
@@ -1970,7 +1970,7 @@
                       _hoisted_7$6,
                       vue.createVNode(_component_t_radio_group, {
                         modelValue: vue.unref(userOptions).expiration,
-                        "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => vue.unref(userOptions).expiration = $event)
+                        "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => vue.unref(userOptions).expiration = $event)
                       }, {
                         default: vue.withCtx(() => [
                           vue.createVNode(_component_t_radio_button, {
@@ -2013,7 +2013,7 @@
                       _hoisted_9$6,
                       vue.createVNode(_component_t_radio_group, {
                         modelValue: vue.unref(userOptions).displayStatus,
-                        "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => vue.unref(userOptions).displayStatus = $event)
+                        "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => vue.unref(userOptions).displayStatus = $event)
                       }, {
                         default: vue.withCtx(() => [
                           vue.createVNode(_component_t_radio_button, {
@@ -2040,7 +2040,7 @@
                       _hoisted_11$4,
                       vue.createVNode(_component_t_radio_group, {
                         modelValue: vue.unref(userOptions).pwdType,
-                        "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => vue.unref(userOptions).pwdType = $event)
+                        "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => vue.unref(userOptions).pwdType = $event)
                       }, {
                         default: vue.withCtx(() => [
                           vue.createVNode(_component_t_radio_button, {
@@ -2075,7 +2075,7 @@
                       _hoisted_13$1,
                       vue.createVNode(_component_t_input, {
                         modelValue: vue.unref(userOptions).pwd,
-                        "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => vue.unref(userOptions).pwd = $event),
+                        "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => vue.unref(userOptions).pwd = $event),
                         placeholder: "请输入自定义提取码",
                         maxlength: "4"
                       }, null, 8, ["modelValue"])
@@ -2110,7 +2110,7 @@
                           }, 8, ["onClick", "loading"]),
                           vue.createVNode(_component_t_button, {
                             theme: "default",
-                            onClick: _cache[5] || (_cache[5] = ($event) => vue.unref(copyValue)(vue.unref(CopyValueEnum$1).extraLink))
+                            onClick: _cache[8] || (_cache[8] = ($event) => vue.unref(copyValue)(vue.unref(CopyValueEnum$1).extraLink))
                           }, {
                             default: vue.withCtx(() => [
                               vue.createTextVNode("复制到剪贴板")
@@ -2119,7 +2119,7 @@
                           }),
                           vue.createVNode(_component_t_button, {
                             theme: "default",
-                            onClick: _cache[6] || (_cache[6] = ($event) => vue.unref(download)(vue.unref(CopyValueEnum$1).extraLink))
+                            onClick: _cache[9] || (_cache[9] = ($event) => vue.unref(download)(vue.unref(CopyValueEnum$1).extraLink))
                           }, {
                             default: vue.withCtx(() => [
                               vue.createTextVNode("下载直链")
@@ -2128,7 +2128,7 @@
                           }),
                           vue.createVNode(_component_t_button, {
                             theme: "default",
-                            onClick: _cache[7] || (_cache[7] = ($event) => vue.unref(downloadExcel)(vue.unref(CopyValueEnum$1).extraLink))
+                            onClick: _cache[10] || (_cache[10] = ($event) => vue.unref(downloadExcel)(vue.unref(CopyValueEnum$1).extraLink))
                           }, {
                             default: vue.withCtx(() => [
                               vue.createTextVNode("下载信息为Excel")
@@ -2158,7 +2158,7 @@
       };
     }
   });
-  const cloud123 = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["__scopeId", "data-v-ef2f7e14"]]);
+  const cloud123 = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["__scopeId", "data-v-d65c6fd0"]]);
   var PwdEnum$1 = /* @__PURE__ */ ((PwdEnum2) => {
     PwdEnum2[PwdEnum2["no"] = 0] = "no";
     PwdEnum2[PwdEnum2["yes"] = 1] = "yes";
