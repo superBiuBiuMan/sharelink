@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)
 // @namespace    dreamlove
-// @version      2.5.4
+// @version      2.5.5
 // @author       superBiuBiu
 // @description  网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘~
 // @iconURL      https://www.google.com/s2/favicons?domain=dreamlove.top
@@ -46,7 +46,7 @@
 // @run-at       document-body
 // ==/UserScript==
 
-(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const i=document.createElement("style");i.textContent=t,document.head.append(i)})(" @keyframes t-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.t-icon{display:inline-block;vertical-align:middle;width:1em;height:1em}.t-icon:before{font-family:unset}.t-icon-loading{animation:t-spin 1s linear infinite}.t-icon{fill:currentColor}.t-icon.t-size-s,i.t-size-s{font-size:14px}.t-icon.t-size-m,i.t-size-m{font-size:16px}.t-icon.t-size-l,i.t-size-l{font-size:18px}.tianyiCloud[data-v-ce767d83]{height:100%;display:flex;flex-direction:column}.tianyiCloud_option[data-v-ce767d83]{display:flex;align-items:center;margin:0 0 20px}.tianyiCloud_option_time[data-v-ce767d83]{margin-left:10px}.tianyiCloud_result[data-v-ce767d83]{flex:1;overflow:auto}.baiduCloud[data-v-eb86a8a4]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-eb86a8a4]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-eb86a8a4]{flex:1;overflow:auto}.cloud115[data-v-b1c14897]{height:100%;display:flex;flex-direction:column}.cloud115_option[data-v-b1c14897]{display:flex;align-items:center;margin:0 0 20px}.cloud115_option_time[data-v-b1c14897]{margin-left:10px}.cloud115_result[data-v-b1c14897]{flex:1;overflow:auto}.cloud123[data-v-d65c6fd0]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-d65c6fd0]{margin:0 0 10px}.cloud123_option_item[data-v-d65c6fd0]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-d65c6fd0]{display:inline-block;width:100px}.cloud123_result[data-v-d65c6fd0]{flex:1;overflow:auto}.lanzouCloud[data-v-98dce44d]{height:100%;display:flex;flex-direction:column}.lanzouCloud_option[data-v-98dce44d]{margin:0 0 10px}.lanzouCloud_option_item[data-v-98dce44d]{display:flex;align-items:center}.lanzouCloud_option_item_title[data-v-98dce44d]{display:inline-block;width:100px}.lanzouCloud_result[data-v-98dce44d]{flex:1;overflow:auto}.quarkCloud[data-v-7ddcaef9]{height:100%;display:flex;flex-direction:column}.quarkCloud_option_item[data-v-7ddcaef9]{display:flex;align-items:center}.quarkCloud_result[data-v-7ddcaef9]{flex:1;overflow:auto}.cloud139[data-v-f1489390]{height:100%;display:flex;flex-direction:column}.cloud139_option[data-v-f1489390]{margin:0 0 10px}.cloud139_option_item[data-v-f1489390]{display:flex;align-items:center}.cloud139_option_item_title[data-v-f1489390]{display:inline-block;width:100px}.cloud139_result[data-v-f1489390]{flex:1;overflow:auto}.xunCloud[data-v-3dbd7c07]{height:100%;display:flex;flex-direction:column}.xunCloud[data-v-3dbd7c07] .t-input--auto-width{min-width:120px}.xunCloud_option_item[data-v-3dbd7c07]{display:flex;align-items:center}.xunCloud_option_item_title[data-v-3dbd7c07]{min-width:70px}.xunCloud_result[data-v-3dbd7c07]{flex:1;overflow:auto}.aliCloud[data-v-973cb799]{height:100%;display:flex;flex-direction:column}.aliCloud_option_item[data-v-973cb799]{display:flex;align-items:center}.aliCloud_option_item_title[data-v-973cb799]{min-width:70px}.aliCloud_result[data-v-973cb799]{flex:1;overflow:auto}.ucCloud[data-v-95aac119]{height:100%;display:flex;flex-direction:column}.ucCloud[data-v-95aac119] .t-input--auto-width{min-width:120px}.ucCloud_option_item[data-v-95aac119]{display:flex;align-items:center}.ucCloud_option_item_title[data-v-95aac119]{min-width:70px}.ucCloud_result[data-v-95aac119]{flex:1;overflow:auto}.cloud123[data-v-3551589d]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-3551589d]{margin:0 0 10px}.cloud123_option_item[data-v-3551589d]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-3551589d]{display:inline-block;width:100px}.cloud123_result[data-v-3551589d]{flex:1;overflow:auto} ");
+(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const a=document.createElement("style");a.textContent=t,document.head.append(a)})(" @keyframes t-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.t-icon{display:inline-block;vertical-align:middle;width:1em;height:1em}.t-icon:before{font-family:unset}.t-icon-loading{animation:t-spin 1s linear infinite}.t-icon{fill:currentColor}.t-icon.t-size-s,i.t-size-s{font-size:14px}.t-icon.t-size-m,i.t-size-m{font-size:16px}.t-icon.t-size-l,i.t-size-l{font-size:18px}.tianyiCloud[data-v-ce767d83]{height:100%;display:flex;flex-direction:column}.tianyiCloud_option[data-v-ce767d83]{display:flex;align-items:center;margin:0 0 20px}.tianyiCloud_option_time[data-v-ce767d83]{margin-left:10px}.tianyiCloud_result[data-v-ce767d83]{flex:1;overflow:auto}.baiduCloud[data-v-eb86a8a4]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-eb86a8a4]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-eb86a8a4]{flex:1;overflow:auto}.cloud115[data-v-b1c14897]{height:100%;display:flex;flex-direction:column}.cloud115_option[data-v-b1c14897]{display:flex;align-items:center;margin:0 0 20px}.cloud115_option_time[data-v-b1c14897]{margin-left:10px}.cloud115_result[data-v-b1c14897]{flex:1;overflow:auto}.cloud123[data-v-d65c6fd0]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-d65c6fd0]{margin:0 0 10px}.cloud123_option_item[data-v-d65c6fd0]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-d65c6fd0]{display:inline-block;width:100px}.cloud123_result[data-v-d65c6fd0]{flex:1;overflow:auto}.lanzouCloud[data-v-98dce44d]{height:100%;display:flex;flex-direction:column}.lanzouCloud_option[data-v-98dce44d]{margin:0 0 10px}.lanzouCloud_option_item[data-v-98dce44d]{display:flex;align-items:center}.lanzouCloud_option_item_title[data-v-98dce44d]{display:inline-block;width:100px}.lanzouCloud_result[data-v-98dce44d]{flex:1;overflow:auto}.quarkCloud[data-v-7ddcaef9]{height:100%;display:flex;flex-direction:column}.quarkCloud_option_item[data-v-7ddcaef9]{display:flex;align-items:center}.quarkCloud_result[data-v-7ddcaef9]{flex:1;overflow:auto}.cloud139[data-v-f1489390]{height:100%;display:flex;flex-direction:column}.cloud139_option[data-v-f1489390]{margin:0 0 10px}.cloud139_option_item[data-v-f1489390]{display:flex;align-items:center}.cloud139_option_item_title[data-v-f1489390]{display:inline-block;width:100px}.cloud139_result[data-v-f1489390]{flex:1;overflow:auto}.xunCloud[data-v-3dbd7c07]{height:100%;display:flex;flex-direction:column}.xunCloud[data-v-3dbd7c07] .t-input--auto-width{min-width:120px}.xunCloud_option_item[data-v-3dbd7c07]{display:flex;align-items:center}.xunCloud_option_item_title[data-v-3dbd7c07]{min-width:70px}.xunCloud_result[data-v-3dbd7c07]{flex:1;overflow:auto}.aliCloud[data-v-3ab6544a]{height:100%;display:flex;flex-direction:column}.aliCloud_option_item[data-v-3ab6544a]{display:flex;align-items:center}.aliCloud_option_item_title[data-v-3ab6544a]{min-width:70px}.aliCloud_result[data-v-3ab6544a]{flex:1;overflow:auto}.ucCloud[data-v-95aac119]{height:100%;display:flex;flex-direction:column}.ucCloud[data-v-95aac119] .t-input--auto-width{min-width:120px}.ucCloud_option_item[data-v-95aac119]{display:flex;align-items:center}.ucCloud_option_item_title[data-v-95aac119]{min-width:70px}.ucCloud_result[data-v-95aac119]{flex:1;overflow:auto}.cloud123[data-v-3551589d]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-3551589d]{margin:0 0 10px}.cloud123_option_item[data-v-3551589d]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-3551589d]{display:inline-block;width:100px}.cloud123_result[data-v-3551589d]{flex:1;overflow:auto} ");
 
 (function (vue, pinia, XLSX, tdesignVueNext, axios) {
   'use strict';
@@ -3094,7 +3094,15 @@
         if (share_id) {
           share_url = await getShareUrl(share_id).catch(() => "");
         } else {
-          const share_id2 = await getShareID(task_id, 1).catch(() => "");
+          await new Promise((r) => setTimeout(r, 500));
+          let share_id2 = await getShareID(task_id, 1).catch(() => "");
+          let i = 2;
+          while (i < 4) {
+            await new Promise((r) => setTimeout(r, 500));
+            share_id2 = await getShareID(task_id, i++).catch(() => "");
+            if (share_id2)
+              break;
+          }
           share_url = await getShareUrl(share_id2).catch(() => "");
         }
         let tempData = {
@@ -4700,7 +4708,7 @@
       downloadExcel
     };
   };
-  const _withScopeId$2 = (n) => (vue.pushScopeId("data-v-973cb799"), n = n(), vue.popScopeId(), n);
+  const _withScopeId$2 = (n) => (vue.pushScopeId("data-v-3ab6544a"), n = n(), vue.popScopeId(), n);
   const _hoisted_1$2 = { class: "aliCloud" };
   const _hoisted_2$2 = { class: "aliCloud_option" };
   const _hoisted_3$2 = { class: "aliCloud_option_item" };
@@ -4867,14 +4875,14 @@
               readonly: "",
               autosize: { minRows: 10 },
               value: vue.unref(userOptions).shareInfoUserSee,
-              placeholder: "分享结果(格式为文件名称: xxxx 分享链接: xxxx 提取码:xxxx 分享有效时间: xxxx) 普通用户每天只能使用分享功能5次；会员用户和Lv.1及以上的达人用户，每天可使用分享次数1000次。超过上限后，将提示「今日分享次数已达上限」\r\n        "
+              placeholder: "(仅限在'资源库'分享资源!)-分享结果(格式为文件名称: xxxx 分享链接: xxxx 提取码:xxxx 分享有效时间: xxxx) 普通用户每天只能使用分享功能5次；会员用户和Lv.1及以上的达人用户，每天可使用分享次数1000次。超过上限后，将提示「今日分享次数已达上限」\r\n        "
             }, null, 8, ["value"])
           ])
         ]);
       };
     }
   });
-  const cloudAli = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-973cb799"]]);
+  const cloudAli = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-3ab6544a"]]);
   var ExpireTimeEnum = /* @__PURE__ */ ((ExpireTimeEnum2) => {
     ExpireTimeEnum2[ExpireTimeEnum2["sevenDay"] = 3] = "sevenDay";
     ExpireTimeEnum2[ExpireTimeEnum2["thirty"] = 4] = "thirty";

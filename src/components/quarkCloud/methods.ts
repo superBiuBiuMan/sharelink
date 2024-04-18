@@ -151,8 +151,17 @@ export const usequarkCloud:UsequarkCloud = () => {
                 //获取分享链接
                 share_url =  await getShareUrl(share_id).catch(() => (''))
             }else{
+                //延迟500毫秒
+                await new Promise(r => setTimeout(r, 500));
                 //再次请求一遍,因为是文件夹的原因
-                const share_id = await getShareID(task_id,1).catch(() => (''))
+                let share_id = await getShareID(task_id,1).catch(() => (''))
+                let i = 2;
+                //有的文件夹好像还要三次,可能还更多次,不知道夸克为啥这样设计....,这里就再尝试
+                while (i < 4){
+                    await new Promise(r => setTimeout(r, 500));
+                    share_id = await getShareID(task_id,i++).catch(() => (''));
+                    if(share_id) break;//跳出循环
+                }
                 share_url =  await getShareUrl(share_id).catch(() => (''))
             }
             let tempData:ShareInfoTypes = {
