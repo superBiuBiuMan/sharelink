@@ -63,7 +63,16 @@ const getSelectInfoList = () => {
       key.startsWith("__reactInternalInstance$")
     );
     //@ts-ignore;
-    return reactDOM[key].memoizedProps.children[0].props.children._owner.memoizedState.selectedRows ?? [];
+    const { dataSource,rowSelection } = reactDOM[key]?.pendingProps?.children?.props?.children[0]?.props?.children?.props ?? {};
+    if(dataSource && rowSelection){
+        const keys = rowSelection?.selectedRowKeys ?? [];
+        const temp = dataSource.filter((item:any) => keys.includes(item.FileId));
+        return temp
+    }else {
+        return [];
+    }
+    //@ts-ignore;
+    return reactDOM[key].pendingProps.children.props.children[0].props.children.props ?? [];
 }
 export const use123Cloud:Use123Cloud = () => {
     const userOptions = ref<UserOptions>({

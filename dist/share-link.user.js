@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)
 // @namespace    dreamlove
-// @version      2.5.5
+// @version      2.5.6
 // @author       superBiuBiu
 // @description  网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘~
 // @iconURL      https://www.google.com/s2/favicons?domain=dreamlove.top
@@ -1613,12 +1613,19 @@
     }))) ?? [];
   };
   const getSelectInfoList$1 = () => {
-    var _a;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
     const reactDOM = document.querySelector(".hombody");
     const key = (_a = Object.keys(reactDOM)) == null ? void 0 : _a.find(
       (key2) => key2.startsWith("__reactInternalInstance$")
     );
-    return reactDOM[key].memoizedProps.children[0].props.children._owner.memoizedState.selectedRows ?? [];
+    const { dataSource, rowSelection } = ((_h = (_g = (_f = (_e = (_d = (_c = (_b = reactDOM[key]) == null ? void 0 : _b.pendingProps) == null ? void 0 : _c.children) == null ? void 0 : _d.props) == null ? void 0 : _e.children[0]) == null ? void 0 : _f.props) == null ? void 0 : _g.children) == null ? void 0 : _h.props) ?? {};
+    if (dataSource && rowSelection) {
+      const keys = (rowSelection == null ? void 0 : rowSelection.selectedRowKeys) ?? [];
+      const temp = dataSource.filter((item) => keys.includes(item.FileId));
+      return temp;
+    } else {
+      return [];
+    }
   };
   const use123Cloud = () => {
     const userOptions = vue.ref({
