@@ -17,7 +17,7 @@ import {
 } from "./types";
 import {MessagePlugin} from 'tdesign-vue-next';
 import {ref} from "vue";
-import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile, get123CloudSecret} from "../../utils";
+import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile,} from "../../utils";
 import axios from "axios";
 import {cloudInfoStore} from "../../store";
 const transformExcelInfoData:TransformExcelInfoData = (data) => {
@@ -52,12 +52,13 @@ export const use139Cloud:Use139Cloud = () => {
         userPhone:"",
     })
     const init:Init = () => {
-        let t = "authorization";
-        let e = t + "=", a = document.cookie.split(";"), n = 0;
-        for (; n < a.length; n++) {
-            let o = a[n].trim();
-            if (0 == o.indexOf(e))
-                userOptions.value.auth = o.substring(e.length, o.length);
+        const regex = /authorization=Basic\s([A-Za-z0-9+/=]+)/;
+        const match = document.cookie.match(regex);
+        if (match) {
+            userOptions.value.auth = 'Basic ' + match?.[1]
+            console.log('userOptions.value.auth',userOptions.value.auth)
+        } else {
+            console.log("No match found");
         }
     }
     init();
