@@ -32,7 +32,7 @@
     <div class="cloud123_option">
       <t-collapse  >
         <!--分享配置项-->
-        <t-collapse-panel :value="CopyValueEnum.shareLink" header="分享配置" >
+        <t-collapse-panel :value="CopyValueEnum.shareLink" header="分享配置(123盘加密算法经常变动,废弃)" >
           <!--操作栏-->
           <div >
             <t-space>
@@ -90,7 +90,7 @@
           </div>
         </t-collapse-panel>
         <!--获取直链-->
-        <t-collapse-panel :value="CopyValueEnum.extraLink" header="获取直链(123云盘VIP才可以用)">
+        <t-collapse-panel :value="CopyValueEnum.extraLink" header="获取直链(123云盘VIP才可以用)(123盘加密算法经常变动,废弃)">
           <!--操作栏-->
           <div >
             <t-space>

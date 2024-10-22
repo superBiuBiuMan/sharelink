@@ -84,6 +84,7 @@ export type GiveAfter = TransformUserOptionsObjType & {
     renameVisible:false,
     shareModality:2,
     shareName:string,//分享文件名
+    isReward:0,//是否开启付费分享
 }
 
 //分享链接返回的数据

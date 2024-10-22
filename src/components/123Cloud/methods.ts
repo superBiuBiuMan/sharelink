@@ -114,6 +114,7 @@ export const use123Cloud:Use123Cloud = () => {
             displayStatus:params.displayStatus,
             sharePwd,
             expiration,
+            shareModality:params.expiration,
         }
     }
     const transformInfoStyle:TransformInfoStyle = (info) => {
@@ -162,17 +163,23 @@ export const use123Cloud:Use123Cloud = () => {
                 fileNum:1,//文件数量,
                 operatePlace:1,
                 renameVisible:false,
-                shareModality:2,
                 shareName:fileInfo.FileName,//分享文件名
+                isReward:0,
             }
             //123加密
-            const randomParams = get123CloudSecret();
+            function generateRandomParams() {
+                const randomValue1 = Math.floor(Math.random() * 10000000000);
+                const randomValue2 = Math.floor(Math.random() * 10000000);
+                const randomValue3 = Math.floor(Math.random() * 10000000000);
+                return `${randomValue1}-${randomValue2}-${randomValue3}`;
+            }
+
+            const params: Record<number, string> = {};
+            params[Math.floor(Math.random() * 10000000000)] = generateRandomParams();
             const { data:backData } = await axios({
                 method:'post',
                 url:`${window.location.origin}/a/api/share/create`,
-                params:{
-                    [randomParams[0]]:randomParams[1],
-                },
+                params,
                 data,
                 headers:{
                     'Content-Type':'application/json;charset=UTF-8',

@@ -59,6 +59,7 @@ export function CopyValueToClipBoard(content:string){
 /**
  * @description 获取123盘加密参数
  * @return 加密参数,格式[xxxx,xxx-xxx-xxx]
+ * @deprecated
  */
 export function get123CloudSecret(){
     function v(t) {
