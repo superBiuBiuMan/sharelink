@@ -155,6 +155,7 @@ export const use123Cloud:Use123Cloud = () => {
         const currentShareInfo = [];//本次分享操作分享的文件信息
         //遍历发送
         for(let fileInfo of selectedRows){
+            //@ts-ignore
             const data:GiveAfter = {
                 ...transformOptions(userOptions.value),
                 driveId:0,
