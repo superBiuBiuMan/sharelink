@@ -28,6 +28,7 @@ export interface SelectFileInfoList {
     fileName:string,//文件名称
     pwd:string,//自定义提取码或随机提取码
     expireTime:string | number,//分享有效期
+    __size:number;//文件大小
 }
 
 //分享链接返回的数据(只取有用的)
@@ -36,6 +37,7 @@ export interface ShareReturnInfoTypes {
     errorno?:number,//0成功,2失败
     shareid?:number,//-1失败,成功返回分享id
     shorturl:string,
+    __size:number;//文件大小
 }
 
 

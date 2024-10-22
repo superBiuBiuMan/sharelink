@@ -16,7 +16,7 @@ import {MessagePlugin} from 'tdesign-vue-next';
 import axios from "axios";
 import {ref} from "vue";
 import {unsafeWindow} from "$";
-import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile, generateRandomString} from "../../utils";
+import {bytesToSize, CopyValueToClipBoard, DownloadTxt, exportXlsxFile, generateRandomString} from "../../utils";
 import {cloudInfoStore} from "../../store";
 import {DownloadExcel} from "../ucCloud/types";
 const transformExcelInfoData:TransformExcelInfoData = (data) => {
@@ -31,6 +31,7 @@ const transformExcelInfoData:TransformExcelInfoData = (data) => {
         }
         return  {
             "文件名称":item?.fileName ?? "",
+            "大小":item?.__size ?? "",
             "分享链接":item?.link ?? "",
             "提取码":item?.pwd ?? "",
             "有效期":time,
@@ -59,11 +60,12 @@ export const useBaiduCloud:UseBaiduCloud = () => {
             case ExpireTimeEnum.forever: time= '永久';break;
             default: time = '未知';
         }
-        return `文件名称: ${info.fileName} 分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: ${time}`;
+        return info?.__size ?  `文件名称: ${info.fileName} 文件大小: ${info.__size} 分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: ${time}` : `文件名称: ${info.fileName}  分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: ${time}`;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
         //@ts-ignore;
         const selectDOM = document.querySelector('tbody').__vue__.$store.state.detail.view.fileMeta;
+        console.log('selectDOM',selectDOM)
         if(!selectDOM.length) {
             return MessagePlugin.warning('请选择要分享的文件!')
         }
@@ -80,6 +82,7 @@ export const useBaiduCloud:UseBaiduCloud = () => {
                 fileName:item.formatName,//文件名称
                 pwd:userOptions.value.pwdType === HasPwdEnum.random ? generateRandomString(4) : userOptions.value.pwd,
                 expireTime:userOptions.value.expireTime,
+                __size:item.size,
             })
         }
         //遍历发送
@@ -114,7 +117,8 @@ export const useBaiduCloud:UseBaiduCloud = () => {
             //填充返回结果
             let tempData = {
                 ...data,
-                ...fileInfo
+                ...fileInfo,
+                __size:bytesToSize(fileInfo.__size),
             }
             userOptions.value.shareInfo.push(tempData);//总的分享信息
             currentShareInfo.push(tempData);//本次分享操作分享的文件信息
