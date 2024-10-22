@@ -139,6 +139,8 @@ const transformExcelInfoData:TransformExcelInfoData = (data) => {
 }
 export const useUcCloud:UseUcCloud = () => {
     const userOptions = ref<UserOptions>({
+        //自定义提取码
+        selfPwd:"",
         //有效期
         expireTimeOptions:[
             { label:'不限',value:ExpireTimeEnum.forever },
@@ -230,7 +232,7 @@ export const useUcCloud:UseUcCloud = () => {
                 expireTime: userOptions.value.expireTime,
                 //UC网盘提取次数为null代表不限制,但是枚举又不能传入null...
                 extractNumber:userOptions.value.extractNumber === -1 ?  null : userOptions.value.extractNumber,
-                passcode:userOptions.value.isPassword ? generateRandomString() : "",
+                passcode:userOptions.value.isPassword ? (userOptions.value.selfPwd ?  userOptions.value.selfPwd :generateRandomString() ) : "",
                 title:userOptions.value.shareTopic ?? '',//分享主题
             })
         }

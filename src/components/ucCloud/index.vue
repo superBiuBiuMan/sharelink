@@ -48,6 +48,14 @@
         <t-select v-model="userOptions.expireTime" placeholder="请选择提取期限" auto-width :options="userOptions.expireTimeOptions"/>
       </div>
       <t-checkbox v-model="userOptions.isPassword">是否有收件密码</t-checkbox>
+      <template v-if="userOptions.isPassword">
+        <t-input
+            v-model="userOptions.selfPwd"
+            :maxcharacter="4"
+            show-limit-number
+            placeholder="只能4字符,估计只能大小写英文数字组合,不填则随机4位提取码,否则分享会失败"
+        />
+      </template>
     </div>
     <!--操作栏-->
     <div class="ucCloud_operation">

@@ -28,6 +28,8 @@ export interface UserOptions {
     extractOptions:Options<ExtractEnum>,
     extractNumber:ExtractEnum,//提取次数
     isPassword:boolean,//是否有密码 true为有, false为没有
+    selfPwd:string,//自定义密码
+
     shareTopic:string,//分享主题(最多30个字)
 
     shareDelay:number,//分享延迟时间
