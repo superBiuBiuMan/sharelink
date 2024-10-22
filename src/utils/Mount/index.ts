@@ -24,7 +24,7 @@ export default () => {
                 `
                 temp.append(app);
 
-                document.querySelector('div.navigation-ceiling ul')?.append(temp);
+                document.querySelector('div.main-top')?.append(temp);
             },1000)
         }break;
         case CloudInfoEnum.cloud123: {
