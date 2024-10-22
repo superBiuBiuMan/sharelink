@@ -57,13 +57,23 @@ const transformExcelExtraLinkData:TransformExcelExtraLinkData = (data) => {
     })) ?? [];
 }
 const getSelectInfoList = () => {
-    const reactDOM = document.querySelector('.hombody');
-    //@ts-ignore;
+    const reactDOM:Element = document.querySelector('.hombody')!;
     const key = Object.keys(reactDOM)?.find(key =>
       key.startsWith("__reactInternalInstance$")
-    );
+    )!;
     //@ts-ignore;
-    const { dataSource,rowSelection } = reactDOM[key]?.pendingProps?.children?.props?.children[0]?.props?.children?.props ?? {};
+    const tempList = [reactDOM[key]]
+    let tempItem;
+    while(tempList.length){
+        const item = tempList.pop();
+        if(item?.memoizedProps?.rowSelection){
+            tempItem = item.memoizedProps;
+            break ;
+        }else{
+            tempList.push(item?.child)
+        }
+    }
+    const { dataSource,rowSelection } = tempItem ?? {};
     if(dataSource && rowSelection){
         const keys = rowSelection?.selectedRowKeys ?? [];
         const temp = dataSource.filter((item:any) => keys.includes(item.FileId));
@@ -71,8 +81,6 @@ const getSelectInfoList = () => {
     }else {
         return [];
     }
-    //@ts-ignore;
-    return reactDOM[key].pendingProps.children.props.children[0].props.children.props ?? [];
 }
 export const use123Cloud:Use123Cloud = () => {
     const userOptions = ref<UserOptions>({
@@ -132,8 +140,7 @@ export const use123Cloud:Use123Cloud = () => {
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
         //选中数据
-        const selectedRows:SelectedRows[] = getSelectInfoList();
-
+        const selectedRows:SelectedRows[] = getSelectInfoList() ?? [];
         if(!selectedRows.length){
             return MessagePlugin.warning('请选择要分享的文件!')
         }
