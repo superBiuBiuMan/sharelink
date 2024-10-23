@@ -11,6 +11,7 @@ export enum CloudInfoEnum {
     cloudAli,//阿里云盘
     cloudUC,//UC网盘
     cloudOnedrive,//Onedrive云盘
+    cloudBaiduSync,//百度网盘同步空间
 }
 export type ShareDOMSelectTypes =  {
     [cloudName in keyof typeof CloudInfoEnum]?:{
@@ -46,6 +47,7 @@ export const ShareDOMSelect:ShareDOMSelectTypes = {
 export const cloudUrlInfo:CloudUrlInfoTypes = {
     cloud123: ['https://www.123pan.com/'],
     cloudBaidu: ['https://pan.baidu.com/disk/main'],
+    cloudBaiduSync: ['https://pan.baidu.com/disk/synchronization'],
     cloudLanZou: [
         'https://pc.woozooo.com/',
         'https:\\/\\/..*?\\.woozooo\\.com',

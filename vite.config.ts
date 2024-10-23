@@ -11,7 +11,7 @@ export default defineConfig({
       userscript: {
         name:'网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)',
         author:'superBiuBiu',
-        version:'2.6.1',
+        version:'2.7.1',
         namespace: 'dreamlove',
           //这里的信息是决定油猴在什么网站规则下运行
         match:
@@ -19,6 +19,7 @@ export default defineConfig({
                 'https://onedrive.live.com/*',
                 'https://cloud.189.cn/*',
                 'https://pan.baidu.com/disk/main*',
+                'https://pan.baidu.com/disk/synchronization*',
                 'https://115.com/*',
                 'https://www.123pan.com/*',
                 'https://pan.quark.cn/*',

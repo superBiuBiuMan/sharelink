@@ -28,11 +28,12 @@
           <t-radio-button :value="ExpireTimeEnum.oneYear">365天</t-radio-button>
           <t-radio-button :value="ExpireTimeEnum.forever">永久</t-radio-button>
         </t-radio-group>
+        <!--延迟-->
         <div>
-          <!--延迟-->
           <t-tooltip content="分享一次后等待下一次分享的时间(避免请求频率过高)">&nbsp;延迟(毫秒):</t-tooltip>
           <t-input-number v-model="userOptions.shareDelay" step="100"/>
         </div>
+
       </div>
       <div class="baiduCloud_option_item">
         <span>提取码:</span>

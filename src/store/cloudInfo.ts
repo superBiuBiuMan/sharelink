@@ -41,6 +41,9 @@ export default defineStore({
                 case CloudInfoEnum.cloudBaidu: {
                     this.cloudName = '百度云';
                 }break;
+                case CloudInfoEnum.cloudBaiduSync: {
+                    this.cloudName = '百度云同步空间';
+                }break;
                 case CloudInfoEnum.cloud115: {
                     this.cloudName = '115云';
                 }break;

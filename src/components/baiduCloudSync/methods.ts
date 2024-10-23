@@ -63,8 +63,10 @@ export const useBaiduCloud:UseBaiduCloud = () => {
         return info?.__size ?  `文件名称: ${info.fileName} 文件大小: ${info.__size} 分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: ${time}` : `文件名称: ${info.fileName}  分享链接:${info.link} 提取码:${info.pwd} 分享有效时间: ${time}`;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
-        let selectDOM:any= document.querySelector('tbody')
-        selectDOM = selectDOM?.__vue__?.$store?.state?.detail?.view?.fileMeta ?? []
+        //@ts-ignore;
+        // const selectDOM = document.querySelector('tbody')?.__vue__?.$store?.state?.detail?.view?.fileMeta ?? []
+        let selectDOM:any = document.querySelector('.nd-main-layout__body .nd-main-list');
+        selectDOM = selectDOM?.__vue__?.selectedList ?? [];
         if(!selectDOM?.length) {
             return MessagePlugin.warning('请选择要分享的文件!')
         }
@@ -103,7 +105,6 @@ export const useBaiduCloud:UseBaiduCloud = () => {
                 data:{
                     period:fileInfo.expireTime,
                     pwd:fileInfo.pwd,
-                    'eflag_disable':true,//不知道是什么参数,好像是分享类型eflag_disable: "personal" === e.shareType
                     channel_list:[],//未知
                     schannel:4,//未知-貌似是一个定制
                     fid_list:`[${fileInfo.id}]`,//文件id

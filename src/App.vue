@@ -12,7 +12,7 @@
   </template>
 
   <t-drawer
-      v-model:visible="visible" :header="cloudInfoStore.cloudName" size="600px"
+      v-model:visible="visible" :header="cloudInfoStore.cloudName" size="600px" :z-index="9999"
 :on-confirm="handleClose" @close="handleClose" placement="right" :closeOnOverlayClick="false">
       <component :is="cloudComponent[cloudInfoStore.cloudKey]" ref="operationRef"></component>
   </t-drawer>
@@ -27,6 +27,7 @@ import type {Component, Ref,} from "vue"
 import {cloudInfoStore} from "./store";
 import cloudTianyi from "./components/tianyiCloud/index.vue";
 import cloudBaidu from "./components/baiduCloud/index.vue";
+import cloudBaiduSync from "./components/baiduCloudSync/index.vue";
 import cloud115 from "./components/115Cloud/index.vue";
 import cloud123 from "./components/123Cloud/index.vue";
 import cloudLanZou from "./components/lanzouCloud/index.vue";
@@ -54,6 +55,7 @@ const cloudComponent:Ref<CloudComponent> = shallowRef({
   cloudAli,
   cloudUC,
   cloudOnedrive,
+  cloudBaiduSync,
 })
 //按钮打开
 const handleOpenDrawerClick = ():void => {

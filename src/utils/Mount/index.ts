@@ -14,6 +14,24 @@ export default () => {
                 tempDOM?.insertBefore(app, tempDOM?.firstChild)
             })
         }break;
+        case CloudInfoEnum.cloudBaiduSync: {
+            setTimeout(() => {
+                //百度云同步空间
+                const tempDOM = document.querySelector('div.wp-aside-nav__sub-top');
+                app.style.cssText = `
+                    text-align:center;
+                `
+                tempDOM?.insertBefore(app, tempDOM?.firstChild)
+            },1000)
+            // observeDOMChanges('body',() => {
+            //     //百度云同步空间
+            //     const tempDOM = document.querySelector('div.wp-aside-nav__sub-top');
+            //     app.style.cssText = `
+            //         text-align:center;
+            //     `
+            //     tempDOM?.insertBefore(app, tempDOM?.firstChild)
+            // })
+        }break;
         case CloudInfoEnum.cloud115 : {
             //115云盘 iframe框架
             setTimeout(() => {
