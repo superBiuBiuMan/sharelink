@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)
 // @namespace    dreamlove
-// @version      2.6.0
+// @version      2.6.1
 // @author       superBiuBiu
 // @description  网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘~
 // @iconURL      https://www.google.com/s2/favicons?domain=dreamlove.top
@@ -26,13 +26,13 @@
 // @match        https://lanzou.com/*
 // @match        https://www.lanzou.com/*
 // @match        https://pan.lanzou.com/*
-// @require      https://cdn.bootcdn.net/ajax/libs/vue/3.5.12/vue.global.prod.min.js
-// @require      https://cdn.bootcdn.net/ajax/libs/vue-demi/0.14.6/index.iife.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/vue/3.5.12/vue.global.prod.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/vue-demi/0.14.6/index.iife.min.js
 // @require      data:application/javascript,window.Vue%3DVue%3B
-// @require      https://cdn.bootcdn.net/ajax/libs/pinia/2.2.4/pinia.iife.prod.min.js
-// @require      https://cdn.bootcdn.net/ajax/libs/xlsx/0.18.5/xlsx.mini.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/pinia/2.2.4/pinia.iife.prod.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.mini.min.js
 // @require      https://unpkg.com/tdesign-vue-next@1.10.2/dist/tdesign.min.js
-// @require      https://cdn.bootcdn.net/ajax/libs/axios/1.6.0/axios.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js
 // @resource     tdesign-vue-next/es/style/index.css  https://unpkg.com/tdesign-vue-next@1.5.7/dist/tdesign.min.css
 // @connect      webapi.115.com
 // @connect      drive-pc.quark.cn
