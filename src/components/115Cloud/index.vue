@@ -25,7 +25,11 @@
       <t-button theme="default" @click="download">下载分享链接</t-button>
       <t-button theme="default" @click="downloadExcel">下载信息为Excel</t-button>
     </t-space>
-    <t-collapse :default-value="[0]" >
+    <!--进度条-->
+    <div class="cloud115_progress">
+      <t-progress :percentage="shareProgress" :color="{ from:' #84fab0',to: '#00A870' }"/>
+    </div>
+    <t-collapse >
       <t-collapse-panel header="配置项">
         <t-form
             ref="form"
@@ -56,7 +60,7 @@
           <t-form-item label="接收次数" name="receiveUserLimit">
             <t-input-number :auto-width="true" v-model="formDataInput.receiveUserLimit" suffix="个" :min="1"  placeholder="默认不限制" min="1"/>
           </t-form-item>
-          <t-form-item label="允许免登录下载" name="skipLogin">
+          <t-form-item label="允许免登录下载(非会员不可开启)" name="skipLogin">
             <t-switch v-model="formDataInput.skipLogin" size="large" :customValue="[1,0]">
               <template #label="slotProps">{{ slotProps.value ? '开' : '关' }}</template>
             </t-switch>
@@ -81,36 +85,6 @@
         </div>
       </t-collapse-panel>
     </t-collapse>
-    <!--@reset="onReset"-->
-    <!--:layout="formData.layout"-->
-    <!--@submit="onSubmit"-->
-
-    <!--配置项-->
-    <!--<div class="cloud115_option">-->
-    <!--    <span>有效期:</span>-->
-    <!--    &lt;!&ndash;分享时间&ndash;&gt;-->
-    <!--    <t-radio-group  v-model="expireTime">-->
-    <!--      <t-radio-button :value="ExpireTimeEnum.oneDay">1天</t-radio-button>-->
-    <!--      <t-radio-button :value="ExpireTimeEnum.threeDay">3天</t-radio-button>-->
-    <!--      <t-radio-button :value="ExpireTimeEnum.fiveDay">5天</t-radio-button>-->
-    <!--      <t-radio-button :value="ExpireTimeEnum.sevenDay">7天</t-radio-button>-->
-    <!--      <t-radio-button :value="ExpireTimeEnum.fifteen">15天</t-radio-button>-->
-    <!--      <t-radio-button :value="ExpireTimeEnum.forever">永久</t-radio-button>-->
-    <!--    </t-radio-group>-->
-    <!--  <div class="cloud115_option_time">-->
-    <!--    <t-tooltip content="分享一次后等待下一次分享的时间(避免请求频率过高)">延迟(毫秒):</t-tooltip>-->
-    <!--    <t-input-number v-model="shareDelay" step="100"/>-->
-    <!--  </div>-->
-    <!--</div>-->
-    <!--&lt;!&ndash;操作栏&ndash;&gt;-->
-    <!--<div class="cloud115_operation">-->
-
-    <!--</div>-->
-    <!--&lt;!&ndash;进度条&ndash;&gt;-->
-    <!--<div class="cloud115_progress">-->
-    <!--  <t-progress :percentage="shareProgress" :color="{ from:' #84fab0',to: '#00A870' }"/>-->
-    <!--</div>-->
-
   </div>
 </template>
 
@@ -123,7 +97,7 @@ const {
         isSharing,
         shareInfoUserSee,
         shareProgress,
-  formDataInput,
+        formDataInput,
         handleBatchOperation,
         handleEnd,
         copyValue,

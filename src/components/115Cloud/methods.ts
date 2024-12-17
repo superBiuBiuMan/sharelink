@@ -18,12 +18,25 @@ import {cloudInfoStore} from "../../store";
 import {DownloadExcel} from "../ucCloud/types";
 
 const transformExcelInfoData:TransformExcelInfoData = (data) => {
+    const timeText = {
+        [ExpireTimeEnum.oneDay]:'1天',
+        [ExpireTimeEnum.threeDay]:'3天',
+        [ExpireTimeEnum.fiveDay]:'5天',
+        [ExpireTimeEnum.sevenDay]:'7天',
+        [ExpireTimeEnum.fifteen]:'15',
+        [ExpireTimeEnum.forever]:'永久',
+    }
     return data?.map(item => {
         return  {
             "文件名称":item?.fileName ?? "",
             "分享链接":item?.share_url ?? "",
             "提取码":item?.receive_code ?? "",
-            "有效期":item?.share_ex_duration ?? "",
+            "有效期":timeText[item.share_duration],
+            "分享链接自动填充访问码": item?.auto_fill_recvcode*1 === 1 ? '开启' : '关闭',
+            "接收次数":item?.receive_user_limit ? item.receive_user_limit : '不限制',
+            "允许免登录下载":   item?.skip_login * 1 === 1 ? '开启' : '关闭',
+            "免登录下载的总流量":item?.skip_login_down_flow_limit ? Math.round(item?.skip_login_down_flow_limit / 1024) + 'KB' :  '不限制'
+
         }
     }) ?? []
 }
@@ -34,7 +47,7 @@ export const use115Cloud:Use115Cloud = () => {
         passcode:"",
         autoFillRecvcode:1,//是否自动填充访问码
         receiveUserLimit:null,//接收次数
-        skipLogin:1,//是否允许免登录下载
+        skipLogin:0,//是否允许免登录下载
         skipLoginDownFlowLimit:null,//允许免登录下载的总流量
     })
     const shareInfo = ref<Array<ShareInfoTypes>>([]);
@@ -43,7 +56,6 @@ export const use115Cloud:Use115Cloud = () => {
     const selectFileInfoList = ref<Array<SelectFileInfoList>>([]);
     const isSharing = ref<boolean>(false);
     const handleTransformFormat:HandleTransformFormat = (info) => {
-        console.log('分享的信息',info)
         const timeText = {
             [ExpireTimeEnum.oneDay]:'1天',
             [ExpireTimeEnum.threeDay]:'3天',
@@ -52,16 +64,7 @@ export const use115Cloud:Use115Cloud = () => {
             [ExpireTimeEnum.fifteen]:'15',
             [ExpireTimeEnum.forever]:'永久',
         }
-      return `
-      文件名称: ${info.fileName}
-      分享链接:${info.share_url}
-      提取码:${info.receive_code}
-      分享链接自动填充访问码:${info.auto_fill_recvcode*1 === 1 ? '开启' : '关闭'}
-      接收次数:${info.receive_user_limit ? info.receive_user_limit : '不限制'}
-      允许免登录下载:${info.skip_login * 1 === 1 ? '开启' : '关闭'},
-      免登录下载的总流量:${info.skip_login_down_flow_limit ? Math.round(info.skip_login_down_flow_limit / 1024) + 'KB' :  '不限制'}
-      分享有效时间: ${timeText[info.share_duration]}
-      `;
+      return `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.receive_code}分享链接自动填充访问码:${info.auto_fill_recvcode*1 === 1 ? '开启' : '关闭'} 接收次数:${info.receive_user_limit ? info.receive_user_limit : '不限制'} 允许免登录下载:${info.skip_login * 1 === 1 ? '开启' : '关闭'} 免登录下载的总流量:${info.skip_login_down_flow_limit ? Math.round(info.skip_login_down_flow_limit / 1024) + 'KB' :  '不限制'} 分享有效时间: ${timeText[info.share_duration]}`;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
         const iframe= document.querySelector('iframe');//获取iframe
@@ -116,8 +119,16 @@ export const use115Cloud:Use115Cloud = () => {
                     formDataUpdate.append('share_code',tempData.share_code as string);
                     formDataUpdate.append('auto_fill_recvcode',info.auto_fill_recvcode);
                     formDataUpdate.append('receive_user_limit',info.receive_user_limit);
-                    formDataUpdate.append('skip_login',info.skip_login );
-                    formDataUpdate.append('skip_login_down_flow_limit', info.skip_login_down_flow_limit);
+                    formDataUpdate.append('share_duration',info.share_duration);
+
+                    if(info.skip_login * 1 === 1){
+                        //开启免登录下载
+                        formDataUpdate.append('skip_login',info.skip_login );
+                        formDataUpdate.append('skip_login_down_flow_limit', info.skip_login_down_flow_limit);
+                    }else{
+                        //关闭免登录下载
+                        formDataUpdate.append('skip_login',info.skip_login );
+                    }
                     if(formDataInput.value.passcode){
                         formDataUpdate.append('receive_code',formDataInput.value.passcode);
                         formDataUpdate.append('is_custom_code','1');
