@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)
 // @namespace    dreamlove
-// @version      2.7.1
+// @version      2.8.0
 // @author       superBiuBiu
 // @description  网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘~
 // @iconURL      https://www.google.com/s2/favicons?domain=dreamlove.top
@@ -47,7 +47,7 @@
 // @run-at       document-body
 // ==/UserScript==
 
-(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const i=document.createElement("style");i.textContent=t,document.head.append(i)})(" @keyframes t-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.t-icon{display:inline-block;vertical-align:middle;width:1em;height:1em}.t-icon:before{font-family:unset}.t-icon-loading{animation:t-spin 1s linear infinite}.t-icon{fill:currentColor}.t-icon.t-size-s,i.t-size-s{font-size:14px}.t-icon.t-size-m,i.t-size-m{font-size:16px}.t-icon.t-size-l,i.t-size-l{font-size:18px}.tianyiCloud[data-v-ce767d83]{height:100%;display:flex;flex-direction:column}.tianyiCloud_option[data-v-ce767d83]{display:flex;align-items:center;margin:0 0 20px}.tianyiCloud_option_time[data-v-ce767d83]{margin-left:10px}.tianyiCloud_result[data-v-ce767d83]{flex:1;overflow:auto}.baiduCloud[data-v-cb3cc612]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-cb3cc612]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-cb3cc612]{flex:1;overflow:auto}.baiduCloud[data-v-1c3aed36]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-1c3aed36]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-1c3aed36]{flex:1;overflow:auto}.cloud115[data-v-b1c14897]{height:100%;display:flex;flex-direction:column}.cloud115_option[data-v-b1c14897]{display:flex;align-items:center;margin:0 0 20px}.cloud115_option_time[data-v-b1c14897]{margin-left:10px}.cloud115_result[data-v-b1c14897]{flex:1;overflow:auto}.cloud123[data-v-f782858b]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-f782858b]{margin:0 0 10px}.cloud123_option_item[data-v-f782858b]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-f782858b]{display:inline-block;width:100px}.cloud123_result[data-v-f782858b]{flex:1;overflow:auto}.lanzouCloud[data-v-98dce44d]{height:100%;display:flex;flex-direction:column}.lanzouCloud_option[data-v-98dce44d]{margin:0 0 10px}.lanzouCloud_option_item[data-v-98dce44d]{display:flex;align-items:center}.lanzouCloud_option_item_title[data-v-98dce44d]{display:inline-block;width:100px}.lanzouCloud_result[data-v-98dce44d]{flex:1;overflow:auto}.quarkCloud[data-v-7ddcaef9]{height:100%;display:flex;flex-direction:column}.quarkCloud_option_item[data-v-7ddcaef9]{display:flex;align-items:center}.quarkCloud_result[data-v-7ddcaef9]{flex:1;overflow:auto}.cloud139[data-v-f1489390]{height:100%;display:flex;flex-direction:column}.cloud139_option[data-v-f1489390]{margin:0 0 10px}.cloud139_option_item[data-v-f1489390]{display:flex;align-items:center}.cloud139_option_item_title[data-v-f1489390]{display:inline-block;width:100px}.cloud139_result[data-v-f1489390]{flex:1;overflow:auto}.xunCloud[data-v-3dbd7c07]{height:100%;display:flex;flex-direction:column}.xunCloud[data-v-3dbd7c07] .t-input--auto-width{min-width:120px}.xunCloud_option_item[data-v-3dbd7c07]{display:flex;align-items:center}.xunCloud_option_item_title[data-v-3dbd7c07]{min-width:70px}.xunCloud_result[data-v-3dbd7c07]{flex:1;overflow:auto}.aliCloud[data-v-3ab6544a]{height:100%;display:flex;flex-direction:column}.aliCloud_option_item[data-v-3ab6544a]{display:flex;align-items:center}.aliCloud_option_item_title[data-v-3ab6544a]{min-width:70px}.aliCloud_result[data-v-3ab6544a]{flex:1;overflow:auto}.ucCloud[data-v-56726208]{height:100%;display:flex;flex-direction:column}.ucCloud[data-v-56726208] .t-input--auto-width{min-width:120px}.ucCloud_option_item[data-v-56726208]{display:flex;align-items:center}.ucCloud_option_item_title[data-v-56726208]{min-width:70px}.ucCloud_result[data-v-56726208]{flex:1;overflow:auto}.cloud123[data-v-3551589d]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-3551589d]{margin:0 0 10px}.cloud123_option_item[data-v-3551589d]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-3551589d]{display:inline-block;width:100px}.cloud123_result[data-v-3551589d]{flex:1;overflow:auto} ");
+(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const i=document.createElement("style");i.textContent=t,document.head.append(i)})(" @keyframes t-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.t-icon{display:inline-block;vertical-align:middle;width:1em;height:1em}.t-icon:before{font-family:unset}.t-icon-loading{animation:t-spin 1s linear infinite}.t-icon{fill:currentColor}.t-icon.t-size-s,i.t-size-s{font-size:14px}.t-icon.t-size-m,i.t-size-m{font-size:16px}.t-icon.t-size-l,i.t-size-l{font-size:18px}.tianyiCloud[data-v-ce767d83]{height:100%;display:flex;flex-direction:column}.tianyiCloud_option[data-v-ce767d83]{display:flex;align-items:center;margin:0 0 20px}.tianyiCloud_option_time[data-v-ce767d83]{margin-left:10px}.tianyiCloud_result[data-v-ce767d83]{flex:1;overflow:auto}.baiduCloud[data-v-cb3cc612]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-cb3cc612]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-cb3cc612]{flex:1;overflow:auto}.baiduCloud[data-v-1c3aed36]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-1c3aed36]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-1c3aed36]{flex:1;overflow:auto}.cloud115[data-v-bfc684f2]{height:100%}.cloud123[data-v-f782858b]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-f782858b]{margin:0 0 10px}.cloud123_option_item[data-v-f782858b]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-f782858b]{display:inline-block;width:100px}.cloud123_result[data-v-f782858b]{flex:1;overflow:auto}.lanzouCloud[data-v-98dce44d]{height:100%;display:flex;flex-direction:column}.lanzouCloud_option[data-v-98dce44d]{margin:0 0 10px}.lanzouCloud_option_item[data-v-98dce44d]{display:flex;align-items:center}.lanzouCloud_option_item_title[data-v-98dce44d]{display:inline-block;width:100px}.lanzouCloud_result[data-v-98dce44d]{flex:1;overflow:auto}.quarkCloud[data-v-7ddcaef9]{height:100%;display:flex;flex-direction:column}.quarkCloud_option_item[data-v-7ddcaef9]{display:flex;align-items:center}.quarkCloud_result[data-v-7ddcaef9]{flex:1;overflow:auto}.cloud139[data-v-f1489390]{height:100%;display:flex;flex-direction:column}.cloud139_option[data-v-f1489390]{margin:0 0 10px}.cloud139_option_item[data-v-f1489390]{display:flex;align-items:center}.cloud139_option_item_title[data-v-f1489390]{display:inline-block;width:100px}.cloud139_result[data-v-f1489390]{flex:1;overflow:auto}.xunCloud[data-v-3dbd7c07]{height:100%;display:flex;flex-direction:column}.xunCloud[data-v-3dbd7c07] .t-input--auto-width{min-width:120px}.xunCloud_option_item[data-v-3dbd7c07]{display:flex;align-items:center}.xunCloud_option_item_title[data-v-3dbd7c07]{min-width:70px}.xunCloud_result[data-v-3dbd7c07]{flex:1;overflow:auto}.aliCloud[data-v-3ab6544a]{height:100%;display:flex;flex-direction:column}.aliCloud_option_item[data-v-3ab6544a]{display:flex;align-items:center}.aliCloud_option_item_title[data-v-3ab6544a]{min-width:70px}.aliCloud_result[data-v-3ab6544a]{flex:1;overflow:auto}.ucCloud[data-v-56726208]{height:100%;display:flex;flex-direction:column}.ucCloud[data-v-56726208] .t-input--auto-width{min-width:120px}.ucCloud_option_item[data-v-56726208]{display:flex;align-items:center}.ucCloud_option_item_title[data-v-56726208]{min-width:70px}.ucCloud_result[data-v-56726208]{flex:1;overflow:auto}.cloud123[data-v-3551589d]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-3551589d]{margin:0 0 10px}.cloud123_option_item[data-v-3551589d]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-3551589d]{display:inline-block;width:100px}.cloud123_result[data-v-3551589d]{flex:1;overflow:auto} ");
 
 (function (vue, pinia, XLSX, tdesignVueNext, axios) {
   'use strict';
@@ -686,6 +686,298 @@
     ExpireTimeEnum2[ExpireTimeEnum2["forever"] = 2099] = "forever";
     return ExpireTimeEnum2;
   })(ExpireTimeEnum$9 || {});
+  var dayjs_min = { exports: {} };
+  (function(module, exports) {
+    !function(t, e) {
+      module.exports = e();
+    }(commonjsGlobal, function() {
+      var t = 1e3, e = 6e4, n = 36e5, r = "millisecond", i = "second", s = "minute", u = "hour", a = "day", o = "week", c = "month", f = "quarter", h2 = "year", d = "date", l = "Invalid Date", $ = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/, y = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g, M = { name: "en", weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"), months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_"), ordinal: function(t2) {
+        var e2 = ["th", "st", "nd", "rd"], n2 = t2 % 100;
+        return "[" + t2 + (e2[(n2 - 20) % 10] || e2[n2] || e2[0]) + "]";
+      } }, m = function(t2, e2, n2) {
+        var r2 = String(t2);
+        return !r2 || r2.length >= e2 ? t2 : "" + Array(e2 + 1 - r2.length).join(n2) + t2;
+      }, v = { s: m, z: function(t2) {
+        var e2 = -t2.utcOffset(), n2 = Math.abs(e2), r2 = Math.floor(n2 / 60), i2 = n2 % 60;
+        return (e2 <= 0 ? "+" : "-") + m(r2, 2, "0") + ":" + m(i2, 2, "0");
+      }, m: function t2(e2, n2) {
+        if (e2.date() < n2.date())
+          return -t2(n2, e2);
+        var r2 = 12 * (n2.year() - e2.year()) + (n2.month() - e2.month()), i2 = e2.clone().add(r2, c), s2 = n2 - i2 < 0, u2 = e2.clone().add(r2 + (s2 ? -1 : 1), c);
+        return +(-(r2 + (n2 - i2) / (s2 ? i2 - u2 : u2 - i2)) || 0);
+      }, a: function(t2) {
+        return t2 < 0 ? Math.ceil(t2) || 0 : Math.floor(t2);
+      }, p: function(t2) {
+        return { M: c, y: h2, w: o, d: a, D: d, h: u, m: s, s: i, ms: r, Q: f }[t2] || String(t2 || "").toLowerCase().replace(/s$/, "");
+      }, u: function(t2) {
+        return void 0 === t2;
+      } }, g = "en", D = {};
+      D[g] = M;
+      var p = "$isDayjsObject", S = function(t2) {
+        return t2 instanceof _ || !(!t2 || !t2[p]);
+      }, w = function t2(e2, n2, r2) {
+        var i2;
+        if (!e2)
+          return g;
+        if ("string" == typeof e2) {
+          var s2 = e2.toLowerCase();
+          D[s2] && (i2 = s2), n2 && (D[s2] = n2, i2 = s2);
+          var u2 = e2.split("-");
+          if (!i2 && u2.length > 1)
+            return t2(u2[0]);
+        } else {
+          var a2 = e2.name;
+          D[a2] = e2, i2 = a2;
+        }
+        return !r2 && i2 && (g = i2), i2 || !r2 && g;
+      }, O = function(t2, e2) {
+        if (S(t2))
+          return t2.clone();
+        var n2 = "object" == typeof e2 ? e2 : {};
+        return n2.date = t2, n2.args = arguments, new _(n2);
+      }, b = v;
+      b.l = w, b.i = S, b.w = function(t2, e2) {
+        return O(t2, { locale: e2.$L, utc: e2.$u, x: e2.$x, $offset: e2.$offset });
+      };
+      var _ = function() {
+        function M2(t2) {
+          this.$L = w(t2.locale, null, true), this.parse(t2), this.$x = this.$x || t2.x || {}, this[p] = true;
+        }
+        var m2 = M2.prototype;
+        return m2.parse = function(t2) {
+          this.$d = function(t3) {
+            var e2 = t3.date, n2 = t3.utc;
+            if (null === e2)
+              return /* @__PURE__ */ new Date(NaN);
+            if (b.u(e2))
+              return /* @__PURE__ */ new Date();
+            if (e2 instanceof Date)
+              return new Date(e2);
+            if ("string" == typeof e2 && !/Z$/i.test(e2)) {
+              var r2 = e2.match($);
+              if (r2) {
+                var i2 = r2[2] - 1 || 0, s2 = (r2[7] || "0").substring(0, 3);
+                return n2 ? new Date(Date.UTC(r2[1], i2, r2[3] || 1, r2[4] || 0, r2[5] || 0, r2[6] || 0, s2)) : new Date(r2[1], i2, r2[3] || 1, r2[4] || 0, r2[5] || 0, r2[6] || 0, s2);
+              }
+            }
+            return new Date(e2);
+          }(t2), this.init();
+        }, m2.init = function() {
+          var t2 = this.$d;
+          this.$y = t2.getFullYear(), this.$M = t2.getMonth(), this.$D = t2.getDate(), this.$W = t2.getDay(), this.$H = t2.getHours(), this.$m = t2.getMinutes(), this.$s = t2.getSeconds(), this.$ms = t2.getMilliseconds();
+        }, m2.$utils = function() {
+          return b;
+        }, m2.isValid = function() {
+          return !(this.$d.toString() === l);
+        }, m2.isSame = function(t2, e2) {
+          var n2 = O(t2);
+          return this.startOf(e2) <= n2 && n2 <= this.endOf(e2);
+        }, m2.isAfter = function(t2, e2) {
+          return O(t2) < this.startOf(e2);
+        }, m2.isBefore = function(t2, e2) {
+          return this.endOf(e2) < O(t2);
+        }, m2.$g = function(t2, e2, n2) {
+          return b.u(t2) ? this[e2] : this.set(n2, t2);
+        }, m2.unix = function() {
+          return Math.floor(this.valueOf() / 1e3);
+        }, m2.valueOf = function() {
+          return this.$d.getTime();
+        }, m2.startOf = function(t2, e2) {
+          var n2 = this, r2 = !!b.u(e2) || e2, f2 = b.p(t2), l2 = function(t3, e3) {
+            var i2 = b.w(n2.$u ? Date.UTC(n2.$y, e3, t3) : new Date(n2.$y, e3, t3), n2);
+            return r2 ? i2 : i2.endOf(a);
+          }, $2 = function(t3, e3) {
+            return b.w(n2.toDate()[t3].apply(n2.toDate("s"), (r2 ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(e3)), n2);
+          }, y2 = this.$W, M3 = this.$M, m3 = this.$D, v2 = "set" + (this.$u ? "UTC" : "");
+          switch (f2) {
+            case h2:
+              return r2 ? l2(1, 0) : l2(31, 11);
+            case c:
+              return r2 ? l2(1, M3) : l2(0, M3 + 1);
+            case o:
+              var g2 = this.$locale().weekStart || 0, D2 = (y2 < g2 ? y2 + 7 : y2) - g2;
+              return l2(r2 ? m3 - D2 : m3 + (6 - D2), M3);
+            case a:
+            case d:
+              return $2(v2 + "Hours", 0);
+            case u:
+              return $2(v2 + "Minutes", 1);
+            case s:
+              return $2(v2 + "Seconds", 2);
+            case i:
+              return $2(v2 + "Milliseconds", 3);
+            default:
+              return this.clone();
+          }
+        }, m2.endOf = function(t2) {
+          return this.startOf(t2, false);
+        }, m2.$set = function(t2, e2) {
+          var n2, o2 = b.p(t2), f2 = "set" + (this.$u ? "UTC" : ""), l2 = (n2 = {}, n2[a] = f2 + "Date", n2[d] = f2 + "Date", n2[c] = f2 + "Month", n2[h2] = f2 + "FullYear", n2[u] = f2 + "Hours", n2[s] = f2 + "Minutes", n2[i] = f2 + "Seconds", n2[r] = f2 + "Milliseconds", n2)[o2], $2 = o2 === a ? this.$D + (e2 - this.$W) : e2;
+          if (o2 === c || o2 === h2) {
+            var y2 = this.clone().set(d, 1);
+            y2.$d[l2]($2), y2.init(), this.$d = y2.set(d, Math.min(this.$D, y2.daysInMonth())).$d;
+          } else
+            l2 && this.$d[l2]($2);
+          return this.init(), this;
+        }, m2.set = function(t2, e2) {
+          return this.clone().$set(t2, e2);
+        }, m2.get = function(t2) {
+          return this[b.p(t2)]();
+        }, m2.add = function(r2, f2) {
+          var d2, l2 = this;
+          r2 = Number(r2);
+          var $2 = b.p(f2), y2 = function(t2) {
+            var e2 = O(l2);
+            return b.w(e2.date(e2.date() + Math.round(t2 * r2)), l2);
+          };
+          if ($2 === c)
+            return this.set(c, this.$M + r2);
+          if ($2 === h2)
+            return this.set(h2, this.$y + r2);
+          if ($2 === a)
+            return y2(1);
+          if ($2 === o)
+            return y2(7);
+          var M3 = (d2 = {}, d2[s] = e, d2[u] = n, d2[i] = t, d2)[$2] || 1, m3 = this.$d.getTime() + r2 * M3;
+          return b.w(m3, this);
+        }, m2.subtract = function(t2, e2) {
+          return this.add(-1 * t2, e2);
+        }, m2.format = function(t2) {
+          var e2 = this, n2 = this.$locale();
+          if (!this.isValid())
+            return n2.invalidDate || l;
+          var r2 = t2 || "YYYY-MM-DDTHH:mm:ssZ", i2 = b.z(this), s2 = this.$H, u2 = this.$m, a2 = this.$M, o2 = n2.weekdays, c2 = n2.months, f2 = n2.meridiem, h3 = function(t3, n3, i3, s3) {
+            return t3 && (t3[n3] || t3(e2, r2)) || i3[n3].slice(0, s3);
+          }, d2 = function(t3) {
+            return b.s(s2 % 12 || 12, t3, "0");
+          }, $2 = f2 || function(t3, e3, n3) {
+            var r3 = t3 < 12 ? "AM" : "PM";
+            return n3 ? r3.toLowerCase() : r3;
+          };
+          return r2.replace(y, function(t3, r3) {
+            return r3 || function(t4) {
+              switch (t4) {
+                case "YY":
+                  return String(e2.$y).slice(-2);
+                case "YYYY":
+                  return b.s(e2.$y, 4, "0");
+                case "M":
+                  return a2 + 1;
+                case "MM":
+                  return b.s(a2 + 1, 2, "0");
+                case "MMM":
+                  return h3(n2.monthsShort, a2, c2, 3);
+                case "MMMM":
+                  return h3(c2, a2);
+                case "D":
+                  return e2.$D;
+                case "DD":
+                  return b.s(e2.$D, 2, "0");
+                case "d":
+                  return String(e2.$W);
+                case "dd":
+                  return h3(n2.weekdaysMin, e2.$W, o2, 2);
+                case "ddd":
+                  return h3(n2.weekdaysShort, e2.$W, o2, 3);
+                case "dddd":
+                  return o2[e2.$W];
+                case "H":
+                  return String(s2);
+                case "HH":
+                  return b.s(s2, 2, "0");
+                case "h":
+                  return d2(1);
+                case "hh":
+                  return d2(2);
+                case "a":
+                  return $2(s2, u2, true);
+                case "A":
+                  return $2(s2, u2, false);
+                case "m":
+                  return String(u2);
+                case "mm":
+                  return b.s(u2, 2, "0");
+                case "s":
+                  return String(e2.$s);
+                case "ss":
+                  return b.s(e2.$s, 2, "0");
+                case "SSS":
+                  return b.s(e2.$ms, 3, "0");
+                case "Z":
+                  return i2;
+              }
+              return null;
+            }(t3) || i2.replace(":", "");
+          });
+        }, m2.utcOffset = function() {
+          return 15 * -Math.round(this.$d.getTimezoneOffset() / 15);
+        }, m2.diff = function(r2, d2, l2) {
+          var $2, y2 = this, M3 = b.p(d2), m3 = O(r2), v2 = (m3.utcOffset() - this.utcOffset()) * e, g2 = this - m3, D2 = function() {
+            return b.m(y2, m3);
+          };
+          switch (M3) {
+            case h2:
+              $2 = D2() / 12;
+              break;
+            case c:
+              $2 = D2();
+              break;
+            case f:
+              $2 = D2() / 3;
+              break;
+            case o:
+              $2 = (g2 - v2) / 6048e5;
+              break;
+            case a:
+              $2 = (g2 - v2) / 864e5;
+              break;
+            case u:
+              $2 = g2 / n;
+              break;
+            case s:
+              $2 = g2 / e;
+              break;
+            case i:
+              $2 = g2 / t;
+              break;
+            default:
+              $2 = g2;
+          }
+          return l2 ? $2 : b.a($2);
+        }, m2.daysInMonth = function() {
+          return this.endOf(c).$D;
+        }, m2.$locale = function() {
+          return D[this.$L];
+        }, m2.locale = function(t2, e2) {
+          if (!t2)
+            return this.$L;
+          var n2 = this.clone(), r2 = w(t2, e2, true);
+          return r2 && (n2.$L = r2), n2;
+        }, m2.clone = function() {
+          return b.w(this.$d, this);
+        }, m2.toDate = function() {
+          return new Date(this.valueOf());
+        }, m2.toJSON = function() {
+          return this.isValid() ? this.toISOString() : null;
+        }, m2.toISOString = function() {
+          return this.$d.toISOString();
+        }, m2.toString = function() {
+          return this.$d.toUTCString();
+        }, M2;
+      }(), k = _.prototype;
+      return O.prototype = k, [["$ms", r], ["$s", i], ["$m", s], ["$H", u], ["$W", a], ["$M", c], ["$y", h2], ["$D", d]].forEach(function(t2) {
+        k[t2[1]] = function(e2) {
+          return this.$g(e2, t2[0], t2[1]);
+        };
+      }), O.extend = function(t2, e2) {
+        return t2.$i || (t2(e2, _, O), t2.$i = true), O;
+      }, O.locale = w, O.isDayjs = S, O.unix = function(t2) {
+        return O(1e3 * t2);
+      }, O.en = D[g], O.Ls = D, O.p = {}, O;
+    });
+  })(dayjs_min);
+  var dayjs_minExports = dayjs_min.exports;
+  const dayjs = /* @__PURE__ */ getDefaultExportFromCjs(dayjs_minExports);
   const transformExcelInfoData$a = (data) => {
     return (data == null ? void 0 : data.map((item) => {
       let time = "";
@@ -803,10 +1095,10 @@
       });
     };
     const download = () => {
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, userOptions.value.shareInfoUserSee);
     };
     const downloadExcel = () => {
-      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`, transformExcelInfoData$a(userOptions.value.shareInfo));
+      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}.xlsx`, transformExcelInfoData$a(userOptions.value.shareInfo));
     };
     return {
       userOptions,
@@ -822,9 +1114,9 @@
   const _hoisted_1$c = { class: "tianyiCloud" };
   const _hoisted_2$b = { class: "tianyiCloud_option" };
   const _hoisted_3$b = { class: "tianyiCloud_option_time" };
-  const _hoisted_4$b = { class: "tianyiCloud_operation" };
-  const _hoisted_5$a = { class: "tianyiCloud_progress" };
-  const _hoisted_6$a = { class: "tianyiCloud_result" };
+  const _hoisted_4$a = { class: "tianyiCloud_operation" };
+  const _hoisted_5$9 = { class: "tianyiCloud_progress" };
+  const _hoisted_6$9 = { class: "tianyiCloud_result" };
   const _sfc_main$d = /* @__PURE__ */ vue.defineComponent({
     __name: "index",
     setup(__props, { expose: __expose }) {
@@ -897,7 +1189,7 @@
               }, null, 8, ["modelValue"])
             ])
           ]),
-          vue.createElementVNode("div", _hoisted_4$b, [
+          vue.createElementVNode("div", _hoisted_4$a, [
             vue.createVNode(_component_t_space, null, {
               default: vue.withCtx(() => [
                 vue.createVNode(_component_t_button, {
@@ -940,13 +1232,13 @@
               _: 1
             })
           ]),
-          vue.createElementVNode("div", _hoisted_5$a, [
+          vue.createElementVNode("div", _hoisted_5$9, [
             vue.createVNode(_component_t_progress, {
               percentage: vue.unref(userOptions).shareProgress,
               color: { from: " #84fab0", to: "#00A870" }
             }, null, 8, ["percentage"])
           ]),
-          vue.createElementVNode("div", _hoisted_6$a, [
+          vue.createElementVNode("div", _hoisted_6$9, [
             vue.createVNode(_component_t_textarea, {
               readonly: "",
               autosize: { minRows: 10 },
@@ -1129,10 +1421,10 @@
       });
     };
     const download = () => {
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, userOptions.value.shareInfoUserSee);
     };
     const downloadExcel = () => {
-      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`, transformExcelInfoData$9(userOptions.value.shareInfo));
+      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}.xlsx`, transformExcelInfoData$9(userOptions.value.shareInfo));
     };
     return {
       userOptions,
@@ -1147,12 +1439,12 @@
   const _hoisted_1$b = { class: "baiduCloud" };
   const _hoisted_2$a = { class: "baiduCloud_option" };
   const _hoisted_3$a = { class: "baiduCloud_option_item" };
-  const _hoisted_4$a = { class: "baiduCloud_option_item" };
-  const _hoisted_5$9 = {
+  const _hoisted_4$9 = { class: "baiduCloud_option_item" };
+  const _hoisted_5$8 = {
     key: 0,
     style: { "margin-top": "4px" }
   };
-  const _hoisted_6$9 = { class: "baiduCloud_operation" };
+  const _hoisted_6$8 = { class: "baiduCloud_operation" };
   const _hoisted_7$8 = { class: "baiduCloud_progress" };
   const _hoisted_8$6 = { class: "baiduCloud_result" };
   const _sfc_main$c = /* @__PURE__ */ vue.defineComponent({
@@ -1245,7 +1537,7 @@
                 }, null, 8, ["modelValue"])
               ])
             ]),
-            vue.createElementVNode("div", _hoisted_4$a, [
+            vue.createElementVNode("div", _hoisted_4$9, [
               _cache[13] || (_cache[13] = vue.createElementVNode("span", null, "提取码:", -1)),
               vue.createVNode(_component_t_radio_group, {
                 modelValue: vue.unref(userOptions).pwdType,
@@ -1271,7 +1563,7 @@
                 ]),
                 _: 1
               }, 8, ["modelValue"]),
-              vue.unref(userOptions).pwdType === vue.unref(HasPwdEnum$1).self ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$9, [
+              vue.unref(userOptions).pwdType === vue.unref(HasPwdEnum$1).self ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$8, [
                 vue.createVNode(_component_t_input, {
                   modelValue: vue.unref(userOptions).pwd,
                   "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => vue.unref(userOptions).pwd = $event),
@@ -1281,7 +1573,7 @@
               ])) : vue.createCommentVNode("", true)
             ])
           ]),
-          vue.createElementVNode("div", _hoisted_6$9, [
+          vue.createElementVNode("div", _hoisted_6$8, [
             vue.createVNode(_component_t_space, null, {
               default: vue.withCtx(() => [
                 vue.createVNode(_component_t_button, {
@@ -1502,10 +1794,10 @@
       });
     };
     const download = () => {
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, userOptions.value.shareInfoUserSee);
     };
     const downloadExcel = () => {
-      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`, transformExcelInfoData$8(userOptions.value.shareInfo));
+      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}.xlsx`, transformExcelInfoData$8(userOptions.value.shareInfo));
     };
     return {
       userOptions,
@@ -1520,12 +1812,12 @@
   const _hoisted_1$a = { class: "baiduCloud" };
   const _hoisted_2$9 = { class: "baiduCloud_option" };
   const _hoisted_3$9 = { class: "baiduCloud_option_item" };
-  const _hoisted_4$9 = { class: "baiduCloud_option_item" };
-  const _hoisted_5$8 = {
+  const _hoisted_4$8 = { class: "baiduCloud_option_item" };
+  const _hoisted_5$7 = {
     key: 0,
     style: { "margin-top": "4px" }
   };
-  const _hoisted_6$8 = { class: "baiduCloud_operation" };
+  const _hoisted_6$7 = { class: "baiduCloud_operation" };
   const _hoisted_7$7 = { class: "baiduCloud_progress" };
   const _hoisted_8$5 = { class: "baiduCloud_result" };
   const _sfc_main$b = /* @__PURE__ */ vue.defineComponent({
@@ -1618,7 +1910,7 @@
                 }, null, 8, ["modelValue"])
               ])
             ]),
-            vue.createElementVNode("div", _hoisted_4$9, [
+            vue.createElementVNode("div", _hoisted_4$8, [
               _cache[13] || (_cache[13] = vue.createElementVNode("span", null, "提取码:", -1)),
               vue.createVNode(_component_t_radio_group, {
                 modelValue: vue.unref(userOptions).pwdType,
@@ -1644,7 +1936,7 @@
                 ]),
                 _: 1
               }, 8, ["modelValue"]),
-              vue.unref(userOptions).pwdType === vue.unref(HasPwdEnum).self ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$8, [
+              vue.unref(userOptions).pwdType === vue.unref(HasPwdEnum).self ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$7, [
                 vue.createVNode(_component_t_input, {
                   modelValue: vue.unref(userOptions).pwd,
                   "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => vue.unref(userOptions).pwd = $event),
@@ -1654,7 +1946,7 @@
               ])) : vue.createCommentVNode("", true)
             ])
           ]),
-          vue.createElementVNode("div", _hoisted_6$8, [
+          vue.createElementVNode("div", _hoisted_6$7, [
             vue.createVNode(_component_t_space, null, {
               default: vue.withCtx(() => [
                 vue.createVNode(_component_t_button, {
@@ -1718,30 +2010,64 @@
   const cloudBaiduSync = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["__scopeId", "data-v-1c3aed36"]]);
   var ExpireTimeEnum$6 = /* @__PURE__ */ ((ExpireTimeEnum2) => {
     ExpireTimeEnum2[ExpireTimeEnum2["oneDay"] = 1] = "oneDay";
+    ExpireTimeEnum2[ExpireTimeEnum2["threeDay"] = 3] = "threeDay";
+    ExpireTimeEnum2[ExpireTimeEnum2["fiveDay"] = 5] = "fiveDay";
     ExpireTimeEnum2[ExpireTimeEnum2["sevenDay"] = 7] = "sevenDay";
+    ExpireTimeEnum2[ExpireTimeEnum2["fifteen"] = 15] = "fifteen";
     ExpireTimeEnum2[ExpireTimeEnum2["forever"] = -1] = "forever";
     return ExpireTimeEnum2;
   })(ExpireTimeEnum$6 || {});
   const transformExcelInfoData$7 = (data) => {
+    const timeText = {
+      [ExpireTimeEnum$6.oneDay]: "1天",
+      [ExpireTimeEnum$6.threeDay]: "3天",
+      [ExpireTimeEnum$6.fiveDay]: "5天",
+      [ExpireTimeEnum$6.sevenDay]: "7天",
+      [ExpireTimeEnum$6.fifteen]: "15",
+      [ExpireTimeEnum$6.forever]: "永久"
+    };
     return (data == null ? void 0 : data.map((item) => {
       return {
-        "文件名称": (item == null ? void 0 : item.fileName) ?? "",
-        "分享链接": (item == null ? void 0 : item.share_url) ?? "",
-        "提取码": (item == null ? void 0 : item.receive_code) ?? "",
-        "有效期": (item == null ? void 0 : item.share_ex_duration) ?? ""
+        "文件名称": item.fileName ?? "",
+        "分享链接": item.share_url ?? "",
+        "提取码": item.receive_code ?? "",
+        "有效期": timeText[item.share_duration],
+        "分享链接自动填充访问码": Number(item.auto_fill_recvcode) === 1 ? "开启" : "关闭",
+        "接收次数": item.receive_user_limit ? item.receive_user_limit : "不限制",
+        "允许免登录下载": Number(item.skip_login) === 1 ? "开启" : "关闭",
+        "免登录下载的总流量": Number(item.skip_login_down_flow_limit) ? Math.round(Number(item.skip_login_down_flow_limit) / 1024) + "KB" : "不限制"
       };
     })) ?? [];
   };
   const use115Cloud = () => {
     const shareDelay = vue.ref(500);
-    const expireTime = vue.ref(ExpireTimeEnum$6.forever);
+    const formDataInput = vue.ref({
+      time: ExpireTimeEnum$6.forever,
+      passcode: "",
+      autoFillRecvcode: 1,
+      //是否自动填充访问码
+      receiveUserLimit: null,
+      //接收次数
+      skipLogin: 0,
+      //是否允许免登录下载
+      skipLoginDownFlowLimit: null
+      //允许免登录下载的总流量
+    });
     const shareInfo = vue.ref([]);
     const shareInfoUserSee = vue.ref("");
     const shareProgress = vue.ref(0);
     const selectFileInfoList = vue.ref([]);
     const isSharing = vue.ref(false);
     const handleTransformFormat = (info) => {
-      return `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.receive_code} 分享有效时间: ${info.share_ex_duration}`;
+      const timeText = {
+        [ExpireTimeEnum$6.oneDay]: "1天",
+        [ExpireTimeEnum$6.threeDay]: "3天",
+        [ExpireTimeEnum$6.fiveDay]: "5天",
+        [ExpireTimeEnum$6.sevenDay]: "7天",
+        [ExpireTimeEnum$6.fifteen]: "15",
+        [ExpireTimeEnum$6.forever]: "永久"
+      };
+      return `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.receive_code}分享链接自动填充访问码:${Number(info.auto_fill_recvcode) === 1 ? "开启" : "关闭"} 接收次数:${info.receive_user_limit ? info.receive_user_limit : "不限制"} 允许免登录下载:${Number(info.skip_login) === 1 ? "开启" : "关闭"} 免登录下载的总流量:${Number(info.skip_login_down_flow_limit) ? Math.round(Number(info.skip_login_down_flow_limit) / 1024) + "KB" : "不限制"} 分享有效时间: ${timeText[info.share_duration]}`;
     };
     const handleBatchOperation = async () => {
       var _a, _b, _c, _d, _e;
@@ -1784,9 +2110,53 @@
               ...result.data || {},
               fileName: fileInfo.fileName
             };
-            shareInfo.value.push(tempData);
-            shareInfoUserSee.value += handleTransformFormat(tempData) + "\n";
-            shareProgress.value = Math.floor(shareInfo.value.length / selectFileInfoList.value.length * 100);
+            const formDataUpdate = new FormData();
+            const info = {
+              auto_fill_recvcode: formDataInput.value.autoFillRecvcode,
+              //分享链接自动填充访问码-传入0则关闭,1则开启
+              receive_user_limit: formDataInput.value.receiveUserLimit ? formDataInput.value.receiveUserLimit : "",
+              //接收次数-不传则不限制,传入数字则限制
+              skip_login: formDataInput.value.skipLogin,
+              //允许免登录下载 传入0关闭 1开启,
+              skip_login_down_flow_limit: formDataInput.value.skipLoginDownFlowLimit ? formDataInput.value.skipLoginDownFlowLimit * 1024 : "",
+              //免登录下载限制 - 大小  * 1024 B 不传则不限制
+              share_duration: formDataInput.value.time
+            };
+            formDataUpdate.append("share_code", tempData.share_code);
+            formDataUpdate.append("auto_fill_recvcode", info.auto_fill_recvcode);
+            formDataUpdate.append("receive_user_limit", info.receive_user_limit);
+            formDataUpdate.append("share_duration", info.share_duration);
+            if (info.skip_login * 1 === 1) {
+              formDataUpdate.append("skip_login", info.skip_login);
+              formDataUpdate.append("skip_login_down_flow_limit", info.skip_login_down_flow_limit);
+            } else {
+              formDataUpdate.append("skip_login", info.skip_login);
+            }
+            if (formDataInput.value.passcode) {
+              formDataUpdate.append("receive_code", formDataInput.value.passcode);
+              formDataUpdate.append("is_custom_code", "1");
+              tempData.receive_code = formDataInput.value.passcode;
+            }
+            _GM_xmlhttpRequest({
+              method: "post",
+              url: "https://webapi.115.com/share/updateshare",
+              headers: {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+              },
+              data: formDataUpdate,
+              onload: ({ response: responseTwice }) => {
+                tempData = {
+                  ...tempData,
+                  ...info
+                };
+                shareInfo.value.push(tempData);
+                shareInfoUserSee.value += handleTransformFormat(tempData) + "\n";
+                shareProgress.value = Math.floor(shareInfo.value.length / selectFileInfoList.value.length * 100);
+              },
+              onerror: (res) => {
+                console.error("二次更新失败", res);
+              }
+            });
           },
           onerror: (res) => {
             console.error("失败", res);
@@ -1816,14 +2186,14 @@
       });
     };
     const download = () => {
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, shareInfoUserSee.value);
+      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, shareInfoUserSee.value);
     };
     const downloadExcel = () => {
-      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`, transformExcelInfoData$7(shareInfo.value));
+      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}.xlsx`, transformExcelInfoData$7(shareInfo.value));
     };
     return {
       shareDelay,
-      expireTime,
+      formDataInput,
       shareInfo,
       selectFileInfoList,
       shareInfoUserSee,
@@ -1838,20 +2208,17 @@
     };
   };
   const _hoisted_1$9 = { class: "cloud115" };
-  const _hoisted_2$8 = { class: "cloud115_option" };
-  const _hoisted_3$8 = { class: "cloud115_option_time" };
-  const _hoisted_4$8 = { class: "cloud115_operation" };
-  const _hoisted_5$7 = { class: "cloud115_progress" };
-  const _hoisted_6$7 = { class: "cloud115_result" };
+  const _hoisted_2$8 = { class: "cloud115_progress" };
+  const _hoisted_3$8 = { class: "cloud115_result" };
   const _sfc_main$a = /* @__PURE__ */ vue.defineComponent({
     __name: "index",
     setup(__props, { expose: __expose }) {
       const {
-        expireTime,
         shareDelay,
         isSharing,
         shareInfoUserSee,
         shareProgress,
+        formDataInput,
         handleBatchOperation,
         handleEnd,
         copyValue,
@@ -1862,104 +2229,256 @@
         handleEnd
       });
       return (_ctx, _cache) => {
-        const _component_t_radio_button = vue.resolveComponent("t-radio-button");
-        const _component_t_radio_group = vue.resolveComponent("t-radio-group");
-        const _component_t_tooltip = vue.resolveComponent("t-tooltip");
-        const _component_t_input_number = vue.resolveComponent("t-input-number");
         const _component_t_button = vue.resolveComponent("t-button");
         const _component_t_space = vue.resolveComponent("t-space");
         const _component_t_progress = vue.resolveComponent("t-progress");
+        const _component_t_radio_button = vue.resolveComponent("t-radio-button");
+        const _component_t_radio_group = vue.resolveComponent("t-radio-group");
+        const _component_t_form_item = vue.resolveComponent("t-form-item");
+        const _component_t_input = vue.resolveComponent("t-input");
+        const _component_t_switch = vue.resolveComponent("t-switch");
+        const _component_t_input_number = vue.resolveComponent("t-input-number");
+        const _component_t_form = vue.resolveComponent("t-form");
+        const _component_t_collapse_panel = vue.resolveComponent("t-collapse-panel");
         const _component_t_textarea = vue.resolveComponent("t-textarea");
+        const _component_t_collapse = vue.resolveComponent("t-collapse");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$9, [
-          vue.createElementVNode("div", _hoisted_2$8, [
-            _cache[3] || (_cache[3] = vue.createElementVNode("span", null, "有效期:", -1)),
-            vue.createVNode(_component_t_radio_group, null, {
-              default: vue.withCtx(() => [
-                vue.createVNode(_component_t_radio_button, null, {
-                  default: vue.withCtx(() => _cache[1] || (_cache[1] = [
-                    vue.createTextVNode("永久")
-                  ])),
-                  _: 1
-                })
-              ]),
-              _: 1
-            }),
-            vue.createElementVNode("div", _hoisted_3$8, [
-              vue.createVNode(_component_t_tooltip, { content: "分享一次后等待下一次分享的时间(避免请求频率过高)" }, {
-                default: vue.withCtx(() => _cache[2] || (_cache[2] = [
-                  vue.createTextVNode("延迟(毫秒):")
+          vue.createVNode(_component_t_space, null, {
+            default: vue.withCtx(() => [
+              vue.createVNode(_component_t_button, {
+                onClick: vue.unref(handleBatchOperation),
+                loading: vue.unref(isSharing)
+              }, {
+                default: vue.withCtx(() => _cache[6] || (_cache[6] = [
+                  vue.createTextVNode("批量分享")
                 ])),
                 _: 1
-              }),
-              vue.createVNode(_component_t_input_number, {
-                modelValue: vue.unref(shareDelay),
-                "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => vue.isRef(shareDelay) ? shareDelay.value = $event : null),
-                step: "100"
-              }, null, 8, ["modelValue"])
-            ])
-          ]),
-          vue.createElementVNode("div", _hoisted_4$8, [
-            vue.createVNode(_component_t_space, null, {
-              default: vue.withCtx(() => [
-                vue.createVNode(_component_t_button, {
-                  onClick: vue.unref(handleBatchOperation),
-                  loading: vue.unref(isSharing)
-                }, {
-                  default: vue.withCtx(() => _cache[4] || (_cache[4] = [
-                    vue.createTextVNode("批量分享")
-                  ])),
-                  _: 1
-                }, 8, ["onClick", "loading"]),
-                vue.createVNode(_component_t_button, {
-                  theme: "default",
-                  onClick: vue.unref(copyValue)
-                }, {
-                  default: vue.withCtx(() => _cache[5] || (_cache[5] = [
-                    vue.createTextVNode("复制到剪贴板")
-                  ])),
-                  _: 1
-                }, 8, ["onClick"]),
-                vue.createVNode(_component_t_button, {
-                  theme: "default",
-                  onClick: vue.unref(download)
-                }, {
-                  default: vue.withCtx(() => _cache[6] || (_cache[6] = [
-                    vue.createTextVNode("下载分享链接")
-                  ])),
-                  _: 1
-                }, 8, ["onClick"]),
-                vue.createVNode(_component_t_button, {
-                  theme: "default",
-                  onClick: vue.unref(downloadExcel)
-                }, {
-                  default: vue.withCtx(() => _cache[7] || (_cache[7] = [
-                    vue.createTextVNode("下载信息为Excel")
-                  ])),
-                  _: 1
-                }, 8, ["onClick"])
-              ]),
-              _: 1
-            })
-          ]),
-          vue.createElementVNode("div", _hoisted_5$7, [
+              }, 8, ["onClick", "loading"]),
+              vue.createVNode(_component_t_button, {
+                theme: "default",
+                onClick: vue.unref(copyValue)
+              }, {
+                default: vue.withCtx(() => _cache[7] || (_cache[7] = [
+                  vue.createTextVNode("复制到剪贴板")
+                ])),
+                _: 1
+              }, 8, ["onClick"]),
+              vue.createVNode(_component_t_button, {
+                theme: "default",
+                onClick: vue.unref(download)
+              }, {
+                default: vue.withCtx(() => _cache[8] || (_cache[8] = [
+                  vue.createTextVNode("下载分享链接")
+                ])),
+                _: 1
+              }, 8, ["onClick"]),
+              vue.createVNode(_component_t_button, {
+                theme: "default",
+                onClick: vue.unref(downloadExcel)
+              }, {
+                default: vue.withCtx(() => _cache[9] || (_cache[9] = [
+                  vue.createTextVNode("下载信息为Excel")
+                ])),
+                _: 1
+              }, 8, ["onClick"])
+            ]),
+            _: 1
+          }),
+          vue.createElementVNode("div", _hoisted_2$8, [
             vue.createVNode(_component_t_progress, {
               percentage: vue.unref(shareProgress),
               color: { from: " #84fab0", to: "#00A870" }
             }, null, 8, ["percentage"])
           ]),
-          vue.createElementVNode("div", _hoisted_6$7, [
-            vue.createVNode(_component_t_textarea, {
-              readonly: "",
-              autosize: { minRows: 10 },
-              value: vue.unref(shareInfoUserSee),
-              placeholder: "分享结果(格式为文件名称: xxxx 分享链接: xxxx 提取码:xxxx 分享有效时间: xxxx)"
-            }, null, 8, ["value"])
-          ])
+          vue.createVNode(_component_t_collapse, null, {
+            default: vue.withCtx(() => [
+              vue.createVNode(_component_t_collapse_panel, { header: "配置项" }, {
+                default: vue.withCtx(() => [
+                  vue.createVNode(_component_t_form, {
+                    ref: "form",
+                    data: vue.unref(formDataInput),
+                    colon: true,
+                    "scroll-to-first-error": "smooth",
+                    labelAlign: "top"
+                  }, {
+                    default: vue.withCtx(() => [
+                      vue.createVNode(_component_t_form_item, {
+                        label: "有效期",
+                        name: "time"
+                      }, {
+                        default: vue.withCtx(() => [
+                          vue.createVNode(_component_t_radio_group, {
+                            modelValue: vue.unref(formDataInput).time,
+                            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => vue.unref(formDataInput).time = $event)
+                          }, {
+                            default: vue.withCtx(() => [
+                              vue.createVNode(_component_t_radio_button, {
+                                value: vue.unref(ExpireTimeEnum$6).oneDay
+                              }, {
+                                default: vue.withCtx(() => _cache[10] || (_cache[10] = [
+                                  vue.createTextVNode("1天")
+                                ])),
+                                _: 1
+                              }, 8, ["value"]),
+                              vue.createVNode(_component_t_radio_button, {
+                                value: vue.unref(ExpireTimeEnum$6).threeDay
+                              }, {
+                                default: vue.withCtx(() => _cache[11] || (_cache[11] = [
+                                  vue.createTextVNode("3天")
+                                ])),
+                                _: 1
+                              }, 8, ["value"]),
+                              vue.createVNode(_component_t_radio_button, {
+                                value: vue.unref(ExpireTimeEnum$6).fiveDay
+                              }, {
+                                default: vue.withCtx(() => _cache[12] || (_cache[12] = [
+                                  vue.createTextVNode("5天")
+                                ])),
+                                _: 1
+                              }, 8, ["value"]),
+                              vue.createVNode(_component_t_radio_button, {
+                                value: vue.unref(ExpireTimeEnum$6).sevenDay
+                              }, {
+                                default: vue.withCtx(() => _cache[13] || (_cache[13] = [
+                                  vue.createTextVNode("7天")
+                                ])),
+                                _: 1
+                              }, 8, ["value"]),
+                              vue.createVNode(_component_t_radio_button, {
+                                value: vue.unref(ExpireTimeEnum$6).fifteen
+                              }, {
+                                default: vue.withCtx(() => _cache[14] || (_cache[14] = [
+                                  vue.createTextVNode("15天")
+                                ])),
+                                _: 1
+                              }, 8, ["value"]),
+                              vue.createVNode(_component_t_radio_button, {
+                                value: vue.unref(ExpireTimeEnum$6).forever
+                              }, {
+                                default: vue.withCtx(() => _cache[15] || (_cache[15] = [
+                                  vue.createTextVNode("永久")
+                                ])),
+                                _: 1
+                              }, 8, ["value"])
+                            ]),
+                            _: 1
+                          }, 8, ["modelValue"])
+                        ]),
+                        _: 1
+                      }),
+                      vue.createVNode(_component_t_form_item, {
+                        label: "访问码",
+                        name: "passcode"
+                      }, {
+                        default: vue.withCtx(() => [
+                          vue.createVNode(_component_t_input, {
+                            modelValue: vue.unref(formDataInput).passcode,
+                            "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => vue.unref(formDataInput).passcode = $event),
+                            placeholder: "请输入自定义提取码(只允许输入字母和数字)",
+                            maxlength: "4"
+                          }, null, 8, ["modelValue"])
+                        ]),
+                        _: 1
+                      }),
+                      vue.createVNode(_component_t_form_item, {
+                        label: "分享链接自动填充访问码",
+                        name: "autoFillRecvcode"
+                      }, {
+                        default: vue.withCtx(() => [
+                          vue.createVNode(_component_t_switch, {
+                            modelValue: vue.unref(formDataInput).autoFillRecvcode,
+                            "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => vue.unref(formDataInput).autoFillRecvcode = $event),
+                            size: "large",
+                            customValue: [1, 0]
+                          }, {
+                            label: vue.withCtx((slotProps) => [
+                              vue.createTextVNode(vue.toDisplayString(slotProps.value ? "开" : "关"), 1)
+                            ]),
+                            _: 1
+                          }, 8, ["modelValue"])
+                        ]),
+                        _: 1
+                      }),
+                      vue.createVNode(_component_t_form_item, {
+                        label: "接收次数",
+                        name: "receiveUserLimit"
+                      }, {
+                        default: vue.withCtx(() => [
+                          vue.createVNode(_component_t_input_number, {
+                            "auto-width": true,
+                            modelValue: vue.unref(formDataInput).receiveUserLimit,
+                            "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => vue.unref(formDataInput).receiveUserLimit = $event),
+                            suffix: "个",
+                            min: 1,
+                            placeholder: "默认不限制"
+                          }, null, 8, ["modelValue"])
+                        ]),
+                        _: 1
+                      }),
+                      vue.createVNode(_component_t_form_item, {
+                        label: "允许免登录下载(非会员不可开启)",
+                        name: "skipLogin"
+                      }, {
+                        default: vue.withCtx(() => [
+                          vue.createVNode(_component_t_switch, {
+                            modelValue: vue.unref(formDataInput).skipLogin,
+                            "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => vue.unref(formDataInput).skipLogin = $event),
+                            size: "large",
+                            customValue: [1, 0]
+                          }, {
+                            label: vue.withCtx((slotProps) => [
+                              vue.createTextVNode(vue.toDisplayString(slotProps.value ? "开" : "关"), 1)
+                            ]),
+                            _: 1
+                          }, 8, ["modelValue"])
+                        ]),
+                        _: 1
+                      }),
+                      vue.unref(formDataInput).skipLogin === 1 ? (vue.openBlock(), vue.createBlock(_component_t_form_item, {
+                        key: 0,
+                        label: "允许免登录下载的总流量",
+                        name: "skipLoginDownFlowLimit"
+                      }, {
+                        default: vue.withCtx(() => [
+                          vue.createVNode(_component_t_input_number, {
+                            "auto-width": true,
+                            modelValue: vue.unref(formDataInput).skipLoginDownFlowLimit,
+                            "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => vue.unref(formDataInput).skipLoginDownFlowLimit = $event),
+                            suffix: "KB",
+                            min: 1,
+                            step: "1",
+                            placeholder: "默认不限制"
+                          }, null, 8, ["modelValue"])
+                        ]),
+                        _: 1
+                      })) : vue.createCommentVNode("", true)
+                    ]),
+                    _: 1
+                  }, 8, ["data"])
+                ]),
+                _: 1
+              }),
+              vue.createVNode(_component_t_collapse_panel, { header: "分享结果" }, {
+                default: vue.withCtx(() => [
+                  vue.createElementVNode("div", _hoisted_3$8, [
+                    vue.createVNode(_component_t_textarea, {
+                      readonly: "",
+                      autosize: { minRows: 10 },
+                      value: vue.unref(shareInfoUserSee),
+                      placeholder: "分享结果(格式为文件名称: xxxx 分享链接: xxxx 提取码:xxxx 分享有效时间: xxxx)"
+                    }, null, 8, ["value"])
+                  ])
+                ]),
+                _: 1
+              })
+            ]),
+            _: 1
+          })
         ]);
       };
     }
   });
-  const cloud115 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["__scopeId", "data-v-b1c14897"]]);
+  const cloud115 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["__scopeId", "data-v-bfc684f2"]]);
   var ExpireTimeEnum$5 = /* @__PURE__ */ ((ExpireTimeEnum2) => {
     ExpireTimeEnum2[ExpireTimeEnum2["oneDay"] = 1] = "oneDay";
     ExpireTimeEnum2[ExpireTimeEnum2["sevenDay"] = 2] = "sevenDay";
@@ -2252,9 +2771,9 @@
     };
     const download = (type = CopyValueEnum$1.shareLink) => {
       if (type === CopyValueEnum$1.shareLink) {
-        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, userOptions.value.shareInfoUserSee);
       } else if (type === CopyValueEnum$1.extraLink) {
-        DownloadTxt(`${cloudInfoStore.cloudName}直链地址${Date.now()}`, userOptions.value.extraLinkUserSee);
+        DownloadTxt(`${cloudInfoStore.cloudName}直链地址-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, userOptions.value.extraLinkUserSee);
       }
     };
     const downloadExcel = (type = CopyValueEnum$1.shareLink) => {
@@ -3054,10 +3573,10 @@
       });
     };
     const download = () => {
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, userOptions.value.shareInfoUserSee);
     };
     const downloadExcel = () => {
-      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`, transformExcelInfoData$5(userOptions.value.shareResultInfoList));
+      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}.xlsx`, transformExcelInfoData$5(userOptions.value.shareResultInfoList));
     };
     return {
       init,
@@ -3558,10 +4077,10 @@
       });
     };
     const download = () => {
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, userOptions.value.shareInfoUserSee);
     };
     const downloadExcel = () => {
-      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`, transformExcelInfoData$4(userOptions.value.shareInfo));
+      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}.xlsx`, transformExcelInfoData$4(userOptions.value.shareInfo));
     };
     return {
       userOptions,
@@ -3943,10 +4462,10 @@
       });
     };
     const download = () => {
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, userOptions.value.shareInfoUserSee);
     };
     const downloadExcel = () => {
-      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`, transformExcelInfoData$3(userOptions.value.shareResultInfoList));
+      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}.xlsx`, transformExcelInfoData$3(userOptions.value.shareResultInfoList));
     };
     return {
       init,
@@ -4497,10 +5016,10 @@
       });
     };
     const download = () => {
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, userOptions.value.shareInfoUserSee);
     };
     const downloadExcel = () => {
-      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`, transformExcelInfoData$2(userOptions.value.shareInfo));
+      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}.xlsx`, transformExcelInfoData$2(userOptions.value.shareInfo));
     };
     return {
       userOptions,
@@ -4661,298 +5180,6 @@
     PwdEnum2[PwdEnum2["yes"] = 1] = "yes";
     return PwdEnum2;
   })(PwdEnum || {});
-  var dayjs_min = { exports: {} };
-  (function(module, exports) {
-    !function(t, e) {
-      module.exports = e();
-    }(commonjsGlobal, function() {
-      var t = 1e3, e = 6e4, n = 36e5, r = "millisecond", i = "second", s = "minute", u = "hour", a = "day", o = "week", c = "month", f = "quarter", h2 = "year", d = "date", l = "Invalid Date", $ = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/, y = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g, M = { name: "en", weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"), months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_"), ordinal: function(t2) {
-        var e2 = ["th", "st", "nd", "rd"], n2 = t2 % 100;
-        return "[" + t2 + (e2[(n2 - 20) % 10] || e2[n2] || e2[0]) + "]";
-      } }, m = function(t2, e2, n2) {
-        var r2 = String(t2);
-        return !r2 || r2.length >= e2 ? t2 : "" + Array(e2 + 1 - r2.length).join(n2) + t2;
-      }, v = { s: m, z: function(t2) {
-        var e2 = -t2.utcOffset(), n2 = Math.abs(e2), r2 = Math.floor(n2 / 60), i2 = n2 % 60;
-        return (e2 <= 0 ? "+" : "-") + m(r2, 2, "0") + ":" + m(i2, 2, "0");
-      }, m: function t2(e2, n2) {
-        if (e2.date() < n2.date())
-          return -t2(n2, e2);
-        var r2 = 12 * (n2.year() - e2.year()) + (n2.month() - e2.month()), i2 = e2.clone().add(r2, c), s2 = n2 - i2 < 0, u2 = e2.clone().add(r2 + (s2 ? -1 : 1), c);
-        return +(-(r2 + (n2 - i2) / (s2 ? i2 - u2 : u2 - i2)) || 0);
-      }, a: function(t2) {
-        return t2 < 0 ? Math.ceil(t2) || 0 : Math.floor(t2);
-      }, p: function(t2) {
-        return { M: c, y: h2, w: o, d: a, D: d, h: u, m: s, s: i, ms: r, Q: f }[t2] || String(t2 || "").toLowerCase().replace(/s$/, "");
-      }, u: function(t2) {
-        return void 0 === t2;
-      } }, g = "en", D = {};
-      D[g] = M;
-      var p = "$isDayjsObject", S = function(t2) {
-        return t2 instanceof _ || !(!t2 || !t2[p]);
-      }, w = function t2(e2, n2, r2) {
-        var i2;
-        if (!e2)
-          return g;
-        if ("string" == typeof e2) {
-          var s2 = e2.toLowerCase();
-          D[s2] && (i2 = s2), n2 && (D[s2] = n2, i2 = s2);
-          var u2 = e2.split("-");
-          if (!i2 && u2.length > 1)
-            return t2(u2[0]);
-        } else {
-          var a2 = e2.name;
-          D[a2] = e2, i2 = a2;
-        }
-        return !r2 && i2 && (g = i2), i2 || !r2 && g;
-      }, O = function(t2, e2) {
-        if (S(t2))
-          return t2.clone();
-        var n2 = "object" == typeof e2 ? e2 : {};
-        return n2.date = t2, n2.args = arguments, new _(n2);
-      }, b = v;
-      b.l = w, b.i = S, b.w = function(t2, e2) {
-        return O(t2, { locale: e2.$L, utc: e2.$u, x: e2.$x, $offset: e2.$offset });
-      };
-      var _ = function() {
-        function M2(t2) {
-          this.$L = w(t2.locale, null, true), this.parse(t2), this.$x = this.$x || t2.x || {}, this[p] = true;
-        }
-        var m2 = M2.prototype;
-        return m2.parse = function(t2) {
-          this.$d = function(t3) {
-            var e2 = t3.date, n2 = t3.utc;
-            if (null === e2)
-              return /* @__PURE__ */ new Date(NaN);
-            if (b.u(e2))
-              return /* @__PURE__ */ new Date();
-            if (e2 instanceof Date)
-              return new Date(e2);
-            if ("string" == typeof e2 && !/Z$/i.test(e2)) {
-              var r2 = e2.match($);
-              if (r2) {
-                var i2 = r2[2] - 1 || 0, s2 = (r2[7] || "0").substring(0, 3);
-                return n2 ? new Date(Date.UTC(r2[1], i2, r2[3] || 1, r2[4] || 0, r2[5] || 0, r2[6] || 0, s2)) : new Date(r2[1], i2, r2[3] || 1, r2[4] || 0, r2[5] || 0, r2[6] || 0, s2);
-              }
-            }
-            return new Date(e2);
-          }(t2), this.init();
-        }, m2.init = function() {
-          var t2 = this.$d;
-          this.$y = t2.getFullYear(), this.$M = t2.getMonth(), this.$D = t2.getDate(), this.$W = t2.getDay(), this.$H = t2.getHours(), this.$m = t2.getMinutes(), this.$s = t2.getSeconds(), this.$ms = t2.getMilliseconds();
-        }, m2.$utils = function() {
-          return b;
-        }, m2.isValid = function() {
-          return !(this.$d.toString() === l);
-        }, m2.isSame = function(t2, e2) {
-          var n2 = O(t2);
-          return this.startOf(e2) <= n2 && n2 <= this.endOf(e2);
-        }, m2.isAfter = function(t2, e2) {
-          return O(t2) < this.startOf(e2);
-        }, m2.isBefore = function(t2, e2) {
-          return this.endOf(e2) < O(t2);
-        }, m2.$g = function(t2, e2, n2) {
-          return b.u(t2) ? this[e2] : this.set(n2, t2);
-        }, m2.unix = function() {
-          return Math.floor(this.valueOf() / 1e3);
-        }, m2.valueOf = function() {
-          return this.$d.getTime();
-        }, m2.startOf = function(t2, e2) {
-          var n2 = this, r2 = !!b.u(e2) || e2, f2 = b.p(t2), l2 = function(t3, e3) {
-            var i2 = b.w(n2.$u ? Date.UTC(n2.$y, e3, t3) : new Date(n2.$y, e3, t3), n2);
-            return r2 ? i2 : i2.endOf(a);
-          }, $2 = function(t3, e3) {
-            return b.w(n2.toDate()[t3].apply(n2.toDate("s"), (r2 ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(e3)), n2);
-          }, y2 = this.$W, M3 = this.$M, m3 = this.$D, v2 = "set" + (this.$u ? "UTC" : "");
-          switch (f2) {
-            case h2:
-              return r2 ? l2(1, 0) : l2(31, 11);
-            case c:
-              return r2 ? l2(1, M3) : l2(0, M3 + 1);
-            case o:
-              var g2 = this.$locale().weekStart || 0, D2 = (y2 < g2 ? y2 + 7 : y2) - g2;
-              return l2(r2 ? m3 - D2 : m3 + (6 - D2), M3);
-            case a:
-            case d:
-              return $2(v2 + "Hours", 0);
-            case u:
-              return $2(v2 + "Minutes", 1);
-            case s:
-              return $2(v2 + "Seconds", 2);
-            case i:
-              return $2(v2 + "Milliseconds", 3);
-            default:
-              return this.clone();
-          }
-        }, m2.endOf = function(t2) {
-          return this.startOf(t2, false);
-        }, m2.$set = function(t2, e2) {
-          var n2, o2 = b.p(t2), f2 = "set" + (this.$u ? "UTC" : ""), l2 = (n2 = {}, n2[a] = f2 + "Date", n2[d] = f2 + "Date", n2[c] = f2 + "Month", n2[h2] = f2 + "FullYear", n2[u] = f2 + "Hours", n2[s] = f2 + "Minutes", n2[i] = f2 + "Seconds", n2[r] = f2 + "Milliseconds", n2)[o2], $2 = o2 === a ? this.$D + (e2 - this.$W) : e2;
-          if (o2 === c || o2 === h2) {
-            var y2 = this.clone().set(d, 1);
-            y2.$d[l2]($2), y2.init(), this.$d = y2.set(d, Math.min(this.$D, y2.daysInMonth())).$d;
-          } else
-            l2 && this.$d[l2]($2);
-          return this.init(), this;
-        }, m2.set = function(t2, e2) {
-          return this.clone().$set(t2, e2);
-        }, m2.get = function(t2) {
-          return this[b.p(t2)]();
-        }, m2.add = function(r2, f2) {
-          var d2, l2 = this;
-          r2 = Number(r2);
-          var $2 = b.p(f2), y2 = function(t2) {
-            var e2 = O(l2);
-            return b.w(e2.date(e2.date() + Math.round(t2 * r2)), l2);
-          };
-          if ($2 === c)
-            return this.set(c, this.$M + r2);
-          if ($2 === h2)
-            return this.set(h2, this.$y + r2);
-          if ($2 === a)
-            return y2(1);
-          if ($2 === o)
-            return y2(7);
-          var M3 = (d2 = {}, d2[s] = e, d2[u] = n, d2[i] = t, d2)[$2] || 1, m3 = this.$d.getTime() + r2 * M3;
-          return b.w(m3, this);
-        }, m2.subtract = function(t2, e2) {
-          return this.add(-1 * t2, e2);
-        }, m2.format = function(t2) {
-          var e2 = this, n2 = this.$locale();
-          if (!this.isValid())
-            return n2.invalidDate || l;
-          var r2 = t2 || "YYYY-MM-DDTHH:mm:ssZ", i2 = b.z(this), s2 = this.$H, u2 = this.$m, a2 = this.$M, o2 = n2.weekdays, c2 = n2.months, f2 = n2.meridiem, h3 = function(t3, n3, i3, s3) {
-            return t3 && (t3[n3] || t3(e2, r2)) || i3[n3].slice(0, s3);
-          }, d2 = function(t3) {
-            return b.s(s2 % 12 || 12, t3, "0");
-          }, $2 = f2 || function(t3, e3, n3) {
-            var r3 = t3 < 12 ? "AM" : "PM";
-            return n3 ? r3.toLowerCase() : r3;
-          };
-          return r2.replace(y, function(t3, r3) {
-            return r3 || function(t4) {
-              switch (t4) {
-                case "YY":
-                  return String(e2.$y).slice(-2);
-                case "YYYY":
-                  return b.s(e2.$y, 4, "0");
-                case "M":
-                  return a2 + 1;
-                case "MM":
-                  return b.s(a2 + 1, 2, "0");
-                case "MMM":
-                  return h3(n2.monthsShort, a2, c2, 3);
-                case "MMMM":
-                  return h3(c2, a2);
-                case "D":
-                  return e2.$D;
-                case "DD":
-                  return b.s(e2.$D, 2, "0");
-                case "d":
-                  return String(e2.$W);
-                case "dd":
-                  return h3(n2.weekdaysMin, e2.$W, o2, 2);
-                case "ddd":
-                  return h3(n2.weekdaysShort, e2.$W, o2, 3);
-                case "dddd":
-                  return o2[e2.$W];
-                case "H":
-                  return String(s2);
-                case "HH":
-                  return b.s(s2, 2, "0");
-                case "h":
-                  return d2(1);
-                case "hh":
-                  return d2(2);
-                case "a":
-                  return $2(s2, u2, true);
-                case "A":
-                  return $2(s2, u2, false);
-                case "m":
-                  return String(u2);
-                case "mm":
-                  return b.s(u2, 2, "0");
-                case "s":
-                  return String(e2.$s);
-                case "ss":
-                  return b.s(e2.$s, 2, "0");
-                case "SSS":
-                  return b.s(e2.$ms, 3, "0");
-                case "Z":
-                  return i2;
-              }
-              return null;
-            }(t3) || i2.replace(":", "");
-          });
-        }, m2.utcOffset = function() {
-          return 15 * -Math.round(this.$d.getTimezoneOffset() / 15);
-        }, m2.diff = function(r2, d2, l2) {
-          var $2, y2 = this, M3 = b.p(d2), m3 = O(r2), v2 = (m3.utcOffset() - this.utcOffset()) * e, g2 = this - m3, D2 = function() {
-            return b.m(y2, m3);
-          };
-          switch (M3) {
-            case h2:
-              $2 = D2() / 12;
-              break;
-            case c:
-              $2 = D2();
-              break;
-            case f:
-              $2 = D2() / 3;
-              break;
-            case o:
-              $2 = (g2 - v2) / 6048e5;
-              break;
-            case a:
-              $2 = (g2 - v2) / 864e5;
-              break;
-            case u:
-              $2 = g2 / n;
-              break;
-            case s:
-              $2 = g2 / e;
-              break;
-            case i:
-              $2 = g2 / t;
-              break;
-            default:
-              $2 = g2;
-          }
-          return l2 ? $2 : b.a($2);
-        }, m2.daysInMonth = function() {
-          return this.endOf(c).$D;
-        }, m2.$locale = function() {
-          return D[this.$L];
-        }, m2.locale = function(t2, e2) {
-          if (!t2)
-            return this.$L;
-          var n2 = this.clone(), r2 = w(t2, e2, true);
-          return r2 && (n2.$L = r2), n2;
-        }, m2.clone = function() {
-          return b.w(this.$d, this);
-        }, m2.toDate = function() {
-          return new Date(this.valueOf());
-        }, m2.toJSON = function() {
-          return this.isValid() ? this.toISOString() : null;
-        }, m2.toISOString = function() {
-          return this.$d.toISOString();
-        }, m2.toString = function() {
-          return this.$d.toUTCString();
-        }, M2;
-      }(), k = _.prototype;
-      return O.prototype = k, [["$ms", r], ["$s", i], ["$m", s], ["$H", u], ["$W", a], ["$M", c], ["$y", h2], ["$D", d]].forEach(function(t2) {
-        k[t2[1]] = function(e2) {
-          return this.$g(e2, t2[0], t2[1]);
-        };
-      }), O.extend = function(t2, e2) {
-        return t2.$i || (t2(e2, _, O), t2.$i = true), O;
-      }, O.locale = w, O.isDayjs = S, O.unix = function(t2) {
-        return O(1e3 * t2);
-      }, O.en = D[g], O.Ls = D, O.p = {}, O;
-    });
-  })(dayjs_min);
-  var dayjs_minExports = dayjs_min.exports;
-  const dayjs = /* @__PURE__ */ getDefaultExportFromCjs(dayjs_minExports);
   const transformExcelInfoData$1 = (data) => {
     return (data == null ? void 0 : data.map((item) => {
       let time;
@@ -5104,10 +5331,10 @@
       });
     };
     const download = () => {
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, userOptions.value.shareInfoUserSee);
     };
     const downloadExcel = () => {
-      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`, transformExcelInfoData$1(userOptions.value.shareInfo));
+      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}.xlsx`, transformExcelInfoData$1(userOptions.value.shareInfo));
     };
     return {
       userOptions,
@@ -5605,10 +5832,10 @@
       });
     };
     const download = () => {
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, userOptions.value.shareInfoUserSee);
     };
     const downloadExcel = () => {
-      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`, transformExcelInfoData(userOptions.value.shareInfo));
+      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}.xlsx`, transformExcelInfoData(userOptions.value.shareInfo));
     };
     return {
       userOptions,
@@ -5829,7 +6056,7 @@
     };
     const download = (type = CopyValueEnum.shareLink) => {
       if (type === CopyValueEnum.shareLink) {
-        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}`, userOptions.value.shareInfoUserSee);
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, userOptions.value.shareInfoUserSee);
       }
     };
     const downloadExcel = (type = CopyValueEnum.shareLink) => {
@@ -6036,7 +6263,7 @@
     }
   });
   const TDesign = (app) => {
-    app.use(tdesignVueNext.Button).use(tdesignVueNext.Drawer).use(tdesignVueNext.Radio).use(tdesignVueNext.Space).use(tdesignVueNext.RadioGroup).use(tdesignVueNext.RadioButton).use(tdesignVueNext.Textarea).use(tdesignVueNext.InputNumber).use(tdesignVueNext.Progress).use(tdesignVueNext.Checkbox).use(tdesignVueNext.Tooltip).use(tdesignVueNext.Collapse).use(tdesignVueNext.CollapsePanel).use(tdesignVueNext.Input).use(tdesignVueNext.Table).use(tdesignVueNext.Select).use(tdesignVueNext.Option);
+    app.use(tdesignVueNext.Button).use(tdesignVueNext.Drawer).use(tdesignVueNext.Radio).use(tdesignVueNext.Space).use(tdesignVueNext.RadioGroup).use(tdesignVueNext.RadioButton).use(tdesignVueNext.Textarea).use(tdesignVueNext.InputNumber).use(tdesignVueNext.Progress).use(tdesignVueNext.Checkbox).use(tdesignVueNext.Tooltip).use(tdesignVueNext.Collapse).use(tdesignVueNext.CollapsePanel).use(tdesignVueNext.Input).use(tdesignVueNext.Table).use(tdesignVueNext.Select).use(tdesignVueNext.Option).use(tdesignVueNext.Form).use(tdesignVueNext.FormItem).use(tdesignVueNext.Switch);
   };
   const Mount = () => {
     const app = document.createElement("div");

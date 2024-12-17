@@ -28,14 +28,14 @@ const transformExcelInfoData:TransformExcelInfoData = (data) => {
     }
     return data?.map(item => {
         return  {
-            "文件名称":item?.fileName ?? "",
-            "分享链接":item?.share_url ?? "",
-            "提取码":item?.receive_code ?? "",
+            "文件名称":item.fileName ?? "",
+            "分享链接":item.share_url ?? "",
+            "提取码":item.receive_code ?? "",
             "有效期":timeText[item.share_duration],
-            "分享链接自动填充访问码": item?.auto_fill_recvcode*1 === 1 ? '开启' : '关闭',
-            "接收次数":item?.receive_user_limit ? item.receive_user_limit : '不限制',
-            "允许免登录下载":   item?.skip_login * 1 === 1 ? '开启' : '关闭',
-            "免登录下载的总流量":item?.skip_login_down_flow_limit ? Math.round(item?.skip_login_down_flow_limit / 1024) + 'KB' :  '不限制'
+            "分享链接自动填充访问码": Number(item.auto_fill_recvcode) === 1 ? '开启' : '关闭',
+            "接收次数":item.receive_user_limit ? item.receive_user_limit : '不限制',
+            "允许免登录下载":   Number(item.skip_login) === 1 ? '开启' : '关闭',
+            "免登录下载的总流量":Number(item.skip_login_down_flow_limit) ? Math.round(Number(item.skip_login_down_flow_limit) / 1024) + 'KB' :  '不限制'
 
         }
     }) ?? []
@@ -64,7 +64,7 @@ export const use115Cloud:Use115Cloud = () => {
             [ExpireTimeEnum.fifteen]:'15',
             [ExpireTimeEnum.forever]:'永久',
         }
-      return `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.receive_code}分享链接自动填充访问码:${info.auto_fill_recvcode*1 === 1 ? '开启' : '关闭'} 接收次数:${info.receive_user_limit ? info.receive_user_limit : '不限制'} 允许免登录下载:${info.skip_login * 1 === 1 ? '开启' : '关闭'} 免登录下载的总流量:${info.skip_login_down_flow_limit ? Math.round(info.skip_login_down_flow_limit / 1024) + 'KB' :  '不限制'} 分享有效时间: ${timeText[info.share_duration]}`;
+      return `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.receive_code}分享链接自动填充访问码:${Number(info.auto_fill_recvcode)=== 1 ? '开启' : '关闭'} 接收次数:${info.receive_user_limit ? info.receive_user_limit : '不限制'} 允许免登录下载:${Number(info.skip_login) === 1 ? '开启' : '关闭'} 免登录下载的总流量:${Number(info.skip_login_down_flow_limit) ? Math.round(Number(info.skip_login_down_flow_limit) / 1024) + 'KB' :  '不限制'} 分享有效时间: ${timeText[info.share_duration]}`;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
         const iframe= document.querySelector('iframe');//获取iframe
@@ -104,6 +104,7 @@ export const use115Cloud:Use115Cloud = () => {
                 data:formData,
                 onload:({response}) => {
                     const result:ShareReturnInfoTypes = JSON.parse(response);
+                    //@ts-ignore
                     let tempData:ShareInfoTypes = {
                         ...(result.data || {}),
                         fileName:fileInfo.fileName,

@@ -58,7 +58,7 @@
             </t-switch>
           </t-form-item>
           <t-form-item label="接收次数" name="receiveUserLimit">
-            <t-input-number :auto-width="true" v-model="formDataInput.receiveUserLimit" suffix="个" :min="1"  placeholder="默认不限制" min="1"/>
+            <t-input-number :auto-width="true" v-model="formDataInput.receiveUserLimit" suffix="个" :min="1"  placeholder="默认不限制" />
           </t-form-item>
           <t-form-item label="允许免登录下载(非会员不可开启)" name="skipLogin">
             <t-switch v-model="formDataInput.skipLogin" size="large" :customValue="[1,0]">
@@ -67,7 +67,7 @@
           </t-form-item>
           <template v-if="formDataInput.skipLogin === 1">
             <t-form-item label="允许免登录下载的总流量" name="skipLoginDownFlowLimit">
-              <t-input-number :auto-width="true" v-model="formDataInput.skipLoginDownFlowLimit" suffix="KB" :min="1" step="1" placeholder="默认不限制" min="1"/>
+              <t-input-number :auto-width="true" v-model="formDataInput.skipLoginDownFlowLimit" suffix="KB" :min="1" step="1" placeholder="默认不限制"/>
             </t-form-item>
           </template>
 
