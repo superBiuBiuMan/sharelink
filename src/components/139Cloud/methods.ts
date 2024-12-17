@@ -20,6 +20,7 @@ import {ref} from "vue";
 import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile,} from "../../utils";
 import axios from "axios";
 import {cloudInfoStore} from "../../store";
+import dayjs from "dayjs";
 const transformExcelInfoData:TransformExcelInfoData = (data) => {
     return data?.map(item => {
         let time;
@@ -181,10 +182,10 @@ export const use139Cloud:Use139Cloud = () => {
         })
     }
     const download:Download = () => {
-        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}` ,userOptions.value.shareInfoUserSee)
     }
     const downloadExcel:DownloadExcel = () => {
-        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`,transformExcelInfoData(userOptions.value.shareResultInfoList))
+        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}.xlsx`,transformExcelInfoData(userOptions.value.shareResultInfoList))
     }
     return {
         init,

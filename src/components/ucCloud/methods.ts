@@ -17,6 +17,7 @@ import {ref} from "vue";
 import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile, generateRandomString} from "../../utils";
 import {GM_xmlhttpRequest} from "$";
 import {cloudInfoStore} from "../../store";
+import dayjs from "dayjs";
 
 /**
  * 获取task_id
@@ -293,10 +294,10 @@ export const useUcCloud:UseUcCloud = () => {
         })
     }
     const download:Download = () => {
-        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}` ,userOptions.value.shareInfoUserSee)
     }
     const downloadExcel:DownloadExcel = () => {
-        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`,transformExcelInfoData(userOptions.value.shareInfo))
+        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}.xlsx`,transformExcelInfoData(userOptions.value.shareInfo))
     }
     return {
         userOptions,

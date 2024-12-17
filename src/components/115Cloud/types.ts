@@ -1,7 +1,10 @@
 import {Ref} from "vue";
 export enum ExpireTimeEnum {
     oneDay=1,//1天
+    threeDay=3,
+    fiveDay=5,
     sevenDay=7,
+    fifteen=15,
     forever=-1,//永久
 }
 

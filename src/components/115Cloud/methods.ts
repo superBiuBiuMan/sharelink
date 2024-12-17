@@ -9,7 +9,7 @@ import {
     CopyValue, Download, Use115Cloud,TransformExcelInfoData
 } from "./types";
 import { MessagePlugin } from 'tdesign-vue-next';
-
+import dayjs  from "dayjs";
 import { ref} from "vue";
 import {GM_xmlhttpRequest, unsafeWindow} from "$";
 import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile, generateRandomString} from "../../utils";
@@ -120,10 +120,10 @@ export const use115Cloud:Use115Cloud = () => {
         })
     }
     const download:Download = () => {
-        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,shareInfoUserSee.value)
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}` ,shareInfoUserSee.value)
     }
     const downloadExcel:DownloadExcel = () => {
-        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`,transformExcelInfoData(shareInfo.value))
+        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}.xlsx`,transformExcelInfoData(shareInfo.value))
     }
     return {
         shareDelay,

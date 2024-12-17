@@ -21,6 +21,7 @@ import {proxy} from "ajax-hook";
 import axios from "axios";
 import {FileTypeEnum} from "../../modules/lanzouCloud/listModule/types";
 import {cloudInfoStore} from "../../store";
+import dayjs from "dayjs";
 const transformExcelInfoData:TransformExcelInfoData = (data) => {
     return data?.map(item => {
         return  {
@@ -172,10 +173,10 @@ export const uselanzouCloud:UselanzouCloud = () => {
         })
     }
     const download:Download = () => {
-        DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee)
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}` ,userOptions.value.shareInfoUserSee)
     }
     const downloadExcel:DownloadExcel = () => {
-        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享${Date.now()}.xlsx`,transformExcelInfoData(userOptions.value.shareResultInfoList))
+        exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}.xlsx`,transformExcelInfoData(userOptions.value.shareResultInfoList))
     }
     return {
         init,

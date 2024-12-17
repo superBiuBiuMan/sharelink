@@ -20,6 +20,7 @@ import {
 } from "../../utils";
 import axios from "axios";
 import {cloudInfoStore} from "../../store";
+import dayjs from "dayjs";
 
 const getSelectInfoList = () => {
     const reactDOM = document.querySelector('#appRoot > div > div:nth-of-type(2)')
@@ -91,7 +92,7 @@ export const useOnedriveCloud:UseOnedriveCloud = () => {
     }
     const download:Download = (type= CopyValueEnum.shareLink) => {
         if(type === CopyValueEnum.shareLink) {
-            DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee);
+            DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}` ,userOptions.value.shareInfoUserSee);
         }
 
     }

@@ -9,7 +9,7 @@ import {
     RadioButton,
     RadioGroup, Select,
     Space, Table,
-    Textarea, Tooltip,Option
+    Textarea, Tooltip,Option,Form,FormItem,Switch
 } from "tdesign-vue-next";
 
 export default (app:App) => {
@@ -31,4 +31,7 @@ export default (app:App) => {
     .use(Table)
     .use(Select)
     .use(Option)
+    .use(Form)
+    .use(FormItem)
+    .use(Switch)
 }

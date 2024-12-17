@@ -31,6 +31,7 @@ import {
 } from "../../utils";
 import axios from "axios";
 import {cloudInfoStore} from "../../store";
+import dayjs from "dayjs";
 
 const transformExcelInfoData:TransformExcelInfoData = (data) => {
     return data?.map(item => {
@@ -289,10 +290,10 @@ export const use123Cloud:Use123Cloud = () => {
     }
     const download:Download = (type= CopyValueEnum.shareLink) => {
         if(type === CopyValueEnum.shareLink) {
-            DownloadTxt(`${cloudInfoStore.cloudName}批量分享${Date.now()}` ,userOptions.value.shareInfoUserSee);
+            DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}` ,userOptions.value.shareInfoUserSee);
         }
         else if(type === CopyValueEnum.extraLink){
-            DownloadTxt(`${cloudInfoStore.cloudName}直链地址${Date.now()}` ,userOptions.value.extraLinkUserSee);
+            DownloadTxt(`${cloudInfoStore.cloudName}直链地址-${dayjs().format('YYYY-MM-DD HH:mm:ss')}` ,userOptions.value.extraLinkUserSee);
         }
 
     }
