@@ -17,6 +17,13 @@ export interface ShareReturnInfoTypes {
         share_url?:string,//分享链接,
         share_ex_duration?:string,//分享有效期
         receive_code?:string,//提取码
+        share_code?:string;//分享文件的唯一标识
+
+        share_duration:ExpireTimeEnum,//分享时间
+        auto_fill_recvcode?:string;//分享链接自动填充访问码-传入0则关闭,1则开启
+        receive_user_limit?:string;////接收次数-不传则不限制,传入数字则限制
+        skip_login?:string;////允许免登录下载 传入0关闭 1开启,
+        skip_login_down_flow_limit?:string;//免登录下载限制 - 大小  * 1024 B 不传则不限制
     }
     error:string,//错误信息,为空则成功,否则返回失败信息
     state:boolean,// 成功返回true 失败返回false
@@ -39,7 +46,7 @@ export type HandleTransformFormat = (info:ShareInfoTypes) => string;
 export type DownloadExcel = () => void;
 export type TransformExcelInfoData = (data:Array<ShareInfoTypes>) => Array<{ [key in string]: any }>;
 export type Use115Cloud = () => {
-    expireTime:Ref<ExpireTimeEnum>,//过期时间
+    formDataInput:Ref<any>
     shareDelay:Ref<number>,//分享延迟时间
     shareInfo:Ref<Array<ShareInfoTypes>>,//分享展示信息(存储使用,不展示)
     shareInfoUserSee:Ref<string>,//用户看得懂的分享信息

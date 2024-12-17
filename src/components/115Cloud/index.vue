@@ -29,13 +29,13 @@
       <t-collapse-panel header="配置项">
         <t-form
             ref="form"
-            :data="formData"
+            :data="formDataInput"
             :colon="true"
             scroll-to-first-error="smooth"
             labelAlign="top"
         >
           <t-form-item label="有效期" name="time">
-            <t-radio-group  v-model="formData.time">
+            <t-radio-group  v-model="formDataInput.time">
               <t-radio-button :value="ExpireTimeEnum.oneDay">1天</t-radio-button>
               <t-radio-button :value="ExpireTimeEnum.threeDay">3天</t-radio-button>
               <t-radio-button :value="ExpireTimeEnum.fiveDay">5天</t-radio-button>
@@ -46,24 +46,24 @@
           </t-form-item>
 
           <t-form-item label="访问码" name="passcode">
-            <t-input v-model="formData.passcode" placeholder="请输入自定义提取码(只允许输入字母和数字)" maxlength="4"/>
+            <t-input v-model="formDataInput.passcode" placeholder="请输入自定义提取码(只允许输入字母和数字)" maxlength="4"/>
           </t-form-item>
           <t-form-item label="分享链接自动填充访问码" name="autoFillRecvcode">
-            <t-switch v-model="formData.autoFillRecvcode" size="large" :customValue="[1,0]">
+            <t-switch v-model="formDataInput.autoFillRecvcode" size="large" :customValue="[1,0]">
               <template #label="slotProps">{{ slotProps.value ? '开' : '关' }}</template>
             </t-switch>
           </t-form-item>
           <t-form-item label="接收次数" name="receiveUserLimit">
-            <t-input-number :auto-width="true" v-model="formData.receiveUserLimit" suffix="个" :min="1"  placeholder="默认不限制" min="1"/>
+            <t-input-number :auto-width="true" v-model="formDataInput.receiveUserLimit" suffix="个" :min="1"  placeholder="默认不限制" min="1"/>
           </t-form-item>
           <t-form-item label="允许免登录下载" name="skipLogin">
-            <t-switch v-model="formData.skipLogin" size="large" :customValue="[1,0]">
+            <t-switch v-model="formDataInput.skipLogin" size="large" :customValue="[1,0]">
               <template #label="slotProps">{{ slotProps.value ? '开' : '关' }}</template>
             </t-switch>
           </t-form-item>
-          <template v-if="formData.skipLogin === 1">
+          <template v-if="formDataInput.skipLogin === 1">
             <t-form-item label="允许免登录下载的总流量" name="skipLoginDownFlowLimit">
-              <t-input-number :auto-width="true" v-model="formData.skipLoginDownFlowLimit" suffix="KB" :min="1" step="1" placeholder="默认不限制" min="1"/>
+              <t-input-number :auto-width="true" v-model="formDataInput.skipLoginDownFlowLimit" suffix="KB" :min="1" step="1" placeholder="默认不限制" min="1"/>
             </t-form-item>
           </template>
 
@@ -119,26 +119,17 @@ import { use115Cloud } from "./methods";
 import {ref} from "vue";
 import {ExpireTimeEnum} from "./types";
 const {
-        expireTime,
         shareDelay,
         isSharing,
         shareInfoUserSee,
         shareProgress,
+  formDataInput,
         handleBatchOperation,
         handleEnd,
         copyValue,
         download,
         downloadExcel,
       } = use115Cloud();
-const formData = ref<any>({
-  time:ExpireTimeEnum.forever,
-  passcode:"",
-  autoFillRecvcode:1,//是否自动填充访问码
-  receiveUserLimit:null,//接收次数
-  skipLogin:1,//是否允许免登录下载
-  skipLoginDownFlowLimit:null,//允许免登录下载的总流量
-})
-
 defineExpose({
   handleEnd,
 })

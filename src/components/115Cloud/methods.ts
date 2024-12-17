@@ -29,14 +29,39 @@ const transformExcelInfoData:TransformExcelInfoData = (data) => {
 }
 export const use115Cloud:Use115Cloud = () => {
     const shareDelay = ref<number>(500);
-    const expireTime = ref<ExpireTimeEnum>(ExpireTimeEnum.forever);
+    const formDataInput = ref({
+        time:ExpireTimeEnum.forever,
+        passcode:"",
+        autoFillRecvcode:1,//是否自动填充访问码
+        receiveUserLimit:null,//接收次数
+        skipLogin:1,//是否允许免登录下载
+        skipLoginDownFlowLimit:null,//允许免登录下载的总流量
+    })
     const shareInfo = ref<Array<ShareInfoTypes>>([]);
     const shareInfoUserSee = ref<string>('');
     const shareProgress = ref<number>(0);
     const selectFileInfoList = ref<Array<SelectFileInfoList>>([]);
     const isSharing = ref<boolean>(false);
     const handleTransformFormat:HandleTransformFormat = (info) => {
-      return `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.receive_code} 分享有效时间: ${info.share_ex_duration}`;
+        console.log('分享的信息',info)
+        const timeText = {
+            [ExpireTimeEnum.oneDay]:'1天',
+            [ExpireTimeEnum.threeDay]:'3天',
+            [ExpireTimeEnum.fiveDay]:'5天',
+            [ExpireTimeEnum.sevenDay]:'7天',
+            [ExpireTimeEnum.fifteen]:'15',
+            [ExpireTimeEnum.forever]:'永久',
+        }
+      return `
+      文件名称: ${info.fileName}
+      分享链接:${info.share_url}
+      提取码:${info.receive_code}
+      分享链接自动填充访问码:${info.auto_fill_recvcode*1 === 1 ? '开启' : '关闭'}
+      接收次数:${info.receive_user_limit ? info.receive_user_limit : '不限制'}
+      允许免登录下载:${info.skip_login * 1 === 1 ? '开启' : '关闭'},
+      免登录下载的总流量:${info.skip_login_down_flow_limit ? Math.round(info.skip_login_down_flow_limit / 1024) + 'KB' :  '不限制'}
+      分享有效时间: ${timeText[info.share_duration]}
+      `;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
         const iframe= document.querySelector('iframe');//获取iframe
@@ -80,12 +105,48 @@ export const use115Cloud:Use115Cloud = () => {
                         ...(result.data || {}),
                         fileName:fileInfo.fileName,
                     }
-                    //填充返回结果
-                    shareInfo.value.push(tempData)
-                    //生成用户观看数据
-                    shareInfoUserSee.value+= (handleTransformFormat(tempData) + '\n')
-                    //进度条
-                    shareProgress.value = Math.floor((shareInfo.value.length / selectFileInfoList.value.length) * 100 );
+                    const formDataUpdate = new FormData();
+                    const info:any = {
+                        auto_fill_recvcode:formDataInput.value.autoFillRecvcode,//分享链接自动填充访问码-传入0则关闭,1则开启
+                        receive_user_limit:formDataInput.value.receiveUserLimit ? formDataInput.value.receiveUserLimit : '',//接收次数-不传则不限制,传入数字则限制
+                        skip_login:formDataInput.value.skipLogin,//允许免登录下载 传入0关闭 1开启,
+                        skip_login_down_flow_limit:formDataInput.value.skipLoginDownFlowLimit ? formDataInput.value.skipLoginDownFlowLimit * 1024 : '',//免登录下载限制 - 大小  * 1024 B 不传则不限制
+                        share_duration:formDataInput.value.time,
+                    }
+                    formDataUpdate.append('share_code',tempData.share_code as string);
+                    formDataUpdate.append('auto_fill_recvcode',info.auto_fill_recvcode);
+                    formDataUpdate.append('receive_user_limit',info.receive_user_limit);
+                    formDataUpdate.append('skip_login',info.skip_login );
+                    formDataUpdate.append('skip_login_down_flow_limit', info.skip_login_down_flow_limit);
+                    if(formDataInput.value.passcode){
+                        formDataUpdate.append('receive_code',formDataInput.value.passcode);
+                        formDataUpdate.append('is_custom_code','1');
+                        tempData.receive_code = formDataInput.value.passcode;
+                    }
+                    //开始更新结果
+                    GM_xmlhttpRequest({
+                        method:'post',
+                        url:'https://webapi.115.com/share/updateshare',
+                        headers:{
+                            'Accept':'application/json, text/javascript, */*; q=0.01',
+                        },
+                        data:formDataUpdate,
+                        onload:({response:responseTwice}) => {
+                            tempData = {
+                                ...tempData,
+                                ...info,
+                            }
+                            //填充返回结果
+                            shareInfo.value.push(tempData)
+                            //生成用户观看数据
+                            shareInfoUserSee.value+= (handleTransformFormat(tempData) + '\n')
+                            //进度条
+                            shareProgress.value = Math.floor((shareInfo.value.length / selectFileInfoList.value.length) * 100 );
+                        },
+                        onerror:(res) => {
+                            console.error('二次更新失败',res)
+                        }
+                    })
                 },
                 onerror:(res) => {
                     console.error('失败',res)
@@ -127,7 +188,7 @@ export const use115Cloud:Use115Cloud = () => {
     }
     return {
         shareDelay,
-        expireTime,
+        formDataInput,
         shareInfo,
         selectFileInfoList,
         shareInfoUserSee,
