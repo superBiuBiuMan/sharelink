@@ -58,7 +58,7 @@ export const cloudUrlInfo:CloudUrlInfoTypes = {
     cloudQuark:['https://pan.quark.cn/'],
     cloud139:['https://yun.139.com/'],
     cloudXun:['https://pan.xunlei.com/'],
-    cloudAli:['https://www.aliyundrive.com/'],
+    cloudAli:['https://www.aliyundrive.com/','https://www.alipan.com/'],
     cloudUC:['https://drive.uc.cn/'],
     cloudOnedrive:['https://onedrive.live.com/']
 }

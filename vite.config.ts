@@ -26,6 +26,7 @@ export default defineConfig({
                 'https://yun.139.com/*',
                 'https://pan.xunlei.com/*',
                 'https://www.aliyundrive.com/*',
+                'https://www.alipan.com/*',
                 'https://drive.uc.cn/*',
                 //蓝奏云
                 'https://lanzou.com/u',
