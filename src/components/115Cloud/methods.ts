@@ -123,14 +123,18 @@ export const use115Cloud:Use115Cloud = () => {
                     formDataUpdate.append('receive_user_limit',info.receive_user_limit);
                     formDataUpdate.append('share_duration',info.share_duration);
 
+                    //免登录设置
+                    const skipLoginForm = new FormData();
+                    skipLoginForm.append('share_code',tempData.share_code as string)
                     if(info.skip_login * 1 === 1){
                         //开启免登录下载
-                        formDataUpdate.append('skip_login',info.skip_login );
-                        formDataUpdate.append('skip_login_down_flow_limit', info.skip_login_down_flow_limit);
+                        skipLoginForm.append('skip_login',info.skip_login );
+                        skipLoginForm.append('skip_login_down_flow_limit', info.skip_login_down_flow_limit);
                     }else{
                         //关闭免登录下载
-                        formDataUpdate.append('skip_login',info.skip_login );
+                        skipLoginForm.append('skip_login',info.skip_login );
                     }
+
                     if(formDataInput.value.passcode){
                         formDataUpdate.append('receive_code',formDataInput.value.passcode);
                         formDataUpdate.append('is_custom_code','1');
@@ -151,10 +155,25 @@ export const use115Cloud:Use115Cloud = () => {
                             }
                             //填充返回结果
                             shareInfo.value.push(tempData)
-                            //生成用户观看数据
-                            shareInfoUserSee.value+= (handleTransformFormat(tempData) + '\n')
-                            //进度条
-                            shareProgress.value = Math.floor((shareInfo.value.length / selectFileInfoList.value.length) * 100 );
+
+                            //更新免登录下载限制
+                            GM_xmlhttpRequest({
+                                method:'post',
+                                url:'https://webapi.115.com/share/skip_login_down',
+                                headers:{
+                                    'Accept':'application/json, text/javascript, */*; q=0.01',
+                                },
+                                data:skipLoginForm,
+                                onload:({response:responseThree}) => {
+                                    //生成用户观看数据
+                                    shareInfoUserSee.value+= (handleTransformFormat(tempData) + '\n')
+                                    //进度条
+                                    shareProgress.value = Math.floor((shareInfo.value.length / selectFileInfoList.value.length) * 100 );
+                                },
+                                onerror:(res) => {
+                                    console.error('二次更新失败',res)
+                                }
+                            })
                         },
                         onerror:(res) => {
                             console.error('二次更新失败',res)
