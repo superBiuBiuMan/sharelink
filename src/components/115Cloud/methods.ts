@@ -76,6 +76,7 @@ export const use115Cloud:Use115Cloud = () => {
         }
         //开始分享
         isSharing.value = true;
+        shareProgress.value = 0;
         selectFileInfoList.value = [];
         for(let dom of selectDOM){
             const id =( dom.getAttribute(ShareDOMSelect["cloud115"]?.idAttribute?.[0] ?? '') || dom.getAttribute(ShareDOMSelect["cloud115"]?.idAttribute?.[1] ?? '') ) ?? '';

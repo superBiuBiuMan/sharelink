@@ -38,6 +38,10 @@
             scroll-to-first-error="smooth"
             labelAlign="top"
         >
+          <t-form-item label="">
+            <t-tooltip content="分享一次后等待下一次分享的时间(避免请求频率过高)"><span class="cloud139_option_item_title">延迟(毫秒):</span></t-tooltip>
+            <t-input-number v-model="shareDelay" step="100"/>
+          </t-form-item>
           <t-form-item label="有效期" name="time">
             <t-radio-group  v-model="formDataInput.time">
               <t-radio-button :value="ExpireTimeEnum.oneDay">1天</t-radio-button>
