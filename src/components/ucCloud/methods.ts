@@ -131,7 +131,7 @@ const transformExcelInfoData:TransformExcelInfoData = (data) => {
         return  {
             "文件名称":item?.fileName ?? "",
             "分享链接":item?.share_url ?? "",
-            "提取码":item?.passcode ?? "",
+            "提取码":item?.passcode ? item?.passcode  : "无提取码",
             "有效期":time,
             "可下载次数":codeNumber,
             "分享主题":item?.title ?? "",
@@ -197,8 +197,8 @@ export const useUcCloud:UseUcCloud = () => {
             default: codeNumber = '未知';
         }
         return info.title
-            ? `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.passcode ?? "为空"} 有效期: ${time} 可下载次数:${codeNumber} 分享主题:${info.title ?? ''}`
-            : `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.passcode ?? "为空"} 有效期: ${time} 可下载次数:${codeNumber}`;
+            ? `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.passcode ? info.passcode :  "无提取码"} 有效期: ${time} 可下载次数:${codeNumber} 分享主题:${info.title ?? ''}`
+            : `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.passcode ? info.passcode :  "无提取码"} 有效期: ${time} 可下载次数:${codeNumber}`;
     }
     const handleBatchOperation:HandleBatchOperation = async () => {
         const tempDOM = document.querySelector('.file-list');
@@ -239,13 +239,20 @@ export const useUcCloud:UseUcCloud = () => {
         }
         //遍历发送
         for(let fileInfo of userOptions.value.selectFileInfoList){
+            const tempPassCode = fileInfo.passcode;
             const sendData = {
                 expired_type:fileInfo.expireTime,//分享天数
                 dl_limit:fileInfo.extractNumber,//提取次数
-                passcode:fileInfo.passcode,//随机提取码
-                url_type:2,
+                // passcode:fileInfo.passcode,//随机提取码
+                // url_type:2,
+                url_type:1,//无提取码的type
                 title:fileInfo.title,//标题
                 fid_list:[fileInfo.id],//文件id
+            }
+            if(tempPassCode){
+                //@ts-ignore;
+                sendData['passcode'] = tempPassCode;
+                sendData['url_type'] = 2
             }
             const { task_id } = await getTaskId(sendData);
             let tempShareID = await getShareId(task_id);
