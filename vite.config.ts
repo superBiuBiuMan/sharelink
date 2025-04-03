@@ -11,7 +11,7 @@ export default defineConfig({
       userscript: {
         name:'网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)',
         author:'superBiuBiu',
-        version:'2.8.2',
+        version:'2.9.0',
         namespace: 'dreamlove',
           //这里的信息是决定油猴在什么网站规则下运行
         match:

@@ -23,7 +23,11 @@
       <t-button @click="handleBatchOperation" :loading="isSharing">批量分享</t-button>
       <t-button theme="default" @click="copyValue">复制到剪贴板</t-button>
       <t-button theme="default" @click="download">下载分享链接</t-button>
+
       <t-button theme="default" @click="downloadExcel">下载信息为Excel</t-button>
+    </t-space>
+    <t-space>
+      <t-button theme="default" @click="downloadVersion2">下载分享链接(文件名+文件大小+分享链接格式)</t-button>
     </t-space>
     <!--进度条-->
     <div class="cloud115_progress">
@@ -106,6 +110,7 @@ const {
         handleEnd,
         copyValue,
         download,
+        downloadVersion2,
         downloadExcel,
       } = use115Cloud();
 defineExpose({

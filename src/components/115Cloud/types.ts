@@ -31,10 +31,12 @@ export interface ShareReturnInfoTypes {
 
 export type ShareInfoTypes  = ShareReturnInfoTypes['data'] & {
         fileName:string,//文件名
+        fileSize:string,//文件大小
 }
 
 export interface SelectFileInfoList {
     id:string | number,//文件id
+    fileSize:string;//文件大小
     fileName:string,//文件名称
 }
 
@@ -60,5 +62,6 @@ export type Use115Cloud = () => {
     handleEnd:HandleEnd,//终止操作
     copyValue:CopyValue,//复制
     download:Download,//下载
+    downloadVersion2:Download,//下载版本2
     downloadExcel:DownloadExcel
 }

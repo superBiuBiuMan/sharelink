@@ -12,7 +12,7 @@ import { MessagePlugin } from 'tdesign-vue-next';
 import dayjs  from "dayjs";
 import { ref} from "vue";
 import {GM_xmlhttpRequest, unsafeWindow} from "$";
-import {CopyValueToClipBoard, DownloadTxt, exportXlsxFile, generateRandomString} from "../../utils";
+import {CopyValueToClipBoard,bytesToSize, DownloadTxt, exportXlsxFile, generateRandomString} from "../../utils";
 import {ShareDOMSelect} from "../../infoConfig";
 import {cloudInfoStore} from "../../store";
 import {DownloadExcel} from "../ucCloud/types";
@@ -29,6 +29,7 @@ const transformExcelInfoData:TransformExcelInfoData = (data) => {
     return data?.map(item => {
         return  {
             "文件名称":item.fileName ?? "",
+            "文件大小":item.fileSize ?? "",
             "分享链接":item.share_url ?? "",
             "提取码":item.receive_code ?? "",
             "有效期":timeText[item.share_duration],
@@ -36,7 +37,6 @@ const transformExcelInfoData:TransformExcelInfoData = (data) => {
             "接收次数":item.receive_user_limit ? item.receive_user_limit : '不限制',
             "允许免登录下载":   Number(item.skip_login) === 1 ? '开启' : '关闭',
             "免登录下载的总流量":Number(item.skip_login_down_flow_limit) ? Math.round(Number(item.skip_login_down_flow_limit) / 1024) + 'KB' :  '不限制'
-
         }
     }) ?? []
 }
@@ -66,6 +66,16 @@ export const use115Cloud:Use115Cloud = () => {
         }
       return `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.receive_code}分享链接自动填充访问码:${Number(info.auto_fill_recvcode)=== 1 ? '开启' : '关闭'} 接收次数:${info.receive_user_limit ? info.receive_user_limit : '不限制'} 允许免登录下载:${Number(info.skip_login) === 1 ? '开启' : '关闭'} 免登录下载的总流量:${Number(info.skip_login_down_flow_limit) ? Math.round(Number(info.skip_login_down_flow_limit) / 1024) + 'KB' :  '不限制'} 分享有效时间: ${timeText[info.share_duration]}`;
     }
+    const handleTransformFormatVersion2:HandleTransformFormat = (info) => {
+        if(info.receive_code && formDataInput.value.autoFillRecvcode === 1){
+            return `${info.fileName}[${info.fileSize}]$${info.share_url}?password=${info.receive_code}&#`
+        }else if(info.receive_code){
+            return `${info.fileName}[${info.fileSize}]$${info.receive_code}$${info.share_url}`
+        }
+        else{
+            return `${info.fileName}[${info.fileSize}]$${info.share_url}`
+        }
+    }
     const handleBatchOperation:HandleBatchOperation = async () => {
         const iframe= document.querySelector('iframe');//获取iframe
         const iframeWindow = (<HTMLIFrameElement>iframe).contentWindow ?? unsafeWindow;
@@ -83,6 +93,7 @@ export const use115Cloud:Use115Cloud = () => {
             const title = dom.getAttribute('title');
             selectFileInfoList.value.push({
                 id,//存储文件id
+                fileSize:dom.getAttribute('file_size') ? bytesToSize(Number(dom.getAttribute('file_size'))) : 'NA',
                 fileName:title ?? '(!!$$未知名称!!$$)',//文件名称
             })
         }
@@ -109,6 +120,7 @@ export const use115Cloud:Use115Cloud = () => {
                     let tempData:ShareInfoTypes = {
                         ...(result.data || {}),
                         fileName:fileInfo.fileName,
+                        fileSize:fileInfo.fileSize,
                     }
                     const formDataUpdate = new FormData();
                     const info:any = {
@@ -215,6 +227,13 @@ export const use115Cloud:Use115Cloud = () => {
     const download:Download = () => {
         DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}` ,shareInfoUserSee.value)
     }
+    const downloadVersion2:Download = () => {
+        let tempData = "";
+        for (const temp of shareInfo.value) {
+            tempData += handleTransformFormatVersion2(temp as any) + "\n";
+        }
+        DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}` ,tempData)
+    }
     const downloadExcel:DownloadExcel = () => {
         exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format('YYYY-MM-DD HH:mm:ss')}.xlsx`,transformExcelInfoData(shareInfo.value))
     }
@@ -229,6 +248,7 @@ export const use115Cloud:Use115Cloud = () => {
         shareProgress,
 
         handleBatchOperation,
+        downloadVersion2,
         handleTransformFormat,
         downloadExcel,
         handleEnd,

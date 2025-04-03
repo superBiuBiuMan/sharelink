@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)
 // @namespace    dreamlove
-// @version      2.8.1
+// @version      2.9.0
 // @author       superBiuBiu
 // @description  网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘~
 // @iconURL      https://www.google.com/s2/favicons?domain=dreamlove.top
@@ -48,7 +48,7 @@
 // @run-at       document-body
 // ==/UserScript==
 
-(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const i=document.createElement("style");i.textContent=t,document.head.append(i)})(" @keyframes t-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.t-icon{display:inline-block;vertical-align:middle;width:1em;height:1em}.t-icon:before{font-family:unset}.t-icon-loading{animation:t-spin 1s linear infinite}.t-icon{fill:currentColor}.t-icon.t-size-s,i.t-size-s{font-size:14px}.t-icon.t-size-m,i.t-size-m{font-size:16px}.t-icon.t-size-l,i.t-size-l{font-size:18px}.tianyiCloud[data-v-ce767d83]{height:100%;display:flex;flex-direction:column}.tianyiCloud_option[data-v-ce767d83]{display:flex;align-items:center;margin:0 0 20px}.tianyiCloud_option_time[data-v-ce767d83]{margin-left:10px}.tianyiCloud_result[data-v-ce767d83]{flex:1;overflow:auto}.baiduCloud[data-v-cb3cc612]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-cb3cc612]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-cb3cc612]{flex:1;overflow:auto}.baiduCloud[data-v-1c3aed36]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-1c3aed36]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-1c3aed36]{flex:1;overflow:auto}.cloud115[data-v-769b66b8]{height:100%}.cloud123[data-v-f782858b]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-f782858b]{margin:0 0 10px}.cloud123_option_item[data-v-f782858b]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-f782858b]{display:inline-block;width:100px}.cloud123_result[data-v-f782858b]{flex:1;overflow:auto}.lanzouCloud[data-v-98dce44d]{height:100%;display:flex;flex-direction:column}.lanzouCloud_option[data-v-98dce44d]{margin:0 0 10px}.lanzouCloud_option_item[data-v-98dce44d]{display:flex;align-items:center}.lanzouCloud_option_item_title[data-v-98dce44d]{display:inline-block;width:100px}.lanzouCloud_result[data-v-98dce44d]{flex:1;overflow:auto}.quarkCloud[data-v-7ddcaef9]{height:100%;display:flex;flex-direction:column}.quarkCloud_option_item[data-v-7ddcaef9]{display:flex;align-items:center}.quarkCloud_result[data-v-7ddcaef9]{flex:1;overflow:auto}.cloud139[data-v-f1489390]{height:100%;display:flex;flex-direction:column}.cloud139_option[data-v-f1489390]{margin:0 0 10px}.cloud139_option_item[data-v-f1489390]{display:flex;align-items:center}.cloud139_option_item_title[data-v-f1489390]{display:inline-block;width:100px}.cloud139_result[data-v-f1489390]{flex:1;overflow:auto}.xunCloud[data-v-3dbd7c07]{height:100%;display:flex;flex-direction:column}.xunCloud[data-v-3dbd7c07] .t-input--auto-width{min-width:120px}.xunCloud_option_item[data-v-3dbd7c07]{display:flex;align-items:center}.xunCloud_option_item_title[data-v-3dbd7c07]{min-width:70px}.xunCloud_result[data-v-3dbd7c07]{flex:1;overflow:auto}.aliCloud[data-v-3ab6544a]{height:100%;display:flex;flex-direction:column}.aliCloud_option_item[data-v-3ab6544a]{display:flex;align-items:center}.aliCloud_option_item_title[data-v-3ab6544a]{min-width:70px}.aliCloud_result[data-v-3ab6544a]{flex:1;overflow:auto}.ucCloud[data-v-56726208]{height:100%;display:flex;flex-direction:column}.ucCloud[data-v-56726208] .t-input--auto-width{min-width:120px}.ucCloud_option_item[data-v-56726208]{display:flex;align-items:center}.ucCloud_option_item_title[data-v-56726208]{min-width:70px}.ucCloud_result[data-v-56726208]{flex:1;overflow:auto}.cloud123[data-v-3551589d]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-3551589d]{margin:0 0 10px}.cloud123_option_item[data-v-3551589d]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-3551589d]{display:inline-block;width:100px}.cloud123_result[data-v-3551589d]{flex:1;overflow:auto} ");
+(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const i=document.createElement("style");i.textContent=t,document.head.append(i)})(" @keyframes t-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.t-icon{display:inline-block;vertical-align:middle;width:1em;height:1em}.t-icon:before{font-family:unset}.t-icon-loading{animation:t-spin 1s linear infinite}.t-icon{fill:currentColor}.t-icon.t-size-s,i.t-size-s{font-size:14px}.t-icon.t-size-m,i.t-size-m{font-size:16px}.t-icon.t-size-l,i.t-size-l{font-size:18px}.tianyiCloud[data-v-ce767d83]{height:100%;display:flex;flex-direction:column}.tianyiCloud_option[data-v-ce767d83]{display:flex;align-items:center;margin:0 0 20px}.tianyiCloud_option_time[data-v-ce767d83]{margin-left:10px}.tianyiCloud_result[data-v-ce767d83]{flex:1;overflow:auto}.baiduCloud[data-v-cb3cc612]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-cb3cc612]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-cb3cc612]{flex:1;overflow:auto}.baiduCloud[data-v-1c3aed36]{height:100%;display:flex;flex-direction:column}.baiduCloud_option_item[data-v-1c3aed36]:nth-of-type(2){margin:14px 0}.baiduCloud_result[data-v-1c3aed36]{flex:1;overflow:auto}.cloud115[data-v-54beefe3]{height:100%}.cloud123[data-v-f782858b]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-f782858b]{margin:0 0 10px}.cloud123_option_item[data-v-f782858b]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-f782858b]{display:inline-block;width:100px}.cloud123_result[data-v-f782858b]{flex:1;overflow:auto}.lanzouCloud[data-v-98dce44d]{height:100%;display:flex;flex-direction:column}.lanzouCloud_option[data-v-98dce44d]{margin:0 0 10px}.lanzouCloud_option_item[data-v-98dce44d]{display:flex;align-items:center}.lanzouCloud_option_item_title[data-v-98dce44d]{display:inline-block;width:100px}.lanzouCloud_result[data-v-98dce44d]{flex:1;overflow:auto}.quarkCloud[data-v-7ddcaef9]{height:100%;display:flex;flex-direction:column}.quarkCloud_option_item[data-v-7ddcaef9]{display:flex;align-items:center}.quarkCloud_result[data-v-7ddcaef9]{flex:1;overflow:auto}.cloud139[data-v-f1489390]{height:100%;display:flex;flex-direction:column}.cloud139_option[data-v-f1489390]{margin:0 0 10px}.cloud139_option_item[data-v-f1489390]{display:flex;align-items:center}.cloud139_option_item_title[data-v-f1489390]{display:inline-block;width:100px}.cloud139_result[data-v-f1489390]{flex:1;overflow:auto}.xunCloud[data-v-3dbd7c07]{height:100%;display:flex;flex-direction:column}.xunCloud[data-v-3dbd7c07] .t-input--auto-width{min-width:120px}.xunCloud_option_item[data-v-3dbd7c07]{display:flex;align-items:center}.xunCloud_option_item_title[data-v-3dbd7c07]{min-width:70px}.xunCloud_result[data-v-3dbd7c07]{flex:1;overflow:auto}.aliCloud[data-v-3ab6544a]{height:100%;display:flex;flex-direction:column}.aliCloud_option_item[data-v-3ab6544a]{display:flex;align-items:center}.aliCloud_option_item_title[data-v-3ab6544a]{min-width:70px}.aliCloud_result[data-v-3ab6544a]{flex:1;overflow:auto}.ucCloud[data-v-56726208]{height:100%;display:flex;flex-direction:column}.ucCloud[data-v-56726208] .t-input--auto-width{min-width:120px}.ucCloud_option_item[data-v-56726208]{display:flex;align-items:center}.ucCloud_option_item_title[data-v-56726208]{min-width:70px}.ucCloud_result[data-v-56726208]{flex:1;overflow:auto}.cloud123[data-v-3551589d]{height:100%;display:flex;flex-direction:column}.cloud123_option[data-v-3551589d]{margin:0 0 10px}.cloud123_option_item[data-v-3551589d]{display:flex;align-items:center;margin:10px 0}.cloud123_option_item_title[data-v-3551589d]{display:inline-block;width:100px}.cloud123_result[data-v-3551589d]{flex:1;overflow:auto} ");
 
 (function (vue, pinia, XLSX, tdesignVueNext, axios) {
   'use strict';
@@ -2030,6 +2030,7 @@
     return (data == null ? void 0 : data.map((item) => {
       return {
         "文件名称": item.fileName ?? "",
+        "文件大小": item.fileSize ?? "",
         "分享链接": item.share_url ?? "",
         "提取码": item.receive_code ?? "",
         "有效期": timeText[item.share_duration],
@@ -2070,6 +2071,15 @@
       };
       return `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.receive_code}分享链接自动填充访问码:${Number(info.auto_fill_recvcode) === 1 ? "开启" : "关闭"} 接收次数:${info.receive_user_limit ? info.receive_user_limit : "不限制"} 允许免登录下载:${Number(info.skip_login) === 1 ? "开启" : "关闭"} 免登录下载的总流量:${Number(info.skip_login_down_flow_limit) ? Math.round(Number(info.skip_login_down_flow_limit) / 1024) + "KB" : "不限制"} 分享有效时间: ${timeText[info.share_duration]}`;
     };
+    const handleTransformFormatVersion2 = (info) => {
+      if (info.receive_code && formDataInput.value.autoFillRecvcode === 1) {
+        return `${info.fileName}[${info.fileSize}]$${info.share_url}?password=${info.receive_code}&#`;
+      } else if (info.receive_code) {
+        return `${info.fileName}[${info.fileSize}]$${info.receive_code}$${info.share_url}`;
+      } else {
+        return `${info.fileName}[${info.fileSize}]$${info.share_url}`;
+      }
+    };
     const handleBatchOperation = async () => {
       var _a, _b, _c, _d, _e;
       const iframe = document.querySelector("iframe");
@@ -2087,6 +2097,7 @@
         selectFileInfoList.value.push({
           id,
           //存储文件id
+          fileSize: dom.getAttribute("file_size") ? bytesToSize(Number(dom.getAttribute("file_size"))) : "NA",
           fileName: title ?? "(!!$$未知名称!!$$)"
           //文件名称
         });
@@ -2110,7 +2121,8 @@
             const result = JSON.parse(response);
             let tempData = {
               ...result.data || {},
-              fileName: fileInfo.fileName
+              fileName: fileInfo.fileName,
+              fileSize: fileInfo.fileSize
             };
             const formDataUpdate = new FormData();
             const info = {
@@ -2205,6 +2217,13 @@
     const download = () => {
       DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, shareInfoUserSee.value);
     };
+    const downloadVersion2 = () => {
+      let tempData = "";
+      for (const temp of shareInfo.value) {
+        tempData += handleTransformFormatVersion2(temp) + "\n";
+      }
+      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, tempData);
+    };
     const downloadExcel = () => {
       exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}.xlsx`, transformExcelInfoData$7(shareInfo.value));
     };
@@ -2217,6 +2236,7 @@
       isSharing,
       shareProgress,
       handleBatchOperation,
+      downloadVersion2,
       handleTransformFormat,
       downloadExcel,
       handleEnd,
@@ -2240,6 +2260,7 @@
         handleEnd,
         copyValue,
         download,
+        downloadVersion2,
         downloadExcel
       } = use115Cloud();
       __expose({
@@ -2302,6 +2323,20 @@
             ]),
             _: 1
           }),
+          vue.createVNode(_component_t_space, null, {
+            default: vue.withCtx(() => [
+              vue.createVNode(_component_t_button, {
+                theme: "default",
+                onClick: vue.unref(downloadVersion2)
+              }, {
+                default: vue.withCtx(() => _cache[11] || (_cache[11] = [
+                  vue.createTextVNode("下载分享链接(文件名+文件大小+分享链接格式)")
+                ])),
+                _: 1
+              }, 8, ["onClick"])
+            ]),
+            _: 1
+          }),
           vue.createElementVNode("div", _hoisted_2$8, [
             vue.createVNode(_component_t_progress, {
               percentage: vue.unref(shareProgress),
@@ -2323,7 +2358,7 @@
                       vue.createVNode(_component_t_form_item, { label: "" }, {
                         default: vue.withCtx(() => [
                           vue.createVNode(_component_t_tooltip, { content: "分享一次后等待下一次分享的时间(避免请求频率过高)" }, {
-                            default: vue.withCtx(() => _cache[11] || (_cache[11] = [
+                            default: vue.withCtx(() => _cache[12] || (_cache[12] = [
                               vue.createElementVNode("span", { class: "cloud139_option_item_title" }, "延迟(毫秒):", -1)
                             ])),
                             _: 1
@@ -2349,7 +2384,7 @@
                               vue.createVNode(_component_t_radio_button, {
                                 value: vue.unref(ExpireTimeEnum$6).oneDay
                               }, {
-                                default: vue.withCtx(() => _cache[12] || (_cache[12] = [
+                                default: vue.withCtx(() => _cache[13] || (_cache[13] = [
                                   vue.createTextVNode("1天")
                                 ])),
                                 _: 1
@@ -2357,7 +2392,7 @@
                               vue.createVNode(_component_t_radio_button, {
                                 value: vue.unref(ExpireTimeEnum$6).threeDay
                               }, {
-                                default: vue.withCtx(() => _cache[13] || (_cache[13] = [
+                                default: vue.withCtx(() => _cache[14] || (_cache[14] = [
                                   vue.createTextVNode("3天")
                                 ])),
                                 _: 1
@@ -2365,7 +2400,7 @@
                               vue.createVNode(_component_t_radio_button, {
                                 value: vue.unref(ExpireTimeEnum$6).fiveDay
                               }, {
-                                default: vue.withCtx(() => _cache[14] || (_cache[14] = [
+                                default: vue.withCtx(() => _cache[15] || (_cache[15] = [
                                   vue.createTextVNode("5天")
                                 ])),
                                 _: 1
@@ -2373,7 +2408,7 @@
                               vue.createVNode(_component_t_radio_button, {
                                 value: vue.unref(ExpireTimeEnum$6).sevenDay
                               }, {
-                                default: vue.withCtx(() => _cache[15] || (_cache[15] = [
+                                default: vue.withCtx(() => _cache[16] || (_cache[16] = [
                                   vue.createTextVNode("7天")
                                 ])),
                                 _: 1
@@ -2381,7 +2416,7 @@
                               vue.createVNode(_component_t_radio_button, {
                                 value: vue.unref(ExpireTimeEnum$6).fifteen
                               }, {
-                                default: vue.withCtx(() => _cache[16] || (_cache[16] = [
+                                default: vue.withCtx(() => _cache[17] || (_cache[17] = [
                                   vue.createTextVNode("15天")
                                 ])),
                                 _: 1
@@ -2389,7 +2424,7 @@
                               vue.createVNode(_component_t_radio_button, {
                                 value: vue.unref(ExpireTimeEnum$6).forever
                               }, {
-                                default: vue.withCtx(() => _cache[17] || (_cache[17] = [
+                                default: vue.withCtx(() => _cache[18] || (_cache[18] = [
                                   vue.createTextVNode("永久")
                                 ])),
                                 _: 1
@@ -2512,7 +2547,7 @@
       };
     }
   });
-  const cloud115 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["__scopeId", "data-v-769b66b8"]]);
+  const cloud115 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["__scopeId", "data-v-54beefe3"]]);
   var ExpireTimeEnum$5 = /* @__PURE__ */ ((ExpireTimeEnum2) => {
     ExpireTimeEnum2[ExpireTimeEnum2["oneDay"] = 1] = "oneDay";
     ExpireTimeEnum2[ExpireTimeEnum2["sevenDay"] = 2] = "sevenDay";
@@ -5688,7 +5723,7 @@
       return {
         "文件名称": (item == null ? void 0 : item.fileName) ?? "",
         "分享链接": (item == null ? void 0 : item.share_url) ?? "",
-        "提取码": (item == null ? void 0 : item.passcode) ?? "",
+        "提取码": (item == null ? void 0 : item.passcode) ? item == null ? void 0 : item.passcode : "无提取码",
         "有效期": time,
         "可下载次数": codeNumber,
         "分享主题": (item == null ? void 0 : item.title) ?? ""
@@ -5778,7 +5813,7 @@
         default:
           codeNumber = "未知";
       }
-      return info.title ? `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.passcode ?? "为空"} 有效期: ${time} 可下载次数:${codeNumber} 分享主题:${info.title ?? ""}` : `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.passcode ?? "为空"} 有效期: ${time} 可下载次数:${codeNumber}`;
+      return info.title ? `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.passcode ? info.passcode : "无提取码"} 有效期: ${time} 可下载次数:${codeNumber} 分享主题:${info.title ?? ""}` : `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.passcode ? info.passcode : "无提取码"} 有效期: ${time} 可下载次数:${codeNumber}`;
     };
     const handleBatchOperation = async () => {
       var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
@@ -5814,19 +5849,25 @@
         });
       }
       for (let fileInfo of userOptions.value.selectFileInfoList) {
+        const tempPassCode = fileInfo.passcode;
         const sendData = {
           expired_type: fileInfo.expireTime,
           //分享天数
           dl_limit: fileInfo.extractNumber,
           //提取次数
-          passcode: fileInfo.passcode,
-          //随机提取码
-          url_type: 2,
+          // passcode:fileInfo.passcode,//随机提取码
+          // url_type:2,
+          url_type: 1,
+          //无提取码的type
           title: fileInfo.title,
           //标题
           fid_list: [fileInfo.id]
           //文件id
         };
+        if (tempPassCode) {
+          sendData["passcode"] = tempPassCode;
+          sendData["url_type"] = 2;
+        }
         const { task_id } = await getTaskId(sendData);
         let tempShareID = await getShareId(task_id);
         if (!tempShareID.share_id) {
