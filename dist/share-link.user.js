@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)
 // @namespace    dreamlove
-// @version      2.9.0
+// @version      2.9.1
 // @author       superBiuBiu
 // @description  网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘~
 // @iconURL      https://www.google.com/s2/favicons?domain=dreamlove.top
@@ -2029,15 +2029,15 @@
     };
     return (data == null ? void 0 : data.map((item) => {
       return {
-        "文件名称": item.fileName ?? "",
-        "文件大小": item.fileSize ?? "",
-        "分享链接": item.share_url ?? "",
-        "提取码": item.receive_code ?? "",
-        "有效期": timeText[item.share_duration],
-        "分享链接自动填充访问码": Number(item.auto_fill_recvcode) === 1 ? "开启" : "关闭",
-        "接收次数": item.receive_user_limit ? item.receive_user_limit : "不限制",
-        "允许免登录下载": Number(item.skip_login) === 1 ? "开启" : "关闭",
-        "免登录下载的总流量": Number(item.skip_login_down_flow_limit) ? Math.round(Number(item.skip_login_down_flow_limit) / 1024) + "KB" : "不限制"
+        文件名称: item.fileName ?? "",
+        文件大小: item.fileSize ?? "",
+        分享链接: item.share_url ?? "",
+        提取码: item.receive_code ?? "",
+        有效期: timeText[item.share_duration],
+        分享链接自动填充访问码: Number(item.auto_fill_recvcode) === 1 ? "开启" : "关闭",
+        接收次数: item.receive_user_limit ? item.receive_user_limit : "不限制",
+        允许免登录下载: Number(item.skip_login) === 1 ? "开启" : "关闭",
+        免登录下载的总流量: Number(item.skip_login_down_flow_limit) ? Math.round(Number(item.skip_login_down_flow_limit) / 1024) + "KB" : "不限制"
       };
     })) ?? [];
   };
@@ -2071,6 +2071,18 @@
       };
       return `文件名称: ${info.fileName} 分享链接:${info.share_url} 提取码:${info.receive_code}分享链接自动填充访问码:${Number(info.auto_fill_recvcode) === 1 ? "开启" : "关闭"} 接收次数:${info.receive_user_limit ? info.receive_user_limit : "不限制"} 允许免登录下载:${Number(info.skip_login) === 1 ? "开启" : "关闭"} 免登录下载的总流量:${Number(info.skip_login_down_flow_limit) ? Math.round(Number(info.skip_login_down_flow_limit) / 1024) + "KB" : "不限制"} 分享有效时间: ${timeText[info.share_duration]}`;
     };
+    const handleGetFolderSize = (id) => {
+      return new Promise((resolve2, reject2) => {
+        _GM_xmlhttpRequest({
+          method: "get",
+          url: `https://webapi.115.com/category/get?cid=${id}`,
+          onload: ({ response }) => {
+            const result = JSON.parse(response);
+            resolve2((result == null ? void 0 : result.size) ?? "NA");
+          }
+        });
+      });
+    };
     const handleTransformFormatVersion2 = (info) => {
       if (info.receive_code && formDataInput.value.autoFillRecvcode === 1) {
         return `${info.fileName}[${info.fileSize}]$${info.share_url}?password=${info.receive_code}&#`;
@@ -2081,10 +2093,12 @@
       }
     };
     const handleBatchOperation = async () => {
-      var _a, _b, _c, _d, _e;
+      var _a, _b, _c, _d, _e, _f, _g, _h, _i;
       const iframe = document.querySelector("iframe");
       const iframeWindow = iframe.contentWindow ?? _unsafeWindow;
-      const selectDOM = iframeWindow.document.querySelectorAll((_a = ShareDOMSelect["cloud115"]) == null ? void 0 : _a.select);
+      const selectDOM = iframeWindow.document.querySelectorAll(
+        (_a = ShareDOMSelect["cloud115"]) == null ? void 0 : _a.select
+      );
       if (!selectDOM.length) {
         return tdesignVueNext.MessagePlugin.warning("请选择要分享的文件!");
       }
@@ -2092,18 +2106,38 @@
       shareProgress.value = 0;
       selectFileInfoList.value = [];
       for (let dom of selectDOM) {
-        const id = (dom.getAttribute((_c = (_b = ShareDOMSelect["cloud115"]) == null ? void 0 : _b.idAttribute) == null ? void 0 : _c[0]) || dom.getAttribute((_e = (_d = ShareDOMSelect["cloud115"]) == null ? void 0 : _d.idAttribute) == null ? void 0 : _e[1])) ?? "";
+        let id = "";
+        let type = "";
+        if (dom.getAttribute((_c = (_b = ShareDOMSelect["cloud115"]) == null ? void 0 : _b.idAttribute) == null ? void 0 : _c[0])) {
+          id = dom.getAttribute(
+            (_e = (_d = ShareDOMSelect["cloud115"]) == null ? void 0 : _d.idAttribute) == null ? void 0 : _e[0]
+          ) ?? "";
+          type = "file";
+        } else if (dom.getAttribute((_g = (_f = ShareDOMSelect["cloud115"]) == null ? void 0 : _f.idAttribute) == null ? void 0 : _g[1])) {
+          id = dom.getAttribute(
+            (_i = (_h = ShareDOMSelect["cloud115"]) == null ? void 0 : _h.idAttribute) == null ? void 0 : _i[1]
+          ) ?? "";
+          type = "folder";
+        }
         const title = dom.getAttribute("title");
         selectFileInfoList.value.push({
           id,
           //存储文件id
           fileSize: dom.getAttribute("file_size") ? bytesToSize(Number(dom.getAttribute("file_size"))) : "NA",
-          fileName: title ?? "(!!$$未知名称!!$$)"
+          fileName: title ?? "(!!$$未知名称!!$$)",
           //文件名称
+          fileType: type
+          //文件类型
         });
       }
       for (let fileInfo of selectFileInfoList.value) {
         const formData = new FormData();
+        let fileSize = "";
+        if (fileInfo.fileType === "file") {
+          fileSize = fileInfo.fileSize;
+        } else if (fileInfo.fileType === "folder") {
+          fileSize = await handleGetFolderSize(fileInfo.id);
+        }
         const { user_id } = _unsafeWindow || {};
         formData.append("user_id", user_id);
         formData.append("file_ids", fileInfo.id + "");
@@ -2114,7 +2148,7 @@
           method: "post",
           url: "https://webapi.115.com/share/send",
           headers: {
-            "Accept": "application/json, text/javascript, */*; q=0.01"
+            Accept: "application/json, text/javascript, */*; q=0.01"
           },
           data: formData,
           onload: ({ response }) => {
@@ -2122,7 +2156,8 @@
             let tempData = {
               ...result.data || {},
               fileName: fileInfo.fileName,
-              fileSize: fileInfo.fileSize
+              // fileSize: fileInfo.fileSize,
+              fileSize
             };
             const formDataUpdate = new FormData();
             const info = {
@@ -2144,7 +2179,10 @@
             skipLoginForm.append("share_code", tempData.share_code);
             if (info.skip_login * 1 === 1) {
               skipLoginForm.append("skip_login", info.skip_login);
-              skipLoginForm.append("skip_login_down_flow_limit", info.skip_login_down_flow_limit);
+              skipLoginForm.append(
+                "skip_login_down_flow_limit",
+                info.skip_login_down_flow_limit
+              );
             } else {
               skipLoginForm.append("skip_login", info.skip_login);
             }
@@ -2157,7 +2195,7 @@
               method: "post",
               url: "https://webapi.115.com/share/updateshare",
               headers: {
-                "Accept": "application/json, text/javascript, */*; q=0.01"
+                Accept: "application/json, text/javascript, */*; q=0.01"
               },
               data: formDataUpdate,
               onload: ({ response: responseTwice }) => {
@@ -2170,12 +2208,14 @@
                   method: "post",
                   url: "https://webapi.115.com/share/skip_login_down",
                   headers: {
-                    "Accept": "application/json, text/javascript, */*; q=0.01"
+                    Accept: "application/json, text/javascript, */*; q=0.01"
                   },
                   data: skipLoginForm,
                   onload: ({ response: responseThree }) => {
                     shareInfoUserSee.value += handleTransformFormat(tempData) + "\n";
-                    shareProgress.value = Math.floor(shareInfo.value.length / selectFileInfoList.value.length * 100);
+                    shareProgress.value = Math.floor(
+                      shareInfo.value.length / selectFileInfoList.value.length * 100
+                    );
                   },
                   onerror: (res) => {
                     console.error("二次更新失败", res);
@@ -2215,17 +2255,32 @@
       });
     };
     const download = () => {
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, shareInfoUserSee.value);
+      DownloadTxt(
+        `${cloudInfoStore.cloudName}批量分享-${dayjs().format(
+        "YYYY-MM-DD HH:mm:ss"
+      )}`,
+        shareInfoUserSee.value
+      );
     };
     const downloadVersion2 = () => {
       let tempData = "";
       for (const temp of shareInfo.value) {
         tempData += handleTransformFormatVersion2(temp) + "\n";
       }
-      DownloadTxt(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}`, tempData);
+      DownloadTxt(
+        `${cloudInfoStore.cloudName}批量分享-${dayjs().format(
+        "YYYY-MM-DD HH:mm:ss"
+      )}`,
+        tempData
+      );
     };
     const downloadExcel = () => {
-      exportXlsxFile(`${cloudInfoStore.cloudName}批量分享-${dayjs().format("YYYY-MM-DD HH:mm:ss")}.xlsx`, transformExcelInfoData$7(shareInfo.value));
+      exportXlsxFile(
+        `${cloudInfoStore.cloudName}批量分享-${dayjs().format(
+        "YYYY-MM-DD HH:mm:ss"
+      )}.xlsx`,
+        transformExcelInfoData$7(shareInfo.value)
+      );
     };
     return {
       shareDelay,
