@@ -9,10 +9,16 @@ export const cloudsRegister = {
  * @param url 当前url
  * @returns 挂载函数
  */
-export const mountCloudDOM = (url?: string) => {
+export const mountCloudInfo = (url?: string) => {
   const cloudInfo = getCloudInfo(url);
   if (cloudInfo) {
-    return cloudInfo.mountFn();
+    return cloudInfo;
   }
-  return document.createElement("div");
+  return {
+    name: "",
+    type: "",
+    mountFn: () => {
+      return document.createElement("div");
+    },
+  };
 };
