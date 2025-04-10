@@ -1,6 +1,7 @@
 import React, { createContext } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import "./style/default.css";
 import "./style/reset.scss";
 import "./style/tailwindcss.css";
 import { BaseCloudInfo } from "./utils/provider";
