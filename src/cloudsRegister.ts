@@ -7,7 +7,7 @@ export const cloudsRegister = {
 /**
  * 挂载云盘DOM
  * @param url 当前url
- * @returns 挂载函数
+ * @returns 挂载信息
  */
 export const mountCloudInfo = (url?: string) => {
   const cloudInfo = getCloudInfo(url);
@@ -17,6 +17,7 @@ export const mountCloudInfo = (url?: string) => {
   return {
     name: "",
     type: "",
+    rootElementId: "",
     mountFn: () => {
       return document.createElement("div");
     },

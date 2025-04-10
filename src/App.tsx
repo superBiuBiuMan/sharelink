@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useBaseCloudInfo } from "./utils/provider";
+import { Button } from "@mui/material";
 function App() {
   const { name, type } = useBaseCloudInfo();
   const [count, setCount] = useState(0);
 
   return (
     <span>
-      你好,世222界
-      {name}
-      {type}
+      <Button variant="contained">Hello world</Button>
     </span>
   );
 }
