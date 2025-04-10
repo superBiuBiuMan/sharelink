@@ -4,13 +4,12 @@ import App from "./App";
 import "./index.css";
 import "./style/reset.scss";
 import "./style/tailwindcss.css";
-ReactDOM.createRoot(
-  (() => {
-    const app = document.createElement("div");
-    document.body.append(app);
-    return app;
-  })()
-).render(
+import { mountCloudDOM } from "./cloudsRegister";
+
+// 获取挂载点并添加容器
+const mountPoint = mountCloudDOM();
+// 在新创建的容器中渲染React应用
+ReactDOM.createRoot(mountPoint).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
