@@ -1,14 +1,14 @@
 import React from "react";
 import Button from "@mui/material/Button";
+import ShareIcon from "@mui/icons-material/Share";
 
 interface Props {}
 
 const Xunlei: React.FC<Props> = () => {
   return (
-    <div>
-      <h1>迅雷云盘</h1>
-      <Button variant="contained">按钮</Button>
-    </div>
+    <Button variant="outlined" startIcon={<ShareIcon />}>
+      批量分享
+    </Button>
   );
 };
 

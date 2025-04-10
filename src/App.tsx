@@ -1,15 +1,9 @@
-import { useState } from "react";
 import { useBaseCloudInfo } from "./utils/provider";
-import { Button } from "@mui/material";
+import { cloudsRegister } from "./cloudsRegister";
 function App() {
-  const { name, type } = useBaseCloudInfo();
-  const [count, setCount] = useState(0);
-
-  return (
-    <span>
-      <Button variant="contained">Hello world</Button>
-    </span>
-  );
+  const { type } = useBaseCloudInfo();
+  const Component = cloudsRegister[type];
+  return <Component />;
 }
 
 export default App;
