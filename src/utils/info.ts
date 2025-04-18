@@ -11,14 +11,25 @@ export const cloudInfoAll = {
     matchUrl: [new RegExp("pan.xunlei.com/*")], // 匹配url
     mountFn: () => {
       const appContainer = document.createElement("li");
-      appContainer.id = cloudInfoAll[cloudEnum.xunlei].rootElementId;
       const mountDOM = document.querySelector(
         ".pan-wrapper-asider > ul"
       ) as HTMLElement;
       if (mountDOM) {
-        mountDOM.appendChild(appContainer);
+        const tempDOM = document.createElement("div");
+        tempDOM.id = cloudInfoAll[cloudEnum.xunlei].rootElementId;
+        mountDOM.appendChild(tempDOM);
+        const shadowContainer = tempDOM.attachShadow({
+          mode: "open",
+        });
+        shadowContainer.appendChild(appContainer);
+        return {
+          appContainer,
+          shadowContainer,
+        };
       }
-      return appContainer;
+      return {
+        appContainer,
+      };
     },
   },
 };
