@@ -1,6 +1,6 @@
-import { findLocalStorageKeysWithPrefix } from "@/tools/common";
+import { findLocalStorageKeysWithPrefix } from "@/utils/common";
 import type { ShareResult } from "./types";
-import { bytesToSize } from "@/tools/size";
+import { bytesToSize } from "@/utils/size";
 import { FileShareStatusEnum } from "@/enum/index";
 /**
  * 获取用户分享信息

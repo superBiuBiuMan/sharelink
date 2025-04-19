@@ -29,6 +29,7 @@ import {
 } from "@mui/material";
 import { useState, useImperativeHandle, forwardRef, useEffect } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import ShareBtn from "@/components/ShareBtn";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ShareIcon from "@mui/icons-material/Share";
 import ArticleIcon from "@mui/icons-material/Article";
@@ -53,14 +54,15 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     allowFastAccess: true,
   });
   const [shareResults, setShareResults] = useState<ShareResult[]>([]); //分享结果
-  const [isSharing, setIsSharing] = useState(false); //是否正在分享
   const [filterStatus, setFilterStatus] = useState<
     "all" | "ready" | "sharing" | "success" | "error"
   >("all");
-  const [configExpanded, setConfigExpanded] = useState(true);
-  const [isPreparingShare, setIsPreparingShare] = useState(false); // 是否正在准备分享
-  const [isPrepared, setIsPrepared] = useState(false); // 是否已准备好分享
-  const [isCancelling, setIsCancelling] = useState(false);
+  const [configExpanded, setConfigExpanded] = useState(true); // 分享配置是否展开
+
+  const [isSharing, setIsSharing] = useState(false); //是否正在分享
+  const [isPreparingShare, setIsPreparingShare] = useState(true); // 是否准备分享->目的是获取文件列表(默认)
+  const [isPrepared, setIsPrepared] = useState(false); // 是否已准备好分享 -> 真正开始分享
+  const [isCancelling, setIsCancelling] = useState(false); // 是否取消分享
 
   useImperativeHandle(ref, () => {
     return {
@@ -69,138 +71,22 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
       },
     };
   });
-
-  // 模拟分享操作
+  //准备分享
   const handlePrepareShare = async () => {
-    setIsPreparingShare(true);
-    try {
-      const shareInfo = getShareInfo();
-      const { selectRowInfos } = shareInfo;
-
-      // 模拟获取文件信息的过程
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // // 初始化文件列表
-      // const initialResults: ShareResult[] = [
-      //   {
-      //     id: "1",
-      //     fileName: "文档1.pdf",
-      //     shareLink: "",
-      //     extractCode: "",
-      //     status: "ready",
-      //     fileSize: "2.5MB",
-      //   },
-      //   {
-      //     id: "2",
-      //     fileName: "图片集.zip",
-      //     shareLink: "",
-      //     extractCode: "",
-      //     status: "ready",
-      //     fileSize: "15MB",
-      //   },
-      //   {
-      //     id: "3",
-      //     fileName: "视频.mp4",
-      //     shareLink: "",
-      //     extractCode: "",
-      //     status: "ready",
-      //     fileSize: "1.2GB",
-      //   },
-      //   {
-      //     id: "4",
-      //     fileName: "演示文稿.pptx",
-      //     shareLink: "",
-      //     extractCode: "",
-      //     status: "ready",
-      //     fileSize: "5MB",
-      //   },
-      //   {
-      //     id: "5",
-      //     fileName: "源代码.zip",
-      //     shareLink: "",
-      //     extractCode: "",
-      //     status: "ready",
-      //     fileSize: "500KB",
-      //   },
-      //   {
-      //     id: "6",
-      //     fileName: "大型视频.mkv",
-      //     shareLink: "",
-      //     extractCode: "",
-      //     status: "ready",
-      //     fileSize: "4.5GB",
-      //   },
-      // ];
-
-      setShareResults(transformFileInfo(selectRowInfos ?? []));
-      setIsPrepared(true);
-    } catch (error) {
-      console.error("准备分享失败:", error);
-    } finally {
-      setIsPreparingShare(false);
-    }
-  };
-
-  const handleShare = async () => {
-    setIsCancelling(false);
     const shareInfo = getShareInfo();
     const { selectRowInfos } = shareInfo;
-
-    // 实际项目中，应该使用selectedRowKeys来获取选中的文件信息
-    // 这里为了简化，使用预定义的文件列表
-
+    // 模拟获取文件信息的过程 todo 删除
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setShareResults(transformFileInfo(selectRowInfos ?? []));
+    setIsPreparingShare(false);
+    setIsPrepared(true);
+  };
+  //开始分享
+  const handleShare = async () => {
+    setIsCancelling(false);
     setIsSharing(true);
-
-    // 初始化文件为"准备分享"状态
-    const initialResults: ShareResult[] = [
-      {
-        id: "1",
-        fileName: "文档1.pdf",
-        shareLink: "",
-        extractCode: "",
-        status: "ready",
-      },
-      {
-        id: "2",
-        fileName: "图片集.zip",
-        shareLink: "",
-        extractCode: "",
-        status: "ready",
-      },
-      {
-        id: "3",
-        fileName: "视频.mp4",
-        shareLink: "",
-        extractCode: "",
-        status: "ready",
-      },
-      {
-        id: "4",
-        fileName: "演示文稿.pptx",
-        shareLink: "",
-        extractCode: "",
-        status: "ready",
-      },
-      {
-        id: "5",
-        fileName: "源代码.zip",
-        shareLink: "",
-        extractCode: "",
-        status: "ready",
-      },
-      {
-        id: "6",
-        fileName: "大型视频.mkv",
-        shareLink: "",
-        extractCode: "",
-        status: "ready",
-      },
-    ];
-
-    setShareResults(initialResults);
-
     // 模拟文件逐个开始分享
-    for (let i = 0; i < initialResults.length; i++) {
+    for (let i = 0; i < shareResults.length; i++) {
       if (isCancelling) {
         setIsSharing(false);
         break;
@@ -565,34 +451,15 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             >
               取消
             </Button>
-            <Button
-              variant="contained"
-              startIcon={<ShareIcon />}
-              onClick={isPrepared ? handleShare : handlePrepareShare}
-              disabled={isPreparingShare || isSharing}
-              size="small"
-            >
-              {isPreparingShare
-                ? "准备中..."
-                : isSharing
-                ? "分享中..."
-                : isPrepared
-                ? "开始分享"
-                : "准备分享"}
-            </Button>
-            {isSharing && (
-              <Button
-                variant="outlined"
-                size="small"
-                color="error"
-                startIcon={<CancelIcon />}
-                onClick={handleCancelShare}
-                disabled={!isSharing}
-                className="hover:bg-red-50"
-              >
-                取消
-              </Button>
-            )}
+            <ShareBtn
+              isPreparingShare={isPreparingShare}
+              isSharing={isSharing}
+              isPrepared={isPrepared}
+              isCancelling={isCancelling}
+              onPrepareShare={handlePrepareShare}
+              onShare={handleShare}
+              onCancelShare={handleCancelShare}
+            />
             <Button
               variant="outlined"
               startIcon={<ContentCopyIcon />}
