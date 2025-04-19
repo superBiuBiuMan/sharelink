@@ -1,3 +1,4 @@
+// 云盘类型
 export const cloudEnum = {
   xunlei: "xunlei",
 };

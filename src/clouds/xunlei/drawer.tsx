@@ -27,6 +27,8 @@ import {
   Collapse,
   CircularProgress,
 } from "@mui/material";
+import { cloudEnum } from "@/utils/info";
+import { shareLogicMap } from "@/utils/shareLogic";
 import { useState, useImperativeHandle, forwardRef, useEffect } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ShareBtn from "@/components/ShareBtn";
@@ -40,7 +42,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
-import PendingIcon from "@mui/icons-material/Pending";
 import { extractOptions, expireTimeOptions } from "./options";
 import { ShareDrawerRef, ShareResult, ShareConfig } from "./types";
 import { ExtractEnum, ExpireTimeEnum } from "./types";
@@ -73,8 +74,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   });
   //准备分享
   const handlePrepareShare = async () => {
-    const shareInfo = getShareInfo();
-    const { selectRowInfos } = shareInfo;
+    const { selectRowInfos } = getShareInfo();
     // 模拟获取文件信息的过程 todo 删除
     await new Promise((resolve) => setTimeout(resolve, 1000));
     setShareResults(transformFileInfo(selectRowInfos ?? []));
@@ -85,14 +85,36 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const handleShare = async () => {
     setIsCancelling(false);
     setIsSharing(true);
+    const {
+      "x-captcha-token": xCaptchaToken,
+      authorization,
+      "x-device-id": xDeviceId,
+      "x-client-id": xClientId,
+    } = getShareInfo();
     // 模拟文件逐个开始分享
     for (let i = 0; i < shareResults.length; i++) {
       if (isCancelling) {
         setIsSharing(false);
         break;
       }
+      try {
+        const res = await shareLogicMap[cloudEnum.xunlei].share(
+          {
+            abc: 123,
+          },
+          {
+            headers: {
+              "x-captcha-token": xCaptchaToken,
+              authorization,
+              "x-device-id": xDeviceId,
+              "x-client-id": xClientId,
+            },
+          }
+        );
+      } catch (error) {
+        console.log(error, "1111111111");
+      }
       await new Promise((resolve) => setTimeout(resolve, 500));
-
       // 更新为"分享中"状态
       setShareResults((prev) => {
         const updated = [...prev];
