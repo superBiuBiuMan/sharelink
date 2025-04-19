@@ -1,20 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* 添加 Shadow DOM 中的自定义修复 */
-:host {
-  all: initial;
+@theme {
+  /* 设置spacing基础单位为px */
+  --spacing: 2px;
+
+  /* 自定义字体大小使用px */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  --text-4xl: 36px;
+  --text-5xl: 48px;
+  --text-6xl: 60px;
 }
 
-/* 确保 Tailwind CSS 在 Shadow DOM 中正常工作的额外样式 */
-:host,
-:root {
-  --tw-shadow: 0 0 #0000;
-  --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
-  --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
-  --tw-ring-color: rgba(59, 130, 246, 0.5);
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
+/* 你也可以添加自定义工具类 */
+@utility my-spacing-px-10 {
+  margin: 10px;
+  padding: 10px;
 }

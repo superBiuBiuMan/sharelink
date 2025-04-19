@@ -17,7 +17,7 @@ const Xunlei: React.FC<Props> = () => {
         startIcon={<ShareIcon />}
         onClick={handleClick}
       >
-        批量分享111
+        批量分享
       </Button>
       <ShareDrawer ref={shareDOM} />
     </>

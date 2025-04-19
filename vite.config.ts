@@ -5,7 +5,6 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    tailwindcss(),
     react(),
     monkey({
       entry: "src/main.tsx",
@@ -24,6 +23,7 @@ export default defineConfig({
         },
       },
     }),
+    tailwindcss(),
   ],
   resolve: {
     alias: {

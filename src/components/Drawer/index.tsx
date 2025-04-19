@@ -23,7 +23,7 @@ const ShareBaseDrawer: React.FC<ShareBaseDrawerProps> = ({
 }) => {
   const Footer = () => {
     return (
-      <div className="flex justify-end items-center gap-4 py-3 px-4">
+      <div className="flex justify-center items-center gap-4 mt-4">
         <Button
           variant="outlined"
           size="small"
@@ -65,7 +65,7 @@ const ShareBaseDrawer: React.FC<ShareBaseDrawerProps> = ({
         >
           <div className="flex flex-col h-full">
             {/* 标题 */}
-            <div className="text-2xl font-bold">{title}</div>
+            <div className="text-xl font-bold">{title}</div>
             <Divider />
             {/* 内容 */}
             <div className="h-0 flex-1 overflow-y-auto">{children}</div>
