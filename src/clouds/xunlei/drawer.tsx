@@ -55,7 +55,11 @@ import {
   exportXlsxFile,
 } from "@/utils/common";
 import { useBaseCloudInfo } from "@/utils/provider";
-import { getShareInfo, transformFileInfo } from "./tools";
+import {
+  getShareInfo,
+  transformFileInfo,
+  transformShareInfoForXlsx,
+} from "./tools";
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const { name: cloudName } = useBaseCloudInfo();
   const [open, setOpen] = useState(false);
@@ -228,14 +232,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
 
   // 下载为Excel
   const handleDownloadExcel = () => {
-    debugger;
-    const data = filteredResults.map((result) => ({
-      文件名称: result?.fileName ?? "",
-      分享链接: result?.shareLink ?? "",
-      提取码: result?.extractCode ?? "",
-      有效期: result?.expireTime ?? "",
-      有效次数: result?.restoreLimit ?? "",
-    }));
+    const data = transformShareInfoForXlsx(filteredResults);
     exportXlsxFile(`${cloudName}-批量分享链接-${getTimestamp()}.xlsx`, data);
   };
 

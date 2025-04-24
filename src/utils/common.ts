@@ -41,6 +41,9 @@ export function getTimestamp() {
  * @param data 数据 比如 [{name: "张三", age: 18}, {name: "李四", age: 20}]
  */
 export function exportXlsxFile(filename: string, data: any) {
+  if (!data || !data?.length) {
+    throw new Error("数据不能为空");
+  }
   const worksheet = XLSX.utils.json_to_sheet(data);
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");

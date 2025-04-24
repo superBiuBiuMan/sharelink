@@ -2,6 +2,7 @@ import { findLocalStorageKeysWithPrefix } from "@/utils/common";
 import type { ShareResult } from "./types";
 import { bytesToSize } from "@/utils/size";
 import { FileShareStatusEnum } from "@/enum/index";
+import { extractOptions, expireTimeOptions } from "./options";
 /**
  * 获取用户分享信息
  * @returns
@@ -46,6 +47,37 @@ export const transformFileInfo = (list: any[]): ShareResult[] => {
       fileName: item?.name,
       status: FileShareStatusEnum.ready,
       fileSize: bytesToSize(item?.size) ?? "NA",
+    };
+  });
+};
+/**
+ * 转换分享信息给xlsx下载
+ * @param list 分享信息
+ * @returns 分享信息
+ */
+export const transformShareInfoForXlsx = (list: ShareResult[]) => {
+  if (!list || !list?.length) return [];
+  return list?.map((item) => {
+    // 查找对应的有效期标签
+    const expireTimeLabel =
+      expireTimeOptions.find((option) => option.value === item?.expireTime)
+        ?.label ||
+      item?.expireTime ||
+      "";
+
+    // 查找对应的提取次数标签
+    const restoreLimitLabel =
+      extractOptions.find((option) => option.value === item?.restoreLimit)
+        ?.label ||
+      item?.restoreLimit ||
+      "";
+
+    return {
+      文件名称: item?.fileName ?? "",
+      分享链接: item?.shareLink ?? "",
+      提取码: item?.extractCode ?? "",
+      有效期: expireTimeLabel,
+      有效次数: restoreLimitLabel,
     };
   });
 };
