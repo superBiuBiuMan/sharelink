@@ -1,3 +1,5 @@
+import * as XLSX from "xlsx";
+import FileSaver from "file-saver";
 /**
  * 指定前缀字符在localStorage中查找
  */
@@ -32,4 +34,20 @@ export function downloadTxt(text: string, filename: string) {
 //获取时间戳
 export function getTimestamp() {
   return new Date().getTime();
+}
+/**
+ * 导出xlsx文件
+ * @param filename 文件名
+ * @param data 数据 比如 [{name: "张三", age: 18}, {name: "李四", age: 20}]
+ */
+export function exportXlsxFile(filename: string, data: any) {
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  // 写入文件
+  const wb_out = XLSX.write(workbook, { type: "buffer" });
+  FileSaver.saveAs(
+    new Blob([wb_out], { type: "application/octet-stream" }),
+    filename
+  );
 }

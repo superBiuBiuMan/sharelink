@@ -36,6 +36,7 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ShareIcon from "@mui/icons-material/Share";
 import ArticleIcon from "@mui/icons-material/Article";
 import ErrorIcon from "@mui/icons-material/Error";
+
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CloseIcon from "@mui/icons-material/Close";
@@ -47,11 +48,16 @@ import { extractOptions, expireTimeOptions } from "./options";
 import { ShareDrawerRef, ShareResult, ShareConfig } from "./types";
 import { ExtractEnum, ExpireTimeEnum } from "./types";
 import type { ShareResponse } from "./types";
-import { copy, downloadTxt, getTimestamp } from "@/utils/common";
+import {
+  copy,
+  downloadTxt,
+  getTimestamp,
+  exportXlsxFile,
+} from "@/utils/common";
 import { useBaseCloudInfo } from "@/utils/provider";
 import { getShareInfo, transformFileInfo } from "./tools";
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
-  const { baseCloudInfo } = useBaseCloudInfo();
+  const { name: cloudName } = useBaseCloudInfo();
   const [open, setOpen] = useState(false);
   const [shareConfig, setShareConfig] = useState<ShareConfig>({
     expireTime: ExpireTimeEnum.forever,
@@ -115,7 +121,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           return updated;
         });
 
-        const res: ShareResponse = await shareLogicMap[cloudEnum.xunlei].share(
+        let res: ShareResponse = await shareLogicMap[cloudEnum.xunlei].share(
           {
             expiration_days: shareConfig.expireTime + "", //过期时间
             file_ids: [shareResults[i].id], //文件id
@@ -138,6 +144,11 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             },
           }
         );
+        res = {
+          ...(res ?? {}),
+          restoreLimit: shareConfig.extractLimit,
+          expireTime: shareConfig.expireTime,
+        };
         // 更新为最终状态（成功或失败）
         setShareResults((prev) => {
           const updated = [...prev];
@@ -152,6 +163,8 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             // 分享成功
             updated[i] = {
               ...updated[i],
+              restoreLimit: res.restoreLimit,
+              expireTime: res.expireTime,
               status: "success",
               shareLink: res.share_url,
               extractCode: res.pass_code,
@@ -210,47 +223,20 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           `${result.fileName}, ${result.shareLink}, ${result.extractCode}`
       )
       .join("\n");
-    debugger;
-    downloadTxt(text, `${baseCloudInfo.name}-分享链接-${getTimestamp()}.txt`);
+    downloadTxt(text, `${cloudName}-批量分享链接-${getTimestamp()}.txt`);
   };
 
   // 下载为Excel
   const handleDownloadExcel = () => {
-    // 实际项目中应使用excel库实现，这里简化处理
-    const header = "文件名,分享链接,提取码,状态,信息\n";
-    const content = shareResults
-      .map((result) => {
-        const statusText =
-          result.status === "ready"
-            ? "准备分享"
-            : result.status === "sharing"
-              ? "分享中"
-              : result.status === "success"
-                ? "分享成功"
-                : "分享失败";
-
-        const message =
-          result.status === "success"
-            ? "分享成功"
-            : result.status === "error"
-              ? result.message || "分享失败"
-              : result.status === "sharing"
-                ? "正在分享中"
-                : "等待分享";
-
-        return `${result.fileName},${result.shareLink || ""},${
-          result.extractCode || ""
-        },${statusText},${message}`;
-      })
-      .join("\n");
-
-    const blob = new Blob([header + content], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "分享信息.csv";
-    a.click();
-    URL.revokeObjectURL(url);
+    debugger;
+    const data = filteredResults.map((result) => ({
+      文件名称: result?.fileName ?? "",
+      分享链接: result?.shareLink ?? "",
+      提取码: result?.extractCode ?? "",
+      有效期: result?.expireTime ?? "",
+      有效次数: result?.restoreLimit ?? "",
+    }));
+    exportXlsxFile(`${cloudName}-批量分享链接-${getTimestamp()}.xlsx`, data);
   };
 
   // 筛选分享结果

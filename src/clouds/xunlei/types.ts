@@ -39,7 +39,11 @@ export interface ShareDrawerRef {
   open: () => void;
 }
 
-export interface ShareResult {
+export interface CommonResult {
+  restoreLimit?: any; //提取次数
+  expireTime?: any; //有效期
+}
+export interface ShareResult extends CommonResult {
   id: string; //文件id
   fileName?: string; //文件名
   shareLink?: string; //分享链接
@@ -47,6 +51,8 @@ export interface ShareResult {
   status: FileShareStatusEnumTypes; //状态
   fileSize?: string; //文件大小
   message?: string; //错误信息
+  restoreLimit?: any; //提取次数
+  expireTime?: any; //有效期
 }
 export interface ShareConfig {
   expireTime: number; // 提取期限(天)
@@ -55,7 +61,7 @@ export interface ShareConfig {
   allowFastAccess: boolean; // 是否允许快速访问
 }
 
-export interface ShareResponse {
+export interface ShareResponse extends CommonResult {
   pass_code: string; //提取码
   share_error_files: any[]; //分享失败文件
   share_id: string; //分享id
