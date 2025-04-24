@@ -10,6 +10,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { initTheme } from "./config/theme";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
+import { NotificationsProvider } from "@toolpad/core/useNotifications";
 
 // 定义挂载返回类型接口
 interface MountResult {
@@ -61,7 +62,15 @@ let timer = setInterval(() => {
         <ThemeProvider theme={initTheme(result.appContainer)}>
           <BaseCloudInfo.Provider value={info}>
             <React.StrictMode>
-              <App />
+              <NotificationsProvider
+                slotProps={{
+                  snackbar: {
+                    anchorOrigin: { vertical: "top", horizontal: "center" },
+                  },
+                }}
+              >
+                <App />
+              </NotificationsProvider>
             </React.StrictMode>
           </BaseCloudInfo.Provider>
         </ThemeProvider>

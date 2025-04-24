@@ -41,12 +41,17 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import { useNotifications } from "@toolpad/core/useNotifications";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import { extractOptions, expireTimeOptions } from "./options";
 import { ShareDrawerRef, ShareResult, ShareConfig } from "./types";
 import { ExtractEnum, ExpireTimeEnum } from "./types";
+import type { ShareResponse } from "./types";
+import { copy, downloadTxt, getTimestamp } from "@/utils/common";
+import { useBaseCloudInfo } from "@/utils/provider";
 import { getShareInfo, transformFileInfo } from "./tools";
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
+  const { baseCloudInfo } = useBaseCloudInfo();
   const [open, setOpen] = useState(false);
   const [shareConfig, setShareConfig] = useState<ShareConfig>({
     expireTime: ExpireTimeEnum.forever,
@@ -58,13 +63,13 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const [filterStatus, setFilterStatus] = useState<
     "all" | "ready" | "sharing" | "success" | "error"
   >("all");
+  const [loadingShareData, setLoadingShareData] = useState(false); // 是否正在加载分享数据
   const [configExpanded, setConfigExpanded] = useState(true); // 分享配置是否展开
-
   const [isSharing, setIsSharing] = useState(false); //是否正在分享
   const [isPreparingShare, setIsPreparingShare] = useState(true); // 是否准备分享->目的是获取文件列表(默认)
   const [isPrepared, setIsPrepared] = useState(false); // 是否已准备好分享 -> 真正开始分享
   const [isCancelling, setIsCancelling] = useState(false); // 是否取消分享
-
+  const notifications = useNotifications();
   useImperativeHandle(ref, () => {
     return {
       open() {
@@ -74,12 +79,17 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   });
   //准备分享
   const handlePrepareShare = async () => {
-    const { selectRowInfos } = getShareInfo();
-    // 模拟获取文件信息的过程 todo 删除
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setShareResults(transformFileInfo(selectRowInfos ?? []));
-    setIsPreparingShare(false);
-    setIsPrepared(true);
+    try {
+      setLoadingShareData(true);
+      const { selectRowInfos } = getShareInfo();
+      // 模拟获取文件信息的过程 todo 删除
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setShareResults(transformFileInfo(selectRowInfos ?? []));
+      setIsPreparingShare(false);
+      setIsPrepared(true);
+    } finally {
+      setLoadingShareData(false);
+    }
   };
   //开始分享
   const handleShare = async () => {
@@ -98,9 +108,26 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         break;
       }
       try {
-        const res = await shareLogicMap[cloudEnum.xunlei].share(
+        // 更新为"分享中"状态
+        setShareResults((prev) => {
+          const updated = [...prev];
+          updated[i] = { ...updated[i], status: "sharing" };
+          return updated;
+        });
+
+        const res: ShareResponse = await shareLogicMap[cloudEnum.xunlei].share(
           {
-            abc: 123,
+            expiration_days: shareConfig.expireTime + "", //过期时间
+            file_ids: [shareResults[i].id], //文件id
+            params: {
+              subscribe_push: "false", //是否订阅推送
+              withPassCodeInLink: shareConfig.allowFastAccess
+                ? "true"
+                : "false", //是否在链接中包含提取码
+            },
+            restore_limit: shareConfig.extractLimit + "", //提取次数
+            share_to: "copy", //分享方式
+            title: "云盘资源分享", //分享标题
           },
           {
             headers: {
@@ -111,48 +138,41 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             },
           }
         );
+        // 更新为最终状态（成功或失败）
+        setShareResults((prev) => {
+          const updated = [...prev];
+          if (res?.share_error_files?.length > 0) {
+            // 分享失败
+            updated[i] = {
+              ...updated[i],
+              status: "error",
+              message: "分享失败",
+            };
+          } else {
+            // 分享成功
+            updated[i] = {
+              ...updated[i],
+              status: "success",
+              shareLink: res.share_url,
+              extractCode: res.pass_code,
+            };
+          }
+          return updated;
+        });
       } catch (error) {
-        console.log(error, "1111111111");
-      }
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      // 更新为"分享中"状态
-      setShareResults((prev) => {
-        const updated = [...prev];
-        updated[i] = { ...updated[i], status: "sharing" };
-        return updated;
-      });
-
-      // 模拟分享过程
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // 更新为最终状态（成功或失败）
-      setShareResults((prev) => {
-        const updated = [...prev];
-        if (i === 2 || i === 4 || i === 5) {
-          // 这些文件模拟分享失败
+        console.log(error, "分享失败");
+        // 更新为最终状态（成功或失败）
+        setShareResults((prev) => {
+          const updated = [...prev];
+          // 分享失败
           updated[i] = {
             ...updated[i],
             status: "error",
-            message:
-              i === 2
-                ? "文件过大，分享失败"
-                : i === 4
-                ? "文件包含敏感内容，分享失败"
-                : "文件超过分享限制大小",
+            message: "分享失败",
           };
-        } else {
-          // 其他文件模拟分享成功
-          updated[i] = {
-            ...updated[i],
-            status: "success",
-            shareLink: `https://share.example.com/${
-              updated[i].id
-            }${Math.random().toString(36).substring(2, 6)}`,
-            extractCode: Math.floor(1000 + Math.random() * 9000).toString(),
-          };
-        }
-        return updated;
-      });
+          return updated;
+        });
+      }
     }
 
     setIsSharing(false);
@@ -160,35 +180,38 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
 
   // 复制到剪贴板
   const handleCopy = () => {
-    const text = shareResults
-      .filter((result) => result.status === "success")
+    const text = filteredResults
       .map(
         (result) =>
           `${result.fileName}: ${result.shareLink} 提取码: ${result.extractCode}`
       )
       .join("\n");
 
-    navigator.clipboard.writeText(text);
-    // 这里可以添加一个提示
+    copy(text)
+      .then(() => {
+        notifications.show("复制成功", {
+          autoHideDuration: 1500,
+          severity: "success",
+        });
+      })
+      .catch((error: any) => {
+        notifications.show("复制失败" + error, {
+          autoHideDuration: 1500,
+          severity: "error",
+        });
+      });
   };
 
   // 下载分享链接
   const handleDownloadLinks = () => {
-    const text = shareResults
-      .filter((result) => result.status === "success")
+    const text = filteredResults
       .map(
         (result) =>
           `${result.fileName}, ${result.shareLink}, ${result.extractCode}`
       )
       .join("\n");
-
-    const blob = new Blob([text], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "分享链接.txt";
-    a.click();
-    URL.revokeObjectURL(url);
+    debugger;
+    downloadTxt(text, `${baseCloudInfo.name}-分享链接-${getTimestamp()}.txt`);
   };
 
   // 下载为Excel
@@ -201,19 +224,19 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           result.status === "ready"
             ? "准备分享"
             : result.status === "sharing"
-            ? "分享中"
-            : result.status === "success"
-            ? "分享成功"
-            : "分享失败";
+              ? "分享中"
+              : result.status === "success"
+                ? "分享成功"
+                : "分享失败";
 
         const message =
           result.status === "success"
             ? "分享成功"
             : result.status === "error"
-            ? result.message || "分享失败"
-            : result.status === "sharing"
-            ? "正在分享中"
-            : "等待分享";
+              ? result.message || "分享失败"
+              : result.status === "sharing"
+                ? "正在分享中"
+                : "等待分享";
 
         return `${result.fileName},${result.shareLink || ""},${
           result.extractCode || ""
@@ -289,7 +312,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         <Divider className="mb-3" />
 
         {/* 内容区域 */}
-        <Box className="flex-1 overflow-y-auto">
+        <Box className="flex-1 flex flex-col overflow-y-auto">
           <Box className="border rounded-md bg-gray-50 mb-3">
             <Box
               className="flex justify-between items-center px-3 py-2 cursor-pointer"
@@ -387,77 +410,85 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             </Collapse>
           </Box>
 
-          {shareResults.length > 0 && (
-            <Box className="mt-3">
-              <Box className="flex justify-between items-center mb-2">
-                <Box>
-                  <h3 className="font-medium text-base">分享结果</h3>
-                  <Typography variant="caption" color="textSecondary">
-                    总计: {shareResults.length} | 准备:{" "}
-                    {getStatusCount("ready")} | 分享中:{" "}
-                    {getStatusCount("sharing")} | 成功:{" "}
-                    {getStatusCount("success")} | 失败:{" "}
-                    {getStatusCount("error")}
-                  </Typography>
-                </Box>
-                <Box>
-                  <FormControl size="small">
-                    <Select
-                      value={filterStatus}
-                      size="small"
-                      onChange={(e) =>
-                        setFilterStatus(e.target.value as typeof filterStatus)
-                      }
-                    >
-                      <MenuItem value="all">全部</MenuItem>
-                      <MenuItem value="ready">准备分享</MenuItem>
-                      <MenuItem value="sharing">分享中</MenuItem>
-                      <MenuItem value="success">分享成功</MenuItem>
-                      <MenuItem value="error">分享失败</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
+          <Box className="mt-3 h-0 flex-1">
+            {/* 加载中 */}
+            {loadingShareData && (
+              <Box className="flex justify-center items-center mt-10">
+                <CircularProgress size={50} />
               </Box>
-              <TableContainer component={Paper} variant="outlined">
-                <Table size="small" className="text-sm">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell width={40}>状态</TableCell>
-                      <TableCell>文件名</TableCell>
-                      <TableCell>分享链接</TableCell>
-                      <TableCell>提取码</TableCell>
-                      <TableCell>信息</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {filteredResults.map((result) => (
-                      <TableRow key={result.id}>
-                        <TableCell>{getStatusIcon(result.status)}</TableCell>
-                        <TableCell>{result.fileName}</TableCell>
-                        <TableCell>
-                          {result.shareLink || "-"}
-                          {result.shareLink && (
-                            <IconButton
-                              size="small"
-                              onClick={() =>
-                                navigator.clipboard.writeText(result.shareLink)
-                              }
-                            >
-                              <ContentCopyIcon fontSize="small" />
-                            </IconButton>
-                          )}
-                        </TableCell>
-                        <TableCell>{result.extractCode || "-"}</TableCell>
-                        <TableCell>
-                          {getStatusText(result.status, result.message)}
-                        </TableCell>
+            )}
+            {/* 加载完成 */}
+            {shareResults.length > 0 && !loadingShareData && (
+              <>
+                <Box className="flex justify-between items-center mb-2">
+                  <Box>
+                    <h3 className="font-medium text-base">分享结果</h3>
+                    <Typography variant="caption" color="textSecondary">
+                      总计: {shareResults.length} | 准备:{" "}
+                      {getStatusCount("ready")} | 分享中:{" "}
+                      {getStatusCount("sharing")} | 成功:{" "}
+                      {getStatusCount("success")} | 失败:{" "}
+                      {getStatusCount("error")}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    {/* 筛选 */}
+                    <FormControl size="small">
+                      <Select
+                        value={filterStatus}
+                        size="small"
+                        onChange={(e) =>
+                          setFilterStatus(e.target.value as typeof filterStatus)
+                        }
+                      >
+                        <MenuItem value="all">全部</MenuItem>
+                        <MenuItem value="ready">准备分享</MenuItem>
+                        <MenuItem value="sharing">分享中</MenuItem>
+                        <MenuItem value="success">分享成功</MenuItem>
+                        <MenuItem value="error">分享失败</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </Box>
+                <TableContainer component={Paper} variant="outlined">
+                  <Table size="small" className="text-sm">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell width={40}>状态</TableCell>
+                        <TableCell>文件名</TableCell>
+                        <TableCell>分享链接</TableCell>
+                        <TableCell>提取码</TableCell>
+                        <TableCell>信息</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-          )}
+                    </TableHead>
+                    <TableBody>
+                      {filteredResults.map((result) => (
+                        <TableRow key={result.id}>
+                          <TableCell>{getStatusIcon(result.status)}</TableCell>
+                          <TableCell>{result.fileName}</TableCell>
+                          <TableCell>
+                            {result.shareLink || "-"}
+                            {result.shareLink && (
+                              <IconButton
+                                size="small"
+                                onClick={() => copy(result.shareLink)}
+                              >
+                                <ContentCopyIcon fontSize="small" />
+                              </IconButton>
+                            )}
+                          </TableCell>
+                          <TableCell>{result.extractCode || "-"}</TableCell>
+                          <TableCell>
+                            {getStatusText(result.status, result.message)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </>
+            )}
+          </Box>
         </Box>
 
         {/* 底部按钮 */}
@@ -486,7 +517,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
               variant="outlined"
               startIcon={<ContentCopyIcon />}
               onClick={handleCopy}
-              disabled={shareResults.length === 0 || isSharing}
+              disabled={filteredResults.length === 0 || isSharing}
               size="small"
             >
               复制
@@ -495,7 +526,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
               variant="outlined"
               startIcon={<FileDownloadIcon />}
               onClick={handleDownloadLinks}
-              disabled={shareResults.length === 0 || isSharing}
+              disabled={filteredResults.length === 0 || isSharing}
               size="small"
             >
               下载
@@ -504,7 +535,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
               variant="outlined"
               startIcon={<ArticleIcon />}
               onClick={handleDownloadExcel}
-              disabled={shareResults.length === 0 || isSharing}
+              disabled={filteredResults.length === 0 || isSharing}
               size="small"
             >
               导出

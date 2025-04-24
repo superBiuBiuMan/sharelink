@@ -54,3 +54,13 @@ export interface ShareConfig {
   shareDelay: number; // 分享延迟
   allowFastAccess: boolean; // 是否允许快速访问
 }
+
+export interface ShareResponse {
+  pass_code: string; //提取码
+  share_error_files: any[]; //分享失败文件
+  share_id: string; //分享id
+  share_list: any[]; //分享列表
+  share_text: string; //分享文本
+  share_text_ext: string | null; //分享文本扩展
+  share_url: string; //分享链接
+}

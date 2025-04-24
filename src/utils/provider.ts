@@ -1,8 +1,8 @@
 import { createContext, useContext } from "react";
 
 export const BaseCloudInfo = createContext({
-  name: "",
-  type: "",
+  name: "1",
+  type: "2",
 });
 
 export const useBaseCloudInfo = () => {
