@@ -360,7 +360,18 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     selectedItems.length === filteredResults.length;
 
   return (
-    <Drawer open={open} onClose={handleCancelClose} anchor="right">
+    <Drawer
+      open={open}
+      onClose={handleCancelClose}
+      anchor="right"
+      slotProps={{
+        paper: {
+          sx: {
+            width: "40vw",
+          },
+        },
+      }}
+    >
       <Box className="flex flex-col h-full p-3">
         {/* 标题 */}
         <Box className="flex justify-between items-center mb-2">
@@ -525,11 +536,34 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                     </FormControl>
                   </Box>
                 </Box>
-                <TableContainer component={Paper} variant="outlined">
-                  <Table size="small" className="text-sm">
+                <TableContainer
+                  component={Paper}
+                  variant="outlined"
+                  sx={{
+                    width: "100%",
+                    overflow: "auto",
+                    position: "relative",
+                  }}
+                >
+                  <Table
+                    size="small"
+                    className="text-sm"
+                    stickyHeader
+                    sx={{ minWidth: 650 }}
+                  >
                     <TableHead>
                       <TableRow>
-                        <TableCell padding="checkbox">
+                        <TableCell
+                          padding="checkbox"
+                          sx={{
+                            position: "sticky",
+                            left: 0,
+                            zIndex: 3,
+                            backgroundColor: "#f5f5f5",
+                            minWidth: "50px",
+                            width: "50px",
+                          }}
+                        >
                           <Checkbox
                             size="small"
                             indeterminate={
@@ -540,17 +574,30 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                             disabled={filteredResults.length === 0 || isSharing}
                           />
                         </TableCell>
-                        <TableCell width={40}>状态</TableCell>
+                        <TableCell style={{ minWidth: "100px" }}>
+                          状态
+                        </TableCell>
                         <TableCell>文件名</TableCell>
                         <TableCell>分享链接</TableCell>
                         <TableCell>提取码</TableCell>
-                        <TableCell>信息</TableCell>
+                        <TableCell style={{ minWidth: "100px" }}>
+                          信息
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {filteredResults.map((result) => (
                         <TableRow key={result.id}>
-                          <TableCell padding="checkbox">
+                          <TableCell
+                            padding="checkbox"
+                            sx={{
+                              position: "sticky",
+                              left: 0,
+                              zIndex: 2,
+                              backgroundColor: "white",
+                              borderRight: "1px solid rgba(224, 224, 224, 1)",
+                            }}
+                          >
                             <Checkbox
                               size="small"
                               checked={selectedItems.includes(result.id)}
@@ -558,9 +605,28 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                               disabled={isSharing}
                             />
                           </TableCell>
-                          <TableCell>{getStatusIcon(result.status)}</TableCell>
-                          <TableCell>{result.fileName}</TableCell>
-                          <TableCell>
+                          <TableCell align="center">
+                            {getStatusIcon(result.status)}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              maxWidth: "200px",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                            title={result.fileName}
+                          >
+                            {result.fileName}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              maxWidth: "250px",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
                             {result.shareLink || "-"}
                             {result.shareLink && (
                               <IconButton
