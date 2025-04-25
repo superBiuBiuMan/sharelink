@@ -1,10 +1,8 @@
 import {
   Box,
-  Divider,
   TextField,
   FormControl,
   FormControlLabel,
-  Button,
   Select,
   MenuItem,
   InputLabel,
@@ -27,13 +25,8 @@ import { cloudEnum } from "@/utils/info";
 import { shareLogicMap } from "@/utils/shareLogic";
 import { useState, useImperativeHandle, forwardRef } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import ShareBtn from "@/components/ShareBtn";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import ArticleIcon from "@mui/icons-material/Article";
 import ErrorIcon from "@mui/icons-material/Error";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
-import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
@@ -52,10 +45,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import useShare from "@/hooks/useShare/index";
 import type { FileShareStatus } from "@/hooks/useShare/types";
 import Drawer from "@/components/Drawer";
-/**
- * 迅雷云盘批量分享抽屉组件
- * 提供批量分享文件的功能，包括配置分享参数、执行分享、管理分享结果等
- */
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   // 获取云盘名称
   const { name: cloudName } = useBaseCloudInfo();

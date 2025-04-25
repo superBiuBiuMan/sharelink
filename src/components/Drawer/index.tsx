@@ -1,5 +1,4 @@
-import { Drawer, Box, Divider, IconButton, Typography } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Drawer, Box, Divider } from "@mui/material";
 import { ReactNode, forwardRef } from "react";
 import Footer from "./footer";
 import Header from "./header";
@@ -26,7 +25,6 @@ export interface BaseDrawerProps {
  */
 const BaseDrawer = forwardRef<BaseDrawerRef, BaseDrawerProps>((props, ref) => {
   const {
-    title = "标题",
     open,
     onClose,
     width = "40vw",

@@ -12,6 +12,10 @@ export const cloudInfoAll = {
     matchUrl: [new RegExp("pan.xunlei.com/*")], // 匹配url
     mountFn: () => {
       const appContainer = document.createElement("li");
+      appContainer.style.cssText = `
+       display: flex;
+       justify-content: center;
+      `;
       const mountDOM = document.querySelector(
         ".pan-wrapper-asider > ul"
       ) as HTMLElement;
