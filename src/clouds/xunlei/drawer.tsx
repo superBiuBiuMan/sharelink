@@ -51,6 +51,7 @@ import { useBaseCloudInfo } from "@/utils/provider";
 import { getShareInfo, transformFileInfo } from "./tools";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useShare from "@/hooks/useShare/index";
+import type { FileShareStatus } from "@/hooks/useShare/types";
 /**
  * 迅雷云盘批量分享抽屉组件
  * 提供批量分享文件的功能，包括配置分享参数、执行分享、管理分享结果等
@@ -257,7 +258,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
    * @param status 状态类型
    * @returns 对应的图标组件
    */
-  const getStatusIcon = (status: "ready" | "sharing" | "success" | "error") => {
+  const getStatusIcon = (status: FileShareStatus) => {
     switch (status) {
       case "ready":
         return <HourglassEmptyIcon fontSize="small" color="disabled" />;
@@ -276,10 +277,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
    * @param message 可选的错误消息
    * @returns 状态文本
    */
-  const getStatusText = (
-    status: "ready" | "sharing" | "success" | "error",
-    message?: string
-  ) => {
+  const getStatusText = (status: FileShareStatus, message?: string) => {
     switch (status) {
       case "ready":
         return "准备分享";
@@ -646,7 +644,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                             {result.shareLink && (
                               <IconButton
                                 size="small"
-                                onClick={() => copyLink(result.shareLink)}
+                                onClick={() => copyLink(result.shareLink ?? "")}
                               >
                                 <ContentCopyIcon fontSize="small" />
                               </IconButton>

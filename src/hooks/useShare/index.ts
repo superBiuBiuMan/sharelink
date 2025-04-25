@@ -65,7 +65,7 @@ function useShare<T extends BaseShareResult>({
   /**
    * 导出分享链接为Excel文件
    */
-  const handleDownloadExcel = (text: string) => {
+  const handleDownloadExcel = (text: Record<string, any>[]) => {
     exportXlsxFile(`${cloudName}-批量分享链接-${getTimestamp()}.xlsx`, text);
   };
 
