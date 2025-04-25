@@ -6,8 +6,16 @@ import {
   getTimestamp,
   exportXlsxFile,
 } from "@/utils/common";
-function useShare({ cloudName }: { cloudName: string }) {
+import type { FileShareStatus, BaseShareResult } from "./types";
+import { FileShareStatusEnum } from "./types";
+function useShare<T extends BaseShareResult>({
+  cloudName,
+}: {
+  cloudName: string;
+}) {
   const notifications = useNotifications();
+  // 分享配置面板是否展开
+  const [configExpanded, setConfigExpanded] = useState(true);
   // 是否正在加载分享数据
   const [loadingShareData, setLoadingShareData] = useState(false);
   // 是否正在分享过程中
@@ -18,14 +26,19 @@ function useShare({ cloudName }: { cloudName: string }) {
   const [isPrepared, setIsPrepared] = useState(false);
   // 是否正在取消分享（用于UI状态更新）
   const [isCancelling, setIsCancelling] = useState(false);
-
+  // 状态筛选器，用于筛选显示特定状态的分享结果
+  const [filterStatus, setFilterStatus] = useState<FileShareStatus>(
+    FileShareStatusEnum.all
+  );
+  // 分享结果列表
+  const [shareResults, setShareResults] = useState<T[]>([]);
   // 是否正在取消分享的引用值（避免状态更新异步问题）
   const isCancellingRef = useRef(false);
   /**
    * 复制分享链接到剪贴板
    * 格式：文件名: 分享链接 提取码: 提取码
    */
-  const handleCopy = (text: any) => {
+  const handleCopy = (text: string) => {
     copy(text)
       .then(() => {
         notifications.show("复制成功", {
@@ -45,21 +58,21 @@ function useShare({ cloudName }: { cloudName: string }) {
    * 下载分享链接为txt文件
    * 格式：文件名, 分享链接, 提取码
    */
-  const handleDownloadLinks = (text: any) => {
+  const handleDownloadLinks = (text: string) => {
     downloadTxt(text, `${cloudName}-批量分享链接-${getTimestamp()}.txt`);
   };
 
   /**
    * 导出分享链接为Excel文件
    */
-  const handleDownloadExcel = (text: any) => {
+  const handleDownloadExcel = (text: string) => {
     exportXlsxFile(`${cloudName}-批量分享链接-${getTimestamp()}.xlsx`, text);
   };
 
   /**
    * 复制单个链接到剪贴板
    */
-  const copyLink = (link: any) => {
+  const copyLink = (link: string) => {
     copy(link)
       .then(() => {
         notifications.show("链接已复制", {
@@ -82,12 +95,18 @@ function useShare({ cloudName }: { cloudName: string }) {
     isPrepared,
     isCancelling,
     isCancellingRef,
+    filterStatus,
+    shareResults,
+    configExpanded,
 
     setLoadingShareData,
     setIsSharing,
     setIsPreparingShare,
     setIsPrepared,
     setIsCancelling,
+    setFilterStatus,
+    setShareResults,
+    setConfigExpanded,
 
     handleCopy,
     handleDownloadLinks,

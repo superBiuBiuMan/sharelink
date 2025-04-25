@@ -1,7 +1,8 @@
 import { findLocalStorageKeysWithPrefix } from "@/utils/common";
 import type { ShareResult } from "./types";
 import { bytesToSize } from "@/utils/size";
-import { FileShareStatusEnum } from "@/enum/index";
+import { FileShareStatusEnum } from "@/hooks/useShare/types";
+
 import { extractOptions, expireTimeOptions } from "./options";
 /**
  * 获取用户分享信息

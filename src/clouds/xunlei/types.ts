@@ -1,4 +1,5 @@
-import type { FileShareStatusEnumTypes } from "@/enum/index";
+import type { BaseShareResult, ShareStatus } from "@/hooks/useShare/types";
+
 //过期时间
 export enum ExpireTimeEnum {
   oneDay = 1,
@@ -39,7 +40,7 @@ export interface ShareDrawerRef {
   open: () => void;
 }
 
-export interface CommonResult {
+export interface CommonResult extends BaseShareResult {
   restoreLimit?: any; //提取次数
   expireTime?: any; //有效期
 }
@@ -48,7 +49,7 @@ export interface ShareResult extends CommonResult {
   fileName?: string; //文件名
   shareLink?: string; //分享链接
   extractCode?: string; //提取码
-  status: FileShareStatusEnumTypes; //状态
+  status: ShareStatus; //状态
   fileSize?: string; //文件大小
   message?: string; //错误信息
   restoreLimit?: any; //提取次数

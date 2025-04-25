@@ -36,13 +36,11 @@ import ShareBtn from "@/components/ShareBtn";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ArticleIcon from "@mui/icons-material/Article";
 import ErrorIcon from "@mui/icons-material/Error";
-
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { useNotifications } from "@toolpad/core/useNotifications";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import { extractOptions, expireTimeOptions } from "./options";
 import { ShareDrawerRef, ShareResult, ShareConfig } from "./types";
@@ -56,7 +54,7 @@ import {
 import { useBaseCloudInfo } from "@/utils/provider";
 import { getShareInfo, transformFileInfo } from "./tools";
 import DeleteIcon from "@mui/icons-material/Delete";
-import useShare from "@/hooks/useShare";
+import useShare from "@/hooks/useShare/index";
 /**
  * 迅雷云盘批量分享抽屉组件
  * 提供批量分享文件的功能，包括配置分享参数、执行分享、管理分享结果等
@@ -72,18 +70,24 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     isPrepared,
     isCancelling,
     isCancellingRef,
+    filterStatus,
+    shareResults,
+    configExpanded,
 
     setLoadingShareData,
     setIsSharing,
     setIsPreparingShare,
     setIsPrepared,
     setIsCancelling,
+    setFilterStatus,
+    setShareResults,
+    setConfigExpanded,
 
     handleCopy,
     handleDownloadLinks,
     handleDownloadExcel,
     copyLink,
-  } = useShare({ cloudName });
+  } = useShare<ShareResult>({ cloudName });
   // 抽屉开关状态
   const [open, setOpen] = useState(false);
 
@@ -94,14 +98,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     shareDelay: 300, // 分享间隔延迟，单位毫秒
     allowFastAccess: true, // 是否允许快速访问（链接中包含提取码）
   });
-  // 分享结果列表
-  const [shareResults, setShareResults] = useState<ShareResult[]>([]);
-  // 状态筛选器，用于筛选显示特定状态的分享结果
-  const [filterStatus, setFilterStatus] = useState<
-    "all" | "ready" | "sharing" | "success" | "error"
-  >("all");
-  // 分享配置面板是否展开
-  const [configExpanded, setConfigExpanded] = useState(true);
   // 已选中项的ID列表
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   /**
