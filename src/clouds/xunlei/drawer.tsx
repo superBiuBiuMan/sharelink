@@ -5,8 +5,6 @@ import {
   TextField,
   FormControl,
   FormControlLabel,
-  Radio,
-  RadioGroup,
   Button,
   Select,
   MenuItem,
@@ -22,8 +20,6 @@ import {
   IconButton,
   Tooltip,
   Typography,
-  Tabs,
-  Tab,
   Collapse,
   CircularProgress,
   Checkbox,
@@ -160,7 +156,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         });
 
         // 调用分享API
-        let res: ShareResponse = await shareLogicMap[cloudEnum.xunlei].share(
+        let res: ShareResponse = (await shareLogicMap[cloudEnum.xunlei].share(
           {
             expiration_days: shareConfig.expireTime + "", // 过期时间
             file_ids: [shareResults[i].id], // 文件id
@@ -182,7 +178,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
               "x-client-id": xClientId,
             },
           }
-        );
+        )) as ShareResponse;
 
         // 补充响应信息
         res = {

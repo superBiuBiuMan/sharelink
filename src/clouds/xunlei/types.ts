@@ -1,4 +1,4 @@
-import type { BaseShareResult, ShareStatus } from "@/hooks/useShare/types";
+import type { BaseShareResult, FileShareStatus } from "@/hooks/useShare/types";
 
 //过期时间
 export enum ExpireTimeEnum {
@@ -49,7 +49,7 @@ export interface ShareResult extends CommonResult {
   fileName?: string; //文件名
   shareLink?: string; //分享链接
   extractCode?: string; //提取码
-  status: ShareStatus; //状态
+  status: FileShareStatus; //状态
   fileSize?: string; //文件大小
   message?: string; //错误信息
   restoreLimit?: any; //提取次数

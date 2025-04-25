@@ -31,7 +31,7 @@ function useShare<T extends BaseShareResult>({
     FileShareStatusEnum.all
   );
   // 分享结果列表
-  const [shareResults, setShareResults] = useState<T[]>([]);
+  const [shareResults, setShareResults] = useState<T[]>([] as T[]);
   // 是否正在取消分享的引用值（避免状态更新异步问题）
   const isCancellingRef = useRef(false);
   /**
@@ -114,7 +114,7 @@ function useShare<T extends BaseShareResult>({
     copyLink,
 
     notifications,
-  };
+  } as const;
 }
 
 export default useShare;
