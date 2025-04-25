@@ -30,17 +30,10 @@ import {
 } from "@mui/material";
 import { cloudEnum } from "@/utils/info";
 import { shareLogicMap } from "@/utils/shareLogic";
-import {
-  useState,
-  useImperativeHandle,
-  forwardRef,
-  useEffect,
-  useRef,
-} from "react";
+import { useState, useImperativeHandle, forwardRef } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ShareBtn from "@/components/ShareBtn";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import ShareIcon from "@mui/icons-material/Share";
 import ArticleIcon from "@mui/icons-material/Article";
 import ErrorIcon from "@mui/icons-material/Error";
 
@@ -57,19 +50,13 @@ import sleep from "@/utils/sleep";
 import { ExtractEnum, ExpireTimeEnum } from "./types";
 import type { ShareResponse } from "./types";
 import {
-  copy,
-  downloadTxt,
-  getTimestamp,
-  exportXlsxFile,
-} from "@/utils/common";
-import { useBaseCloudInfo } from "@/utils/provider";
-import {
-  getShareInfo,
-  transformFileInfo,
   transformShareInfoForXlsx,
+  formatStringForCopyAndDownload,
 } from "./tools";
+import { useBaseCloudInfo } from "@/utils/provider";
+import { getShareInfo, transformFileInfo } from "./tools";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import useShare from "@/hooks/useShare";
 /**
  * 迅雷云盘批量分享抽屉组件
  * 提供批量分享文件的功能，包括配置分享参数、执行分享、管理分享结果等
@@ -77,7 +64,26 @@ import DeleteIcon from "@mui/icons-material/Delete";
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   // 获取云盘名称
   const { name: cloudName } = useBaseCloudInfo();
+  const {
+    notifications,
+    loadingShareData,
+    isSharing,
+    isPreparingShare,
+    isPrepared,
+    isCancelling,
+    isCancellingRef,
 
+    setLoadingShareData,
+    setIsSharing,
+    setIsPreparingShare,
+    setIsPrepared,
+    setIsCancelling,
+
+    handleCopy,
+    handleDownloadLinks,
+    handleDownloadExcel,
+    copyLink,
+  } = useShare({ cloudName });
   // 抽屉开关状态
   const [open, setOpen] = useState(false);
 
@@ -88,42 +94,16 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     shareDelay: 300, // 分享间隔延迟，单位毫秒
     allowFastAccess: true, // 是否允许快速访问（链接中包含提取码）
   });
-
   // 分享结果列表
   const [shareResults, setShareResults] = useState<ShareResult[]>([]);
-
   // 状态筛选器，用于筛选显示特定状态的分享结果
   const [filterStatus, setFilterStatus] = useState<
     "all" | "ready" | "sharing" | "success" | "error"
   >("all");
-
-  // 是否正在加载分享数据
-  const [loadingShareData, setLoadingShareData] = useState(false);
-
   // 分享配置面板是否展开
   const [configExpanded, setConfigExpanded] = useState(true);
-
-  // 是否正在分享过程中
-  const [isSharing, setIsSharing] = useState(false);
-
-  // 是否准备分享（获取文件列表阶段）
-  const [isPreparingShare, setIsPreparingShare] = useState(true);
-
-  // 是否已准备好分享（文件列表已获取完成）
-  const [isPrepared, setIsPrepared] = useState(false);
-
-  // 是否正在取消分享（用于UI状态更新）
-  const [isCancelling, setIsCancelling] = useState(false);
-
-  // 是否正在取消分享的引用值（避免状态更新异步问题）
-  const isCancellingRef = useRef(false);
-
-  // 提示框工具
-  const notifications = useNotifications();
-
   // 已选中项的ID列表
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-
   /**
    * 向父组件暴露打开抽屉的方法
    */
@@ -261,56 +241,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     setIsSharing(false);
     isCancellingRef.current = false;
   };
-
-  /**
-   * 复制分享链接到剪贴板
-   * 格式：文件名: 分享链接 提取码: 提取码
-   */
-  const handleCopy = () => {
-    const text = filteredResults
-      .map(
-        (result) =>
-          `${result.fileName}: ${result.shareLink} 提取码: ${result.extractCode}`
-      )
-      .join("\n");
-
-    copy(text)
-      .then(() => {
-        notifications.show("复制成功", {
-          autoHideDuration: 1500,
-          severity: "success",
-        });
-      })
-      .catch((error: any) => {
-        notifications.show("复制失败" + error, {
-          autoHideDuration: 1500,
-          severity: "error",
-        });
-      });
-  };
-
-  /**
-   * 下载分享链接为txt文件
-   * 格式：文件名, 分享链接, 提取码
-   */
-  const handleDownloadLinks = () => {
-    const text = filteredResults
-      .map(
-        (result) =>
-          `${result.fileName}, ${result.shareLink}, ${result.extractCode}`
-      )
-      .join("\n");
-    downloadTxt(text, `${cloudName}-批量分享链接-${getTimestamp()}.txt`);
-  };
-
-  /**
-   * 导出分享链接为Excel文件
-   */
-  const handleDownloadExcel = () => {
-    const data = transformShareInfoForXlsx(filteredResults);
-    exportXlsxFile(`${cloudName}-批量分享链接-${getTimestamp()}.xlsx`, data);
-  };
-
   /**
    * 根据筛选条件过滤分享结果
    */
@@ -724,7 +654,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                             {result.shareLink && (
                               <IconButton
                                 size="small"
-                                onClick={() => copy(result.shareLink)}
+                                onClick={() => copyLink(result.shareLink)}
                               >
                                 <ContentCopyIcon fontSize="small" />
                               </IconButton>
@@ -781,7 +711,9 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             <Button
               variant="outlined"
               startIcon={<ContentCopyIcon />}
-              onClick={handleCopy}
+              onClick={() =>
+                handleCopy(formatStringForCopyAndDownload(filteredResults))
+              }
               disabled={filteredResults.length === 0 || isSharing}
               size="small"
             >
@@ -791,7 +723,11 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             <Button
               variant="outlined"
               startIcon={<FileDownloadIcon />}
-              onClick={handleDownloadLinks}
+              onClick={() => {
+                handleDownloadLinks(
+                  formatStringForCopyAndDownload(filteredResults)
+                );
+              }}
               disabled={filteredResults.length === 0 || isSharing}
               size="small"
             >
@@ -801,7 +737,10 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             <Button
               variant="outlined"
               startIcon={<ArticleIcon />}
-              onClick={handleDownloadExcel}
+              onClick={() => {
+                const data = transformShareInfoForXlsx(filteredResults);
+                handleDownloadExcel(data);
+              }}
               disabled={filteredResults.length === 0 || isSharing}
               size="small"
             >

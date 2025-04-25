@@ -81,3 +81,13 @@ export const transformShareInfoForXlsx = (list: ShareResult[]) => {
     };
   });
 };
+
+//格式化字符串提供给复制和下载
+export const formatStringForCopyAndDownload = (list: ShareResult[]) => {
+  if (!list || !list?.length) return "";
+  return list
+    ?.map((item) => {
+      return `${item?.fileName}: ${item?.shareLink} 提取码: ${item?.extractCode}`;
+    })
+    .join("\n");
+};
