@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { useNotifications } from "@toolpad/core/useNotifications";
+import { CircularProgress } from "@mui/material";
 import {
   copy,
   downloadTxt,
@@ -87,7 +88,6 @@ function useShare<T extends BaseShareResult>({
         });
       });
   };
-
   return {
     loadingShareData,
     isSharing,

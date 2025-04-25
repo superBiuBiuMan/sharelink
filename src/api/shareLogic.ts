@@ -1,4 +1,4 @@
-import { cloudEnum } from "./info";
+import { cloudEnum } from "../utils/info";
 import http from "@/http/index";
 import type { AlovaMethodCreateConfig, AlovaGenerics } from "alova";
 export const shareLogicMap = {

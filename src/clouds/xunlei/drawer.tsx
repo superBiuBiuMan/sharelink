@@ -22,14 +22,13 @@ import {
   Checkbox,
 } from "@mui/material";
 import { cloudEnum } from "@/utils/info";
-import { shareLogicMap } from "@/utils/shareLogic";
+import { shareLogicMap } from "@/api/shareLogic";
 import { useState, useImperativeHandle, forwardRef } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import ErrorIcon from "@mui/icons-material/Error";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import StatusIcon from "@/components/StatucIcon";
+import StatusText from "@/components/StatusText";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import { extractOptions, expireTimeOptions } from "./options";
 import { ShareDrawerRef, ShareResult, ShareConfig } from "./types";
 import sleep from "@/utils/sleep";
@@ -242,44 +241,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   ) => {
     return shareResults.filter((r) => r.status === status).length;
   };
-
-  /**
-   * 获取状态对应的图标
-   * @param status 状态类型
-   * @returns 对应的图标组件
-   */
-  const getStatusIcon = (status: FileShareStatus) => {
-    switch (status) {
-      case "ready":
-        return <HourglassEmptyIcon fontSize="small" color="disabled" />;
-      case "sharing":
-        return <CircularProgress size={16} />;
-      case "success":
-        return <CheckCircleIcon fontSize="small" color="success" />;
-      case "error":
-        return <ErrorIcon fontSize="small" color="error" />;
-    }
-  };
-
-  /**
-   * 获取状态对应的文本描述
-   * @param status 状态类型
-   * @param message 可选的错误消息
-   * @returns 状态文本
-   */
-  const getStatusText = (status: FileShareStatus, message?: string) => {
-    switch (status) {
-      case "ready":
-        return "准备分享";
-      case "sharing":
-        return "分享中...";
-      case "success":
-        return "分享成功";
-      case "error":
-        return message || "分享失败";
-    }
-  };
-
   /**
    * 处理取消/关闭抽屉
    * 重置所有状态
@@ -623,7 +584,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                           </TableCell>
                           {/* 状态图标 */}
                           <TableCell align="center">
-                            {getStatusIcon(result.status)}
+                            <StatusIcon status={result.status} />
                           </TableCell>
                           {/* 文件名（处理溢出） */}
                           <TableCell
@@ -654,7 +615,10 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                               whiteSpace: "nowrap",
                             }}
                           >
-                            {getStatusText(result.status, result.message)}
+                            <StatusText
+                              status={result.status}
+                              message={result.message}
+                            />
                           </TableCell>
                         </TableRow>
                       ))}

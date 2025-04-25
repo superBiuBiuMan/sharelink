@@ -17,18 +17,21 @@ import {
   TextField,
   Switch,
   InputLabel,
+  Checkbox,
   FormControlLabel,
 } from "@mui/material";
 import { useState, useImperativeHandle, forwardRef } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { ShareDrawerRef, ShareResult } from "../xunlei/types";
+import type { ShareDrawerRef, ShareResult } from "./types";
 import { useBaseCloudInfo } from "@/utils/provider";
 import useShare from "@/hooks/useShare/index";
 import Drawer from "@/components/Drawer";
 import { extractOptions, expireOptions } from "./options";
 import { ExtractEnum, ExpireTimeEnum } from "./types";
 import defaultGlobalSetting from "@/setting";
+import { transformShareInfo } from "./tools";
+import { findNodeReact } from "@/utils/nodeFind";
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   // 获取云盘名称
   const { name: cloudName } = useBaseCloudInfo();
@@ -66,16 +69,13 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     enableCustomCode: false, // 是否启用自定义提取码
     customCode: "", // 自定义提取码
   });
-  // const [shareTheme, setShareTheme] = useState(""); // 分享主题
-  // const [extractLimit, setExtractLimit] = useState<ExtractEnum>(
-  //   ExtractEnum.forever
-  // ); // 下载次数
-  // const [expireTime, setExpireTime] = useState<ExpireTimeEnum>(
-  //   ExpireTimeEnum.forever
-  // ); // 有效期
-  // const [enableCustomCode, setEnableCustomCode] = useState(false); // 是否启用自定义提取码
-  // const [customCode, setCustomCode] = useState(""); // 自定义提取码
-
+  /**
+   * 根据筛选条件过滤分享结果
+   */
+  const filteredResults = shareResults.filter((result) => {
+    if (filterStatus === "all") return true;
+    return result.status === filterStatus;
+  });
   /**
    * 向父组件暴露打开抽屉的方法
    */
@@ -93,10 +93,16 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const handlePrepareShare = async () => {
     try {
       setLoadingShareData(true);
-      // TODO: 实现获取分享文件列表的逻辑
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const result = findNodeReact(".file-list", ["selectedRowKeys", "list"]);
+      setShareResults(transformShareInfo(result.list));
       setIsPreparingShare(false);
       setIsPrepared(true);
+    } catch (e) {
+      notifications.show("获取分享文件列表失败" + e, {
+        autoHideDuration: 1500,
+        severity: "error",
+      });
+      console.error(e);
     } finally {
       setLoadingShareData(false);
     }
@@ -370,7 +376,65 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                         <TableCell>信息</TableCell>
                       </TableRow>
                     </TableHead>
-                    <TableBody>{/* TODO: 添加表格内容 */}</TableBody>
+                    <TableBody>
+                      {filteredResults.map((result) => (
+                        <TableRow key={result.id}>
+                          {/* 固定的多选框单元格 */}
+                          <TableCell
+                            padding="checkbox"
+                            sx={{
+                              position: "sticky", // 使用粘性定位
+                              left: 0, // 固定在左侧
+                              zIndex: 2, // 确保在其他单元格之上
+                              backgroundColor: "white", // 数据行背景色
+                              borderRight: "1px solid rgba(224, 224, 224, 1)", // 右侧边框
+                            }}
+                          >
+                            <Checkbox
+                              size="small"
+                              checked={selectedItems.includes(result.id)}
+                              onChange={() => handleItemSelect(result.id)}
+                              disabled={isSharing}
+                            />
+                          </TableCell>
+                          {/* 状态图标 */}
+                          <TableCell align="center">
+                            {getStatusIcon(result.status)}
+                          </TableCell>
+                          {/* 文件名（处理溢出） */}
+                          <TableCell
+                            title={result.fileName} // 悬停提示完整名称
+                          >
+                            {result.fileName}
+                          </TableCell>
+                          {/* 分享链接（处理溢出） */}
+                          <TableCell>
+                            {result.shareLink || "-"}
+                            {result.shareLink && (
+                              <IconButton
+                                size="small"
+                                onClick={() => copyLink(result.shareLink ?? "")}
+                              >
+                                <ContentCopyIcon fontSize="small" />
+                              </IconButton>
+                            )}
+                          </TableCell>
+                          {/* 提取码 */}
+                          <TableCell>{result.extractCode || "-"}</TableCell>
+                          {/* 状态信息 */}
+                          <TableCell
+                            sx={{
+                              maxWidth: "250px",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {getStatusText(result.status, result.message)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
                   </Table>
                 </TableContainer>
               </>
