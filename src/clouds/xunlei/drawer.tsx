@@ -45,6 +45,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import useShare from "@/hooks/useShare/index";
 import type { FileShareStatus } from "@/hooks/useShare/types";
 import Drawer from "@/components/Drawer";
+import defaultGlobalSetting from "@/setting";
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   // 获取云盘名称
   const { name: cloudName } = useBaseCloudInfo();
@@ -81,7 +82,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const [shareConfig, setShareConfig] = useState<ShareConfig>({
     expireTime: ExpireTimeEnum.forever, // 提取期限，默认永久
     extractLimit: ExtractEnum.forever, // 提取次数，默认不限制
-    shareDelay: 300, // 分享间隔延迟，单位毫秒
+    shareDelay: defaultGlobalSetting.defaultShareDelay, // 分享间隔延迟，单位毫秒
     allowFastAccess: true, // 是否允许快速访问（链接中包含提取码）
   });
   // 已选中项的ID列表
@@ -414,10 +415,10 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                       value={shareConfig.expireTime}
                       label="提取期限"
                       onChange={(e) =>
-                        setShareConfig({
-                          ...shareConfig,
+                        setShareConfig((prev: any) => ({
+                          ...prev,
                           expireTime: Number(e.target.value),
-                        })
+                        }))
                       }
                     >
                       {expireTimeOptions.map((option) => (
@@ -435,10 +436,10 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                       value={shareConfig.extractLimit}
                       label="提取次数"
                       onChange={(e) =>
-                        setShareConfig({
-                          ...shareConfig,
+                        setShareConfig((prev: any) => ({
+                          ...prev,
                           extractLimit: Number(e.target.value),
-                        })
+                        }))
                       }
                     >
                       {extractOptions.map((option) => (
@@ -452,16 +453,15 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                   {/* 分享延迟设置 */}
                   <FormControl fullWidth>
                     <TextField
-                      id="filled-number"
                       label="分享延迟"
                       type="number"
                       variant="filled"
                       value={shareConfig.shareDelay}
                       onChange={(e) =>
-                        setShareConfig({
-                          ...shareConfig,
+                        setShareConfig((prev: any) => ({
+                          ...prev,
                           shareDelay: Number(e.target.value),
-                        })
+                        }))
                       }
                       slotProps={{
                         htmlInput: {
@@ -479,10 +479,10 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                         <Switch
                           checked={shareConfig.allowFastAccess}
                           onChange={(e) =>
-                            setShareConfig({
-                              ...shareConfig,
+                            setShareConfig((prev: any) => ({
+                              ...prev,
                               allowFastAccess: e.target.checked,
-                            })
+                            }))
                           }
                         />
                       }

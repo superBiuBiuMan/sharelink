@@ -14,6 +14,10 @@ import {
   TableRow,
   TableCell,
   Paper,
+  TextField,
+  Switch,
+  InputLabel,
+  FormControlLabel,
 } from "@mui/material";
 import { useState, useImperativeHandle, forwardRef } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -22,7 +26,9 @@ import { ShareDrawerRef, ShareResult } from "../xunlei/types";
 import { useBaseCloudInfo } from "@/utils/provider";
 import useShare from "@/hooks/useShare/index";
 import Drawer from "@/components/Drawer";
-
+import { extractOptions, expireOptions } from "./options";
+import { ExtractEnum, ExpireTimeEnum } from "./types";
+import defaultGlobalSetting from "@/setting";
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   // 获取云盘名称
   const { name: cloudName } = useBaseCloudInfo();
@@ -50,6 +56,25 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
 
   // 抽屉开关状态
   const [open, setOpen] = useState(false);
+
+  // 分享配置状态
+  const [shareConfig, setShareConfig] = useState<any>({
+    shareDelay: defaultGlobalSetting.defaultShareDelay, // 分享延迟
+    shareTheme: "", // 分享主题
+    extractLimit: ExtractEnum.forever, // 下载次数
+    expireTime: ExpireTimeEnum.forever, // 有效期
+    enableCustomCode: false, // 是否启用自定义提取码
+    customCode: "", // 自定义提取码
+  });
+  // const [shareTheme, setShareTheme] = useState(""); // 分享主题
+  // const [extractLimit, setExtractLimit] = useState<ExtractEnum>(
+  //   ExtractEnum.forever
+  // ); // 下载次数
+  // const [expireTime, setExpireTime] = useState<ExpireTimeEnum>(
+  //   ExpireTimeEnum.forever
+  // ); // 有效期
+  // const [enableCustomCode, setEnableCustomCode] = useState(false); // 是否启用自定义提取码
+  // const [customCode, setCustomCode] = useState(""); // 自定义提取码
 
   /**
    * 向父组件暴露打开抽屉的方法
@@ -161,7 +186,133 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             <Collapse in={configExpanded}>
               <Box className="p-3 pt-0 border-t">
                 <Box className="grid grid-cols-2 gap-3">
-                  {/* TODO: 添加分享配置选项 */}
+                  {/* 分享延迟 */}
+                  <FormControl fullWidth size="small">
+                    <TextField
+                      label="分享延迟"
+                      size="small"
+                      type="number"
+                      value={shareConfig.shareDelay}
+                      onChange={(e) =>
+                        setShareConfig((prev: any) => ({
+                          ...prev,
+                          shareDelay: Number(e.target.value),
+                        }))
+                      }
+                      slotProps={{
+                        htmlInput: {
+                          min: 1,
+                          step: 100,
+                        },
+                      }}
+                    />
+                  </FormControl>
+
+                  {/* 分享主题 */}
+                  <FormControl fullWidth size="small">
+                    <TextField
+                      size="small"
+                      label="分享主题"
+                      value={shareConfig.shareTheme}
+                      onChange={(e) =>
+                        setShareConfig((prev: any) => ({
+                          ...prev,
+                          shareTheme: e.target.value,
+                        }))
+                      }
+                      placeholder="请输入分享主题"
+                      slotProps={{
+                        htmlInput: {
+                          maxLength: 30,
+                        },
+                      }}
+                    />
+                  </FormControl>
+
+                  {/* 下载次数 */}
+                  <FormControl fullWidth size="small">
+                    <InputLabel>下载次数</InputLabel>
+                    <Select
+                      label="下载次数"
+                      value={shareConfig.extractLimit}
+                      onChange={(e) =>
+                        setShareConfig((prev: any) => ({
+                          ...prev,
+                          extractLimit: Number(e.target.value),
+                        }))
+                      }
+                      size="small"
+                    >
+                      {extractOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+
+                  {/* 有效期 */}
+                  <FormControl fullWidth size="small">
+                    <InputLabel>有效期</InputLabel>
+                    <Select
+                      label="有效期"
+                      value={shareConfig.expireTime}
+                      onChange={(e) =>
+                        setShareConfig((prev: any) => ({
+                          ...prev,
+                          expireTime: Number(e.target.value),
+                        }))
+                      }
+                      size="small"
+                    >
+                      {expireOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+
+                  {/* 开启提取码开关 */}
+                  <FormControl fullWidth>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={shareConfig.enableCustomCode}
+                          onChange={(e) =>
+                            setShareConfig((prev: any) => ({
+                              ...prev,
+                              enableCustomCode: e.target.checked,
+                            }))
+                          }
+                          size="small"
+                        />
+                      }
+                      label="开启提取码"
+                    />
+                  </FormControl>
+
+                  {/* 开启提取码输入框 */}
+                  {shareConfig.enableCustomCode && (
+                    <FormControl fullWidth>
+                      <TextField
+                        size="small"
+                        value={shareConfig.customCode}
+                        onChange={(e) =>
+                          setShareConfig((prev: any) => ({
+                            ...prev,
+                            customCode: e.target.value,
+                          }))
+                        }
+                        placeholder="请输入4位提取码(只能包含大小写英文+数字)"
+                        slotProps={{
+                          htmlInput: {
+                            maxLength: 4,
+                          },
+                        }}
+                      />
+                    </FormControl>
+                  )}
                 </Box>
               </Box>
             </Collapse>
