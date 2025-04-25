@@ -19,10 +19,15 @@ import {
   InputLabel,
   Checkbox,
   FormControlLabel,
+  Tooltip,
 } from "@mui/material";
 import { useState, useImperativeHandle, forwardRef } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import DeleteIcon from "@mui/icons-material/Delete";
+import StatusIcon from "@/components/StatucIcon";
+import StatusText from "@/components/StatusText";
 import type { ShareDrawerRef, ShareResult } from "./types";
 import { useBaseCloudInfo } from "@/utils/provider";
 import useShare from "@/hooks/useShare/index";
@@ -55,6 +60,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     setFilterStatus,
     setShareResults,
     setConfigExpanded,
+    copyLink,
   } = useShare<ShareResult>({ cloudName });
 
   // 抽屉开关状态
@@ -69,6 +75,10 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     enableCustomCode: false, // 是否启用自定义提取码
     customCode: "", // 自定义提取码
   });
+
+  // 添加选中项状态
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
   /**
    * 根据筛选条件过滤分享结果
    */
@@ -94,7 +104,11 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     try {
       setLoadingShareData(true);
       const result = findNodeReact(".file-list", ["selectedRowKeys", "list"]);
-      setShareResults(transformShareInfo(result.list));
+      setShareResults(
+        transformShareInfo(result.list)?.filter((item) =>
+          result.selectedRowKeys.includes(item.id)
+        ) ?? []
+      );
       setIsPreparingShare(false);
       setIsPrepared(true);
     } catch (e) {
@@ -141,6 +155,37 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const handleCancelShare = () => {
     setIsCancelling(true);
     isCancellingRef.current = true;
+  };
+
+  // 处理单个项目选择
+  const handleItemSelect = (id: string) => {
+    setSelectedItems((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  // 处理全选
+  const handleSelectAll = () => {
+    if (selectedItems.length === filteredResults.length) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(filteredResults.map((item) => item.id));
+    }
+  };
+
+  // 处理删除选中项
+  const handleDeleteSelected = () => {
+    setShareResults((prev) =>
+      prev.filter((item) => !selectedItems.includes(item.id))
+    );
+    setSelectedItems([]);
+  };
+
+  // 获取特定状态的结果数量
+  const getStatusCount = (
+    status: "ready" | "sharing" | "success" | "error"
+  ) => {
+    return shareResults.filter((r) => r.status === status).length;
   };
 
   return (
@@ -341,11 +386,25 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                   <Box>
                     <h3 className="font-medium text-base">分享结果</h3>
                     <Typography variant="caption" color="textSecondary">
-                      总计: {shareResults.length}
+                      总计: {shareResults.length} | 待分享:{" "}
+                      {getStatusCount("ready")} | 分享中:{" "}
+                      {getStatusCount("sharing")} | 成功:{" "}
+                      {getStatusCount("success")} | 失败:{" "}
+                      {getStatusCount("error")}
                     </Typography>
                   </Box>
                   <Box className="flex gap-2">
-                    {/* 状态筛选下拉框 */}
+                    {selectedItems.length > 0 && (
+                      <Tooltip title="删除选中项">
+                        <IconButton
+                          size="small"
+                          onClick={handleDeleteSelected}
+                          disabled={isSharing}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                     <FormControl size="small">
                       <Select
                         value={filterStatus}
@@ -369,6 +428,21 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                   <Table size="small" className="text-sm">
                     <TableHead>
                       <TableRow>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            size="small"
+                            checked={
+                              selectedItems.length === filteredResults.length &&
+                              filteredResults.length > 0
+                            }
+                            indeterminate={
+                              selectedItems.length > 0 &&
+                              selectedItems.length < filteredResults.length
+                            }
+                            onChange={handleSelectAll}
+                            disabled={isSharing}
+                          />
+                        </TableCell>
                         <TableCell>状态</TableCell>
                         <TableCell>文件名</TableCell>
                         <TableCell>分享链接</TableCell>
@@ -379,17 +453,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                     <TableBody>
                       {filteredResults.map((result) => (
                         <TableRow key={result.id}>
-                          {/* 固定的多选框单元格 */}
-                          <TableCell
-                            padding="checkbox"
-                            sx={{
-                              position: "sticky", // 使用粘性定位
-                              left: 0, // 固定在左侧
-                              zIndex: 2, // 确保在其他单元格之上
-                              backgroundColor: "white", // 数据行背景色
-                              borderRight: "1px solid rgba(224, 224, 224, 1)", // 右侧边框
-                            }}
-                          >
+                          <TableCell padding="checkbox">
                             <Checkbox
                               size="small"
                               checked={selectedItems.includes(result.id)}
@@ -397,40 +461,45 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                               disabled={isSharing}
                             />
                           </TableCell>
-                          {/* 状态图标 */}
                           <TableCell align="center">
-                            {getStatusIcon(result.status)}
+                            <StatusIcon status={result.status} />
                           </TableCell>
-                          {/* 文件名（处理溢出） */}
-                          <TableCell
-                            title={result.fileName} // 悬停提示完整名称
-                          >
-                            {result.fileName}
-                          </TableCell>
-                          {/* 分享链接（处理溢出） */}
-                          <TableCell>
-                            {result.shareLink || "-"}
-                            {result.shareLink && (
-                              <IconButton
-                                size="small"
-                                onClick={() => copyLink(result.shareLink ?? "")}
-                              >
-                                <ContentCopyIcon fontSize="small" />
-                              </IconButton>
-                            )}
-                          </TableCell>
-                          {/* 提取码 */}
-                          <TableCell>{result.extractCode || "-"}</TableCell>
-                          {/* 状态信息 */}
                           <TableCell
                             sx={{
-                              maxWidth: "250px",
+                              maxWidth: "200px",
                               overflow: "hidden",
                               textOverflow: "ellipsis",
                               whiteSpace: "nowrap",
                             }}
+                            title={result.fileName}
                           >
-                            {getStatusText(result.status, result.message)}
+                            {result.fileName}
+                          </TableCell>
+                          <TableCell>
+                            {result.shareLink ? (
+                              <Box className="flex items-center gap-1">
+                                <span className="truncate max-w-[150px]">
+                                  {result.shareLink}
+                                </span>
+                                <IconButton
+                                  size="small"
+                                  onClick={() =>
+                                    copyLink(result.shareLink ?? "")
+                                  }
+                                >
+                                  <ContentCopyIcon fontSize="small" />
+                                </IconButton>
+                              </Box>
+                            ) : (
+                              "-"
+                            )}
+                          </TableCell>
+                          <TableCell>{result.extractCode || "-"}</TableCell>
+                          <TableCell>
+                            <StatusText
+                              status={result.status}
+                              message={result.message}
+                            />
                           </TableCell>
                         </TableRow>
                       ))}
