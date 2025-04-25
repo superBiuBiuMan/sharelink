@@ -29,7 +29,13 @@ import {
 } from "@mui/material";
 import { cloudEnum } from "@/utils/info";
 import { shareLogicMap } from "@/utils/shareLogic";
-import { useState, useImperativeHandle, forwardRef, useEffect } from "react";
+import {
+  useState,
+  useImperativeHandle,
+  forwardRef,
+  useEffect,
+  useRef,
+} from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ShareBtn from "@/components/ShareBtn";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -46,6 +52,7 @@ import { useNotifications } from "@toolpad/core/useNotifications";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import { extractOptions, expireTimeOptions } from "./options";
 import { ShareDrawerRef, ShareResult, ShareConfig } from "./types";
+import sleep from "@/utils/sleep";
 import { ExtractEnum, ExpireTimeEnum } from "./types";
 import type { ShareResponse } from "./types";
 import {
@@ -79,6 +86,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const [isPreparingShare, setIsPreparingShare] = useState(true); // 是否准备分享->目的是获取文件列表(默认)
   const [isPrepared, setIsPrepared] = useState(false); // 是否已准备好分享 -> 真正开始分享
   const [isCancelling, setIsCancelling] = useState(false); // 是否取消分享
+  const isCancellingRef = useRef(false); // 是否取消分享-同步记录状态
   const notifications = useNotifications();
   useImperativeHandle(ref, () => {
     return {
@@ -113,7 +121,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     } = getShareInfo();
     // 模拟文件逐个开始分享
     for (let i = 0; i < shareResults.length; i++) {
-      if (isCancelling) {
+      if (isCancellingRef.current) {
         setIsSharing(false);
         break;
       }
@@ -189,10 +197,13 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           };
           return updated;
         });
+      } finally {
+        await sleep(shareConfig.shareDelay);
       }
     }
-
+    setIsPreparingShare(true); // 设置为准备分享状态
     setIsSharing(false);
+    isCancellingRef.current = false;
   };
 
   // 复制到剪贴板
@@ -279,16 +290,35 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         return message || "分享失败";
     }
   };
-
+  // 取消关闭按钮
+  const handleCancelClose = () => {
+    setOpen(false);
+    setIsCancelling(false);
+    setIsSharing(false);
+    setIsPreparingShare(true);
+  };
+  // 取消分享
+  const handleCancelShare = () => {
+    setIsCancelling(true); //视图更新
+    isCancellingRef.current = true;
+    setShareResults((prev) => {
+      return prev.map((result) => {
+        if (result.status === "sharing" || result.status === "ready") {
+          return { ...result, status: "ready" };
+        }
+        return result;
+      });
+    });
+  };
   return (
-    <Drawer open={open} onClose={() => setOpen(false)} anchor="right">
+    <Drawer open={open} onClose={handleCancelClose} anchor="right">
       <Box className="flex flex-col h-full p-3">
         {/* 标题 */}
         <Box className="flex justify-between items-center mb-2">
           <Typography variant="subtitle1" className="font-bold">
             批量分享
           </Typography>
-          <IconButton size="small" onClick={() => setOpen(false)}>
+          <IconButton size="small" onClick={handleCancelClose}>
             <CloseIcon fontSize="small" />
           </IconButton>
         </Box>
@@ -482,7 +512,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
               variant="outlined"
               color="error"
               startIcon={<CancelIcon />}
-              onClick={() => setOpen(false)}
+              onClick={handleCancelClose}
               size="small"
             >
               取消
@@ -532,14 +562,14 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
 
 export default ShareDrawer;
 
-const handleCancelShare = () => {
-  setIsCancelling(true);
-  setShareResults((prev) => {
-    return prev.map((result) => {
-      if (result.status === "sharing" || result.status === "ready") {
-        return { ...result, status: "ready" };
-      }
-      return result;
-    });
-  });
-};
+// const handleCancelShare = () => {
+//   setIsCancelling(true);
+//   setShareResults((prev) => {
+//     return prev.map((result) => {
+//       if (result.status === "sharing" || result.status === "ready") {
+//         return { ...result, status: "ready" };
+//       }
+//       return result;
+//     });
+//   });
+// };
