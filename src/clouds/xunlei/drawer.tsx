@@ -26,6 +26,7 @@ import {
   Tab,
   Collapse,
   CircularProgress,
+  Checkbox,
 } from "@mui/material";
 import { cloudEnum } from "@/utils/info";
 import { shareLogicMap } from "@/utils/shareLogic";
@@ -67,6 +68,8 @@ import {
   transformFileInfo,
   transformShareInfoForXlsx,
 } from "./tools";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const { name: cloudName } = useBaseCloudInfo();
   const [open, setOpen] = useState(false);
@@ -88,6 +91,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const [isCancelling, setIsCancelling] = useState(false); // 是否取消分享
   const isCancellingRef = useRef(false); // 是否取消分享-同步记录状态
   const notifications = useNotifications();
+  const [selectedItems, setSelectedItems] = useState<string[]>([]); // 存储已选中项的ID
   useImperativeHandle(ref, () => {
     return {
       open() {
@@ -310,6 +314,51 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
       });
     });
   };
+
+  // 处理单行选择
+  const handleItemSelect = (id: string) => {
+    setSelectedItems((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((itemId) => itemId !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
+  };
+
+  // 处理全选
+  const handleSelectAll = () => {
+    if (selectedItems.length === filteredResults.length) {
+      // 如果当前所有项目都已选中，则取消全选
+      setSelectedItems([]);
+    } else {
+      // 否则选中所有可见项目
+      setSelectedItems(filteredResults.map((item) => item.id));
+    }
+  };
+
+  // 删除选中项
+  const handleDeleteSelected = () => {
+    if (selectedItems.length === 0) return;
+
+    setShareResults((prev) => {
+      return prev.filter((item) => !selectedItems.includes(item.id));
+    });
+
+    // 清空选中状态
+    setSelectedItems([]);
+
+    notifications.show(`已删除 ${selectedItems.length} 项`, {
+      autoHideDuration: 1500,
+      severity: "success",
+    });
+  };
+
+  // 判断当前页面是否全选
+  const isAllSelected =
+    filteredResults.length > 0 &&
+    selectedItems.length === filteredResults.length;
+
   return (
     <Drawer open={open} onClose={handleCancelClose} anchor="right">
       <Box className="flex flex-col h-full p-3">
@@ -441,10 +490,23 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                       {getStatusCount("ready")} | 分享中:{" "}
                       {getStatusCount("sharing")} | 成功:{" "}
                       {getStatusCount("success")} | 失败:{" "}
-                      {getStatusCount("error")}
+                      {getStatusCount("error")} | 已选: {selectedItems.length}
                     </Typography>
                   </Box>
-                  <Box>
+                  <Box className="flex gap-2">
+                    {/* 删除按钮 */}
+                    <Tooltip title="删除已选项">
+                      <span>
+                        <IconButton
+                          size="small"
+                          onClick={handleDeleteSelected}
+                          disabled={selectedItems.length === 0 || isSharing}
+                          color="error"
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </span>
+                    </Tooltip>
                     {/* 筛选 */}
                     <FormControl size="small">
                       <Select
@@ -467,6 +529,17 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                   <Table size="small" className="text-sm">
                     <TableHead>
                       <TableRow>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            size="small"
+                            indeterminate={
+                              selectedItems.length > 0 && !isAllSelected
+                            }
+                            checked={isAllSelected}
+                            onChange={handleSelectAll}
+                            disabled={filteredResults.length === 0 || isSharing}
+                          />
+                        </TableCell>
                         <TableCell width={40}>状态</TableCell>
                         <TableCell>文件名</TableCell>
                         <TableCell>分享链接</TableCell>
@@ -477,6 +550,14 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                     <TableBody>
                       {filteredResults.map((result) => (
                         <TableRow key={result.id}>
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              size="small"
+                              checked={selectedItems.includes(result.id)}
+                              onChange={() => handleItemSelect(result.id)}
+                              disabled={isSharing}
+                            />
+                          </TableCell>
                           <TableCell>{getStatusIcon(result.status)}</TableCell>
                           <TableCell>{result.fileName}</TableCell>
                           <TableCell>
