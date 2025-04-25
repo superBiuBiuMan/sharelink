@@ -1,7 +1,9 @@
 import Xunlei from "./clouds/xunlei";
+import Uc from "./clouds/uc";
 import { cloudEnum, getCloudInfo } from "./utils/info";
 export const cloudsRegister = {
   [cloudEnum.xunlei]: Xunlei,
+  [cloudEnum.uc]: Uc,
 };
 
 /**

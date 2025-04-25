@@ -1,6 +1,7 @@
 // 云盘类型
 export const cloudEnum = {
   xunlei: "xunlei",
+  uc: "uc",
 };
 
 // 云盘信息
@@ -23,6 +24,39 @@ export const cloudInfoAll = {
         const tempDOM = document.createElement("div");
         tempDOM.id = cloudInfoAll[cloudEnum.xunlei].rootElementId;
         mountDOM.appendChild(tempDOM);
+        const shadowContainer = tempDOM.attachShadow({
+          mode: "open",
+        });
+        shadowContainer.appendChild(appContainer);
+        return {
+          appContainer,
+          shadowContainer,
+        };
+      }
+      return {
+        appContainer,
+      };
+    },
+  },
+  [cloudEnum.uc]: {
+    name: "UC网盘", // 云盘名称
+    type: cloudEnum.uc, // 云盘类型
+    rootElementId: "sharelink-plus-uc", //挂载唯一id标识,判断是否挂载成功的用途
+    matchUrl: [new RegExp("drive.uc.cn/*")], // 匹配url
+    mountFn: () => {
+      //挂载逻辑
+      const appContainer = document.createElement("div");
+      appContainer.style.cssText = `
+       margin-right:16px;
+       margin-bottom:4px;
+      `;
+      const mountDOM = document.querySelector(
+        ".file-search-box"
+      ) as HTMLElement;
+      if (mountDOM) {
+        const tempDOM = document.createElement("div");
+        tempDOM.id = cloudInfoAll[cloudEnum.uc].rootElementId;
+        mountDOM?.parentNode?.insertBefore(tempDOM, mountDOM.nextSibling);
         const shadowContainer = tempDOM.attachShadow({
           mode: "open",
         });

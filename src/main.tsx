@@ -36,7 +36,7 @@ let timer = setInterval(() => {
     }
 
     // 使用类型断言确保返回对象具有正确的属性
-    const result = mountInfo.mountFn() as MountResult;
+    const result = mountInfo.mountFn() as unknown as MountResult;
 
     // 检查是否有shadowContainer
     if (!result.shadowContainer) {
