@@ -70,28 +70,63 @@ import {
 } from "./tools";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+/**
+ * 迅雷云盘批量分享抽屉组件
+ * 提供批量分享文件的功能，包括配置分享参数、执行分享、管理分享结果等
+ */
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
+  // 获取云盘名称
   const { name: cloudName } = useBaseCloudInfo();
+
+  // 抽屉开关状态
   const [open, setOpen] = useState(false);
+
+  // 分享配置信息
   const [shareConfig, setShareConfig] = useState<ShareConfig>({
-    expireTime: ExpireTimeEnum.forever,
-    extractLimit: ExtractEnum.forever,
-    shareDelay: 300,
-    allowFastAccess: true,
+    expireTime: ExpireTimeEnum.forever, // 提取期限，默认永久
+    extractLimit: ExtractEnum.forever, // 提取次数，默认不限制
+    shareDelay: 300, // 分享间隔延迟，单位毫秒
+    allowFastAccess: true, // 是否允许快速访问（链接中包含提取码）
   });
-  const [shareResults, setShareResults] = useState<ShareResult[]>([]); //分享结果
+
+  // 分享结果列表
+  const [shareResults, setShareResults] = useState<ShareResult[]>([]);
+
+  // 状态筛选器，用于筛选显示特定状态的分享结果
   const [filterStatus, setFilterStatus] = useState<
     "all" | "ready" | "sharing" | "success" | "error"
   >("all");
-  const [loadingShareData, setLoadingShareData] = useState(false); // 是否正在加载分享数据
-  const [configExpanded, setConfigExpanded] = useState(true); // 分享配置是否展开
-  const [isSharing, setIsSharing] = useState(false); //是否正在分享
-  const [isPreparingShare, setIsPreparingShare] = useState(true); // 是否准备分享->目的是获取文件列表(默认)
-  const [isPrepared, setIsPrepared] = useState(false); // 是否已准备好分享 -> 真正开始分享
-  const [isCancelling, setIsCancelling] = useState(false); // 是否取消分享
-  const isCancellingRef = useRef(false); // 是否取消分享-同步记录状态
+
+  // 是否正在加载分享数据
+  const [loadingShareData, setLoadingShareData] = useState(false);
+
+  // 分享配置面板是否展开
+  const [configExpanded, setConfigExpanded] = useState(true);
+
+  // 是否正在分享过程中
+  const [isSharing, setIsSharing] = useState(false);
+
+  // 是否准备分享（获取文件列表阶段）
+  const [isPreparingShare, setIsPreparingShare] = useState(true);
+
+  // 是否已准备好分享（文件列表已获取完成）
+  const [isPrepared, setIsPrepared] = useState(false);
+
+  // 是否正在取消分享（用于UI状态更新）
+  const [isCancelling, setIsCancelling] = useState(false);
+
+  // 是否正在取消分享的引用值（避免状态更新异步问题）
+  const isCancellingRef = useRef(false);
+
+  // 提示框工具
   const notifications = useNotifications();
-  const [selectedItems, setSelectedItems] = useState<string[]>([]); // 存储已选中项的ID
+
+  // 已选中项的ID列表
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+  /**
+   * 向父组件暴露打开抽屉的方法
+   */
   useImperativeHandle(ref, () => {
     return {
       open() {
@@ -99,7 +134,11 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
       },
     };
   });
-  //准备分享
+
+  /**
+   * 准备分享功能
+   * 获取需要分享的文件列表并转换为内部数据结构
+   */
   const handlePrepareShare = async () => {
     try {
       setLoadingShareData(true);
@@ -113,18 +152,25 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
       setLoadingShareData(false);
     }
   };
-  //开始分享
+
+  /**
+   * 开始分享功能
+   * 逐个分享文件并更新分享状态
+   */
   const handleShare = async () => {
     setIsCancelling(false);
     setIsSharing(true);
+    // 获取API请求所需的认证信息
     const {
       "x-captcha-token": xCaptchaToken,
       authorization,
       "x-device-id": xDeviceId,
       "x-client-id": xClientId,
     } = getShareInfo();
-    // 模拟文件逐个开始分享
+
+    // 逐个分享文件
     for (let i = 0; i < shareResults.length; i++) {
+      // 检查是否取消分享
       if (isCancellingRef.current) {
         setIsSharing(false);
         break;
@@ -137,19 +183,20 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           return updated;
         });
 
+        // 调用分享API
         let res: ShareResponse = await shareLogicMap[cloudEnum.xunlei].share(
           {
-            expiration_days: shareConfig.expireTime + "", //过期时间
-            file_ids: [shareResults[i].id], //文件id
+            expiration_days: shareConfig.expireTime + "", // 过期时间
+            file_ids: [shareResults[i].id], // 文件id
             params: {
-              subscribe_push: "false", //是否订阅推送
+              subscribe_push: "false", // 是否订阅推送
               withPassCodeInLink: shareConfig.allowFastAccess
                 ? "true"
-                : "false", //是否在链接中包含提取码
+                : "false", // 是否在链接中包含提取码
             },
-            restore_limit: shareConfig.extractLimit + "", //提取次数
-            share_to: "copy", //分享方式
-            title: "云盘资源分享", //分享标题
+            restore_limit: shareConfig.extractLimit + "", // 提取次数
+            share_to: "copy", // 分享方式
+            title: "云盘资源分享", // 分享标题
           },
           {
             headers: {
@@ -160,11 +207,14 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             },
           }
         );
+
+        // 补充响应信息
         res = {
           ...(res ?? {}),
           restoreLimit: shareConfig.extractLimit,
           expireTime: shareConfig.expireTime,
         };
+
         // 更新为最终状态（成功或失败）
         setShareResults((prev) => {
           const updated = [...prev];
@@ -190,10 +240,9 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         });
       } catch (error) {
         console.log(error, "分享失败");
-        // 更新为最终状态（成功或失败）
+        // 更新为最终状态（分享失败）
         setShareResults((prev) => {
           const updated = [...prev];
-          // 分享失败
           updated[i] = {
             ...updated[i],
             status: "error",
@@ -202,15 +251,21 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           return updated;
         });
       } finally {
+        // 分享间隔延迟
         await sleep(shareConfig.shareDelay);
       }
     }
-    setIsPreparingShare(true); // 设置为准备分享状态
+
+    // 重置状态为准备分享状态，允许重新开始分享流程
+    setIsPreparingShare(true);
     setIsSharing(false);
     isCancellingRef.current = false;
   };
 
-  // 复制到剪贴板
+  /**
+   * 复制分享链接到剪贴板
+   * 格式：文件名: 分享链接 提取码: 提取码
+   */
   const handleCopy = () => {
     const text = filteredResults
       .map(
@@ -234,7 +289,10 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
       });
   };
 
-  // 下载分享链接
+  /**
+   * 下载分享链接为txt文件
+   * 格式：文件名, 分享链接, 提取码
+   */
   const handleDownloadLinks = () => {
     const text = filteredResults
       .map(
@@ -245,26 +303,38 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     downloadTxt(text, `${cloudName}-批量分享链接-${getTimestamp()}.txt`);
   };
 
-  // 下载为Excel
+  /**
+   * 导出分享链接为Excel文件
+   */
   const handleDownloadExcel = () => {
     const data = transformShareInfoForXlsx(filteredResults);
     exportXlsxFile(`${cloudName}-批量分享链接-${getTimestamp()}.xlsx`, data);
   };
 
-  // 筛选分享结果
+  /**
+   * 根据筛选条件过滤分享结果
+   */
   const filteredResults = shareResults.filter((result) => {
     if (filterStatus === "all") return true;
     return result.status === filterStatus;
   });
 
-  // 获取状态统计
+  /**
+   * 获取特定状态的结果数量
+   * @param status 状态类型
+   * @returns 该状态的结果数量
+   */
   const getStatusCount = (
     status: "ready" | "sharing" | "success" | "error"
   ) => {
     return shareResults.filter((r) => r.status === status).length;
   };
 
-  // 获取状态对应的图标
+  /**
+   * 获取状态对应的图标
+   * @param status 状态类型
+   * @returns 对应的图标组件
+   */
   const getStatusIcon = (status: "ready" | "sharing" | "success" | "error") => {
     switch (status) {
       case "ready":
@@ -278,7 +348,12 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     }
   };
 
-  // 获取状态对应的文本
+  /**
+   * 获取状态对应的文本描述
+   * @param status 状态类型
+   * @param message 可选的错误消息
+   * @returns 状态文本
+   */
   const getStatusText = (
     status: "ready" | "sharing" | "success" | "error",
     message?: string
@@ -294,17 +369,26 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         return message || "分享失败";
     }
   };
-  // 取消关闭按钮
+
+  /**
+   * 处理取消/关闭抽屉
+   * 重置所有状态
+   */
   const handleCancelClose = () => {
     setOpen(false);
     setIsCancelling(false);
     setIsSharing(false);
     setIsPreparingShare(true);
   };
-  // 取消分享
+
+  /**
+   * 取消正在进行的分享操作
+   */
   const handleCancelShare = () => {
-    setIsCancelling(true); //视图更新
-    isCancellingRef.current = true;
+    setIsCancelling(true); // 更新UI状态
+    isCancellingRef.current = true; // 更新引用值，用于同步检查
+
+    // 将所有sharing状态的项重置为ready
     setShareResults((prev) => {
       return prev.map((result) => {
         if (result.status === "sharing" || result.status === "ready") {
@@ -315,7 +399,10 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     });
   };
 
-  // 处理单行选择
+  /**
+   * 处理单行选择
+   * @param id 选中/取消选中的项目ID
+   */
   const handleItemSelect = (id: string) => {
     setSelectedItems((prev) => {
       if (prev.includes(id)) {
@@ -326,7 +413,9 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     });
   };
 
-  // 处理全选
+  /**
+   * 处理全选/取消全选
+   */
   const handleSelectAll = () => {
     if (selectedItems.length === filteredResults.length) {
       // 如果当前所有项目都已选中，则取消全选
@@ -337,7 +426,9 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     }
   };
 
-  // 删除选中项
+  /**
+   * 删除选中的项目
+   */
   const handleDeleteSelected = () => {
     if (selectedItems.length === 0) return;
 
@@ -354,7 +445,9 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     });
   };
 
-  // 判断当前页面是否全选
+  /**
+   * 判断当前页面是否全选
+   */
   const isAllSelected =
     filteredResults.length > 0 &&
     selectedItems.length === filteredResults.length;
@@ -367,13 +460,13 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
       slotProps={{
         paper: {
           sx: {
-            width: "40vw",
+            width: "40vw", // 抽屉宽度为视窗宽度的40%
           },
         },
       }}
     >
       <Box className="flex flex-col h-full p-3">
-        {/* 标题 */}
+        {/* 标题区域 */}
         <Box className="flex justify-between items-center mb-2">
           <Typography variant="subtitle1" className="font-bold">
             批量分享
@@ -386,6 +479,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
 
         {/* 内容区域 */}
         <Box className="flex-1 flex flex-col overflow-y-auto">
+          {/* 分享配置面板 */}
           <Box className="border rounded-md bg-gray-50 mb-3">
             <Box
               className="flex justify-between items-center px-3 py-2 cursor-pointer"
@@ -400,6 +494,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             <Collapse in={configExpanded}>
               <Box className="p-3 pt-0 border-t">
                 <Box className="grid grid-cols-2 gap-3">
+                  {/* 提取期限选项 */}
                   <FormControl fullWidth>
                     <InputLabel>提取期限</InputLabel>
                     <Select
@@ -420,6 +515,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                     </Select>
                   </FormControl>
 
+                  {/* 提取次数选项 */}
                   <FormControl fullWidth>
                     <InputLabel>提取次数</InputLabel>
                     <Select
@@ -440,6 +536,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                     </Select>
                   </FormControl>
 
+                  {/* 分享延迟设置 */}
                   <FormControl fullWidth>
                     <TextField
                       id="filled-number"
@@ -462,6 +559,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                     />
                   </FormControl>
 
+                  {/* 快速访问选项 */}
                   <FormControl className="flex flex-row items-center">
                     <FormControlLabel
                       control={
@@ -483,16 +581,18 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             </Collapse>
           </Box>
 
+          {/* 分享结果区域 */}
           <Box className="mt-3 h-0 flex-1">
-            {/* 加载中 */}
+            {/* 加载中状态 */}
             {loadingShareData && (
               <Box className="flex justify-center items-center mt-10">
                 <CircularProgress size={50} />
               </Box>
             )}
-            {/* 加载完成 */}
+            {/* 分享结果列表 */}
             {shareResults.length > 0 && !loadingShareData && (
               <>
+                {/* 结果统计和工具栏 */}
                 <Box className="flex justify-between items-center mb-2">
                   <Box>
                     <h3 className="font-medium text-base">分享结果</h3>
@@ -505,7 +605,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                     </Typography>
                   </Box>
                   <Box className="flex gap-2">
-                    {/* 删除按钮 */}
+                    {/* 删除选中项按钮 */}
                     <Tooltip title="删除已选项">
                       <span>
                         <IconButton
@@ -518,7 +618,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                         </IconButton>
                       </span>
                     </Tooltip>
-                    {/* 筛选 */}
+                    {/* 状态筛选下拉框 */}
                     <FormControl size="small">
                       <Select
                         value={filterStatus}
@@ -536,30 +636,32 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                     </FormControl>
                   </Box>
                 </Box>
+                {/* 结果表格 */}
                 <TableContainer
                   component={Paper}
                   variant="outlined"
                   sx={{
                     width: "100%",
-                    overflow: "auto",
-                    position: "relative",
+                    overflow: "auto", // 启用横向滚动
+                    position: "relative", // 为固定列提供定位上下文
                   }}
                 >
                   <Table
                     size="small"
                     className="text-sm"
-                    stickyHeader
-                    sx={{ minWidth: 650 }}
+                    stickyHeader // 固定表头
+                    sx={{ minWidth: 650 }} // 表格最小宽度
                   >
                     <TableHead>
                       <TableRow>
+                        {/* 固定的多选框列 */}
                         <TableCell
                           padding="checkbox"
                           sx={{
-                            position: "sticky",
-                            left: 0,
-                            zIndex: 3,
-                            backgroundColor: "#f5f5f5",
+                            position: "sticky", // 使用粘性定位
+                            left: 0, // 固定在左侧
+                            zIndex: 3, // 确保在其他表头之上
+                            backgroundColor: "#f5f5f5", // 表头背景色
                             minWidth: "50px",
                             width: "50px",
                           }}
@@ -588,14 +690,15 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                     <TableBody>
                       {filteredResults.map((result) => (
                         <TableRow key={result.id}>
+                          {/* 固定的多选框单元格 */}
                           <TableCell
                             padding="checkbox"
                             sx={{
-                              position: "sticky",
-                              left: 0,
-                              zIndex: 2,
-                              backgroundColor: "white",
-                              borderRight: "1px solid rgba(224, 224, 224, 1)",
+                              position: "sticky", // 使用粘性定位
+                              left: 0, // 固定在左侧
+                              zIndex: 2, // 确保在其他单元格之上
+                              backgroundColor: "white", // 数据行背景色
+                              borderRight: "1px solid rgba(224, 224, 224, 1)", // 右侧边框
                             }}
                           >
                             <Checkbox
@@ -605,28 +708,18 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                               disabled={isSharing}
                             />
                           </TableCell>
+                          {/* 状态图标 */}
                           <TableCell align="center">
                             {getStatusIcon(result.status)}
                           </TableCell>
+                          {/* 文件名（处理溢出） */}
                           <TableCell
-                            sx={{
-                              maxWidth: "200px",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                            }}
-                            title={result.fileName}
+                            title={result.fileName} // 悬停提示完整名称
                           >
                             {result.fileName}
                           </TableCell>
-                          <TableCell
-                            sx={{
-                              maxWidth: "250px",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
+                          {/* 分享链接（处理溢出） */}
+                          <TableCell>
                             {result.shareLink || "-"}
                             {result.shareLink && (
                               <IconButton
@@ -637,8 +730,17 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                               </IconButton>
                             )}
                           </TableCell>
+                          {/* 提取码 */}
                           <TableCell>{result.extractCode || "-"}</TableCell>
-                          <TableCell>
+                          {/* 状态信息 */}
+                          <TableCell
+                            sx={{
+                              maxWidth: "250px",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
                             {getStatusText(result.status, result.message)}
                           </TableCell>
                         </TableRow>
@@ -651,10 +753,11 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           </Box>
         </Box>
 
-        {/* 底部按钮 */}
+        {/* 底部按钮区域 */}
         <Box className="mt-auto pt-3">
           <Divider className="mb-3" />
           <Box className="flex justify-center items-center gap-2 flex-wrap">
+            {/* 取消按钮 */}
             <Button
               variant="outlined"
               color="error"
@@ -664,6 +767,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             >
               取消
             </Button>
+            {/* 分享控制按钮（准备/开始/取消分享） */}
             <ShareBtn
               isPreparingShare={isPreparingShare}
               isSharing={isSharing}
@@ -673,6 +777,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
               onShare={handleShare}
               onCancelShare={handleCancelShare}
             />
+            {/* 复制到剪贴板按钮 */}
             <Button
               variant="outlined"
               startIcon={<ContentCopyIcon />}
@@ -682,6 +787,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             >
               复制
             </Button>
+            {/* 下载TXT按钮 */}
             <Button
               variant="outlined"
               startIcon={<FileDownloadIcon />}
@@ -691,6 +797,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             >
               下载
             </Button>
+            {/* 导出Excel按钮 */}
             <Button
               variant="outlined"
               startIcon={<ArticleIcon />}
@@ -708,15 +815,3 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
 });
 
 export default ShareDrawer;
-
-// const handleCancelShare = () => {
-//   setIsCancelling(true);
-//   setShareResults((prev) => {
-//     return prev.map((result) => {
-//       if (result.status === "sharing" || result.status === "ready") {
-//         return { ...result, status: "ready" };
-//       }
-//       return result;
-//     });
-//   });
-// };
