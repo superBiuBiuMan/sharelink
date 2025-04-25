@@ -1,5 +1,4 @@
 import {
-  Drawer,
   Box,
   Divider,
   TextField,
@@ -52,6 +51,7 @@ import { getShareInfo, transformFileInfo } from "./tools";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useShare from "@/hooks/useShare/index";
 import type { FileShareStatus } from "@/hooks/useShare/types";
+import Drawer from "@/components/Drawer";
 /**
  * 迅雷云盘批量分享抽屉组件
  * 提供批量分享文件的功能，包括配置分享参数、执行分享、管理分享结果等
@@ -376,27 +376,31 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     <Drawer
       open={open}
       onClose={handleCancelClose}
-      anchor="right"
-      slotProps={{
-        paper: {
-          sx: {
-            width: "40vw", // 抽屉宽度为视窗宽度的40%
-          },
-        },
+      headerProps={{
+        title: `${cloudName} 批量分享`,
+        handleCancelClose,
+      }}
+      footerProps={{
+        handleCancelClose,
+        isPreparingShare,
+        isSharing,
+        isPrepared,
+        isCancelling,
+        handlePrepareShare,
+        handleShare,
+        handleCancelShare,
+        copyToClipboard: () =>
+          handleCopy(formatStringForCopyAndDownload(filteredResults)),
+        downloadLinksToTxt: () =>
+          handleDownloadLinks(formatStringForCopyAndDownload(filteredResults)),
+        downloadLinksToExcel: () =>
+          handleDownloadExcel(transformShareInfoForXlsx(filteredResults)),
+        disabledCopy: isSharing,
+        disabledDownloadLinks: isSharing,
+        disabledDownloadExcel: isSharing,
       }}
     >
       <Box className="flex flex-col h-full p-3">
-        {/* 标题区域 */}
-        <Box className="flex justify-between items-center mb-2">
-          <Typography variant="subtitle1" className="font-bold">
-            批量分享
-          </Typography>
-          <IconButton size="small" onClick={handleCancelClose}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        </Box>
-        <Divider className="mb-3" />
-
         {/* 内容区域 */}
         <Box className="flex-1 flex flex-col overflow-y-auto">
           {/* 分享配置面板 */}
@@ -670,72 +674,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                 </TableContainer>
               </>
             )}
-          </Box>
-        </Box>
-
-        {/* 底部按钮区域 */}
-        <Box className="mt-auto pt-3">
-          <Divider className="mb-3" />
-          <Box className="flex justify-center items-center gap-2 flex-wrap">
-            {/* 取消按钮 */}
-            <Button
-              variant="outlined"
-              color="error"
-              startIcon={<CancelIcon />}
-              onClick={handleCancelClose}
-              size="small"
-            >
-              取消
-            </Button>
-            {/* 分享控制按钮（准备/开始/取消分享） */}
-            <ShareBtn
-              isPreparingShare={isPreparingShare}
-              isSharing={isSharing}
-              isPrepared={isPrepared}
-              isCancelling={isCancelling}
-              onPrepareShare={handlePrepareShare}
-              onShare={handleShare}
-              onCancelShare={handleCancelShare}
-            />
-            {/* 复制到剪贴板按钮 */}
-            <Button
-              variant="outlined"
-              startIcon={<ContentCopyIcon />}
-              onClick={() =>
-                handleCopy(formatStringForCopyAndDownload(filteredResults))
-              }
-              disabled={filteredResults.length === 0 || isSharing}
-              size="small"
-            >
-              复制
-            </Button>
-            {/* 下载TXT按钮 */}
-            <Button
-              variant="outlined"
-              startIcon={<FileDownloadIcon />}
-              onClick={() => {
-                handleDownloadLinks(
-                  formatStringForCopyAndDownload(filteredResults)
-                );
-              }}
-              disabled={filteredResults.length === 0 || isSharing}
-              size="small"
-            >
-              下载
-            </Button>
-            {/* 导出Excel按钮 */}
-            <Button
-              variant="outlined"
-              startIcon={<ArticleIcon />}
-              onClick={() => {
-                const data = transformShareInfoForXlsx(filteredResults);
-                handleDownloadExcel(data);
-              }}
-              disabled={filteredResults.length === 0 || isSharing}
-              size="small"
-            >
-              导出
-            </Button>
           </Box>
         </Box>
       </Box>
