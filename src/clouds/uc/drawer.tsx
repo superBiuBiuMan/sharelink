@@ -33,10 +33,17 @@ import { useBaseCloudInfo } from "@/utils/provider";
 import useShare from "@/hooks/useShare/index";
 import Drawer from "@/components/Drawer";
 import { extractOptions, expireOptions } from "./options";
-import { ExtractEnum, ExpireTimeEnum } from "./types";
+import { ExtractEnum, ExpireTimeEnum, ExtractCodeTypeEnum } from "./types";
 import defaultGlobalSetting from "@/setting";
-import { transformShareInfo } from "./tools";
+import {
+  transformShareInfo,
+  formatStringForCopyAndDownload,
+  transformShareInfoForXlsx,
+} from "./tools";
 import { findNodeReact } from "@/utils/nodeFind";
+import { generateRandomString } from "@/utils/common";
+import { shareLogicMap } from "@/api";
+import { cloudEnum } from "@/utils/info";
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   // 获取云盘名称
   const { name: cloudName } = useBaseCloudInfo();
@@ -62,6 +69,9 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     setShareResults,
     setConfigExpanded,
     setOpen,
+    handleCopy,
+    handleDownloadLinks,
+    handleDownloadExcel,
     copyLink,
   } = useShare<ShareResult>({ cloudName });
 
@@ -127,14 +137,85 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const handleShare = async () => {
     setIsCancelling(false);
     setIsSharing(true);
+    for (let i = 0; i < shareResults.length; i++) {
+      // 检查是否取消分享
+      if (isCancellingRef.current) {
+        setIsSharing(false);
+        break;
+      }
+      try {
+        //获取
+        const sendData = {
+          expired_type: shareConfig.expireTime, //分享天数
+          dl_limit: shareConfig.extractLimit, //提取次数
+          url_type: shareConfig.enableCustomCode
+            ? ExtractCodeTypeEnum.yes
+            : ExtractCodeTypeEnum.no, //提取码type
+          title: shareConfig.shareTheme, //标题
+          fid_list: [shareResults[i].id], //文件id
+        };
+        // 如果开启提取码，则设置提取码
+        if (shareConfig.enableCustomCode) {
+          //@ts-ignore
+          sendData["passcode"] = shareConfig.customCode
+            ? shareConfig.customCode
+            : generateRandomString();
+        }
+        //开始调用接口
+        const { task_id } =
+          await shareLogicMap[cloudEnum.uc].getTaskId(sendData);
+        let shareIdInfo = await shareLogicMap[cloudEnum.uc].getShareId(task_id);
+        if (!shareIdInfo.share_id) {
+          shareIdInfo = await shareLogicMap[cloudEnum.uc].getShareId(
+            task_id,
+            1
+          );
+        }
+        //获取分享链接 passcode如果存在则说明有提取码
+        const { share_url, passcode } = await shareLogicMap[
+          cloudEnum.uc
+        ].getShareInfo(shareIdInfo.share_id);
+        setShareResults((prev) => {
+          const updated = [...prev];
+          if (share_url) {
+            // 分享成功
+            updated[i] = {
+              ...updated[i],
+              expireTime: shareConfig.expireTime,
+              status: "success",
+              shareLink: share_url,
+              extractCode: passcode,
+              restoreLimit: shareConfig.extractLimit,
+              shareTheme: shareConfig.shareTheme,
+            };
+          } else {
+            //分享失败
+            updated[i] = {
+              ...updated[i],
+              status: "error",
+              message: "分享失败",
+            };
+          }
+          return updated;
+        });
 
-    try {
-      // TODO: 实现分享逻辑
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    } finally {
-      setIsPreparingShare(true);
-      setIsSharing(false);
-      isCancellingRef.current = false;
+        console.log("share_url", share_url, passcode);
+      } catch (error) {
+        console.log(error, "分享失败");
+        setShareResults((prev) => {
+          const updated = [...prev];
+          updated[i] = {
+            ...updated[i],
+            status: "error",
+            message: "分享失败",
+          };
+          return updated;
+        });
+      } finally {
+        setIsPreparingShare(true);
+        setIsSharing(false);
+        isCancellingRef.current = false;
+      }
     }
   };
 
@@ -205,13 +286,13 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         handleShare,
         handleCancelShare,
         copyToClipboard: () => {
-          /* TODO */
+          handleCopy(formatStringForCopyAndDownload(filteredResults));
         },
         downloadLinksToTxt: () => {
-          /* TODO */
+          handleDownloadLinks(formatStringForCopyAndDownload(filteredResults));
         },
         downloadLinksToExcel: () => {
-          /* TODO */
+          handleDownloadExcel(transformShareInfoForXlsx(filteredResults));
         },
         disabledCopy: isSharing,
         disabledDownloadLinks: isSharing,

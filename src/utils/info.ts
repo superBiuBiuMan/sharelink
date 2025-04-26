@@ -2,7 +2,7 @@
 export const cloudEnum = {
   xunlei: "xunlei",
   uc: "uc",
-};
+} as const;
 
 // 云盘信息
 export const cloudInfoAll = {

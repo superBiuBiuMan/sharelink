@@ -22,7 +22,7 @@ import {
   Checkbox,
 } from "@mui/material";
 import { cloudEnum } from "@/utils/info";
-import { shareLogicMap } from "@/api/shareLogic";
+import { shareLogicMap } from "@/api";
 import { useState, useImperativeHandle, forwardRef } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import StatusIcon from "@/components/StatucIcon";

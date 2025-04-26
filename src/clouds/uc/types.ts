@@ -23,6 +23,13 @@ export enum ExtractEnum {
   fifty = 50,
   hundred = 100,
 }
+
+//提取码type
+export enum ExtractCodeTypeEnum {
+  no = 1, //无提取码
+  yes = 2, //有提取码
+}
+
 export interface ShareResult extends BaseShareResult {
   id: string; //文件id
   status: FileShareStatus; //状态
@@ -33,4 +40,5 @@ export interface ShareResult extends BaseShareResult {
   message?: string; //错误信息
   restoreLimit?: any; //提取次数
   expireTime?: any; //有效期
+  shareTheme?: string; //分享主题
 }

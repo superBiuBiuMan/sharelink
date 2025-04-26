@@ -54,3 +54,54 @@ export function exportXlsxFile(filename: string, data: any) {
     filename
   );
 }
+
+/**
+ * 随机生成指定位数提取码从数字和字母中
+ * @param numDigits 生成的位数
+ * @return 生成的提取码
+ */
+export function generateRandomString(numDigits: number = 4): string {
+  const numbers: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const letters: string[] = [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+  ];
+  let result: string = "";
+
+  for (let i = 0; i < numDigits; i++) {
+    const randomIndex: number = Math.floor(
+      Math.random() * (numbers.length + letters.length)
+    );
+    if (randomIndex < numbers.length) {
+      result += String(numbers[randomIndex]);
+    } else {
+      result += letters[randomIndex - numbers.length];
+    }
+  }
+
+  return result;
+}
