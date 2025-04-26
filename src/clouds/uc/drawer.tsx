@@ -92,16 +92,12 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   // 添加选中项状态
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  /**
-   * 根据筛选条件过滤分享结果
-   */
+  //根据筛选条件过滤分享结果
   const filteredResults = shareResults.filter((result) => {
     if (filterStatus === "all") return true;
     return result.status === filterStatus;
   });
-  /**
-   * 向父组件暴露打开抽屉的方法
-   */
+  //向父组件暴露打开抽屉的方法
   useImperativeHandle(ref, () => {
     return {
       open() {
@@ -110,9 +106,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     };
   });
 
-  /**
-   * 准备分享功能
-   */
+  //准备分享功能
   const handlePrepareShare = async () => {
     try {
       setLoadingShareData(true);
@@ -138,9 +132,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     }
   };
 
-  /**
-   * 开始分享功能
-   */
+  //开始分享功能
   const handleShare = async () => {
     setIsCancelling(false);
     setIsSharing(true);
@@ -229,16 +221,12 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     resetShareStatus();
   };
 
-  /**
-   * 处理取消/关闭抽屉
-   */
+  //处理取消/关闭抽屉
   const handleCancelClose = () => {
     handleDefaultCloseDrawerCallback();
   };
 
-  /**
-   * 取消正在进行的分享操作
-   */
+  //取消正在进行的分享操作
   const handleCancelShare = () => {
     setIsCancelling(true);
     isCancellingRef.current = true;
