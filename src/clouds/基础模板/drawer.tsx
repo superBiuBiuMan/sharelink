@@ -14,6 +14,12 @@ import StatusCount from "@/components/StatucCount";
 import StatusIcon from "@/components/StatucIcon";
 import StatusText from "@/components/StatusText";
 import sleep from "@/utils/sleep";
+import { shareLogicMap } from "@/api";
+import { cloudEnum } from "@/utils/info";
+import {
+  formatStringForCopyAndDownload,
+  transformShareInfoForXlsx,
+} from "./tools";
 import {
   Table,
   TableBody,
@@ -222,13 +228,13 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         handleShare,
         handleCancelShare,
         copyToClipboard: () => {
-          // handleCopy(formatStringForCopyAndDownload(filteredResults));
+          handleCopy(formatStringForCopyAndDownload(filteredResults));
         },
         downloadLinksToTxt: () => {
-          // handleDownloadLinks(formatStringForCopyAndDownload(filteredResults));
+          handleDownloadLinks(formatStringForCopyAndDownload(filteredResults));
         },
         downloadLinksToExcel: () => {
-          // handleDownloadExcel(transformShareInfoForXlsx(filteredResults));
+          handleDownloadExcel(transformShareInfoForXlsx(filteredResults));
         },
         disabledCopy: isSharing,
         disabledDownloadLinks: isSharing,

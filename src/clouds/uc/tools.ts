@@ -14,7 +14,7 @@ export const transformShareInfo = (list: any[]): ShareResult[] => {
     list.map((item) => ({
       id: item.fid,
       fileName: item.file_name,
-      status: FileShareStatusEnum.all,
+      status: FileShareStatusEnum.ready,
       fileSize: bytesToSize(item.file_size),
     })) ?? []
   );

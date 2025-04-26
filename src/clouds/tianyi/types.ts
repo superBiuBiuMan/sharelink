@@ -4,12 +4,15 @@ export interface ShareDrawerRef {
   open(): void;
 }
 export enum ExpireTimeEnum {
-  oneDay = 1, //1天
+  oneDay = 1,
   sevenDay = 7,
-  thirtyDay = 30,
-  oneYear = 365,
-  forever = 0, //永久
+  forever = 2099,
 }
+export const ExpireTimeEnumMap = {
+  [ExpireTimeEnum.oneDay]: "1天",
+  [ExpireTimeEnum.sevenDay]: "7天",
+  [ExpireTimeEnum.forever]: "永久",
+};
 export interface ShareResult extends BaseShareResult {
   id: string; //文件id
   status: FileShareStatus; //状态
@@ -19,4 +22,5 @@ export interface ShareResult extends BaseShareResult {
   fileSize?: string; //文件大小
   message?: string; //错误信息
   expireTime?: any; //有效期
+  isFolder?: boolean; //是否是文件夹
 }
