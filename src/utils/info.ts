@@ -5,6 +5,7 @@ export const cloudEnum = {
   baidu: "baidu",
   tianyi: "tianyi",
   quark: "quark",
+  alipan: "alipan",
 } as const;
 
 // 云盘信息
@@ -162,6 +163,66 @@ export const cloudInfoAll = {
       }
       return {
         appContainer,
+      };
+    },
+  },
+  [cloudEnum.alipan]: {
+    name: "阿里云盘", // 云盘名称
+    type: cloudEnum.alipan, // 云盘类型
+    rootElementId: "sharelink-plus-alipan", //挂载唯一id标识,判断是否挂载成功的用途
+    matchUrl: [new RegExp("www.alipan.com/*")], // 匹配url
+    mountFn: () => {
+      const appContainer = document.createElement("div");
+      appContainer.style.cssText = ``;
+
+      // 查找导航标签元素
+      const navTabItem = document.querySelector("div[class^='nav-tab-item--']");
+      if (navTabItem) {
+        // 获取nav-tab-item的具体class名
+        const navTabClass = Array.from(navTabItem.classList).find((className) =>
+          className.startsWith("nav-tab-item--")
+        );
+
+        if (navTabClass) {
+          // 创建挂载节点
+          const tempDOM = document.createElement("div");
+          tempDOM.id = cloudInfoAll[cloudEnum.alipan].rootElementId;
+
+          // 添加相同的class
+          appContainer.classList.add(navTabClass);
+
+          // 查找并挂载到nav-tab-content
+          const navTabContent = document.querySelector(
+            "div[class^='nav-tab-content--']"
+          );
+          if (navTabContent) {
+            tempDOM.style.cssText = `
+              margin: 8px 16px;
+            `;
+            navTabContent.appendChild(tempDOM);
+            const shadowContainer = tempDOM.attachShadow({
+              mode: "open",
+            });
+            shadowContainer.appendChild(appContainer);
+            return {
+              appContainer,
+              shadowContainer,
+            };
+          }
+        }
+      }
+
+      // 如果上述挂载点都没找到，则挂载到body
+      const tempDOM = document.createElement("div");
+      tempDOM.id = cloudInfoAll[cloudEnum.alipan].rootElementId;
+      document.body.appendChild(tempDOM);
+      const shadowContainer = tempDOM.attachShadow({
+        mode: "open",
+      });
+      shadowContainer.appendChild(appContainer);
+      return {
+        appContainer,
+        shadowContainer,
       };
     },
   },

@@ -17,6 +17,8 @@ export default defineConfig({
           "https://pan.baidu.com/disk/main*",
           "https://cloud.189.cn/**",
           "https://pan.quark.cn/**",
+          "https://www.aliyundrive.com/**",
+          "https://www.alipan.com/**",
         ],
       },
       build: {

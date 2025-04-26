@@ -6,7 +6,7 @@ import ShareDrawer from "./drawer";
 import type { ShareDrawerRef } from "./types";
 interface Props {}
 
-const Xunlei: React.FC<Props> = () => {
+const Quark: React.FC<Props> = () => {
   const shareDOM = useRef<ShareDrawerRef>(null);
   const handleClick = () => {
     shareDOM.current?.open();
@@ -25,4 +25,4 @@ const Xunlei: React.FC<Props> = () => {
   );
 };
 
-export default Xunlei;
+export default Quark;

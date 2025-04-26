@@ -3,6 +3,7 @@ import Uc from "./clouds/uc";
 import Baidu from "./clouds/baidu";
 import Tianyi from "./clouds/tianyi";
 import Quark from "./clouds/quark";
+import Alipan from "./clouds/alipan";
 import { cloudEnum, getCloudInfo } from "./utils/info";
 export const cloudsRegister = {
   [cloudEnum.xunlei]: Xunlei,
@@ -10,6 +11,7 @@ export const cloudsRegister = {
   [cloudEnum.baidu]: Baidu,
   [cloudEnum.tianyi]: Tianyi,
   [cloudEnum.quark]: Quark,
+  [cloudEnum.alipan]: Alipan,
 };
 
 /**
