@@ -15,6 +15,7 @@ export default defineConfig({
           "https://pan.xunlei.com/**",
           "https://drive.uc.cn/**",
           "https://pan.baidu.com/disk/main*",
+          "https://cloud.189.cn/**",
         ],
       },
       build: {

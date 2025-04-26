@@ -3,6 +3,7 @@ export const cloudEnum = {
   xunlei: "xunlei",
   uc: "uc",
   baidu: "baidu",
+  tianyi: "tianyi",
 } as const;
 
 // 云盘信息
@@ -88,6 +89,35 @@ export const cloudInfoAll = {
         const tempDOM = document.createElement("div");
         tempDOM.id = cloudInfoAll[cloudEnum.baidu].rootElementId;
         mountDOM?.insertBefore(tempDOM, mountDOM?.firstChild);
+        const shadowContainer = tempDOM.attachShadow({
+          mode: "open",
+        });
+        shadowContainer.appendChild(appContainer);
+        return {
+          appContainer,
+          shadowContainer,
+        };
+      }
+      return {
+        appContainer,
+      };
+    },
+  },
+  [cloudEnum.tianyi]: {
+    name: "天翼云盘", // 云盘名称
+    type: cloudEnum.tianyi, // 云盘类型
+    rootElementId: "sharelink-plus-tianyi", //挂载唯一id标识,判断是否挂载成功的用途
+    matchUrl: [new RegExp("cloud.189.cn/*")], // 匹配url
+    mountFn: () => {
+      // todo 挂载逻辑
+      const appContainer = document.createElement("div");
+      appContainer.style.cssText = `
+      `;
+      const mountDOM = document.querySelector("ul.nav-menu") as HTMLElement;
+      if (mountDOM) {
+        const tempDOM = document.createElement("div");
+        tempDOM.id = cloudInfoAll[cloudEnum.tianyi].rootElementId;
+        mountDOM?.appendChild(tempDOM);
         const shadowContainer = tempDOM.attachShadow({
           mode: "open",
         });
