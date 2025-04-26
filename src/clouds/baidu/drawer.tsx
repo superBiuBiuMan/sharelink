@@ -15,6 +15,19 @@ import StatusIcon from "@/components/StatucIcon";
 import StatusText from "@/components/StatusText";
 import sleep from "@/utils/sleep";
 import { expireOptions } from "./options";
+import { unsafeWindow } from "$";
+import { shareLogicMap } from "@/api";
+import { cloudEnum } from "@/utils/info";
+import {
+  formatStringForCopyAndDownload,
+  transformShareInfoForXlsx,
+} from "./tools";
+import { generateRandomString } from "@/utils/common";
+import {
+  getBaiduShareListInfo,
+  transformShareInfo,
+  getBaiduBaseShareParams,
+} from "./tools";
 import {
   Table,
   TableBody,
@@ -101,16 +114,8 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const handlePrepareShare = async () => {
     try {
       setLoadingShareData(true);
-      //todo 查找分享文件列表
-      // const result = findNodeReact(".file-list", ["selectedRowKeys", "list"]);
-      // setShareResults(
-      //   transformShareInfo(result.list)
-      //     ?.filter((item) => result.selectedRowKeys.includes(item.id))
-      //     ?.map((item) => ({
-      //       ...item,
-      //       status: "ready",
-      //     })) ?? []
-      // );
+      const { list } = getBaiduShareListInfo();
+      setShareResults(transformShareInfo(list));
       setIsPreparingShare(false);
       setIsPrepared(true);
     } catch (e) {
@@ -132,6 +137,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const handleShare = async () => {
     setIsCancelling(false);
     setIsSharing(true);
+    const { bdstoken, version } = getBaiduBaseShareParams();
     for (let i = 0; i < shareResults.length; i++) {
       // 检查是否取消分享
       if (isCancellingRef.current) {
@@ -139,28 +145,50 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         break;
       }
       try {
-        // todo 对应的分享逻辑
+        const pwd = shareConfig.enableCustomCode
+          ? shareConfig.customCode
+          : generateRandomString();
+        const res = await shareLogicMap[cloudEnum.baidu].share(
+          window.location.origin + "/share/set",
+          {
+            period: shareConfig.expireTime,
+            pwd: pwd,
+            eflag_disable: true, //不知道是什么参数,好像是分享类型eflag_disable: "personal" === e.shareType
+            channel_list: [], //未知
+            schannel: 4, //未知-貌似是一个定制
+            fid_list: `[${shareResults[i].id}]`, //文件id
+          },
+          {
+            bdstoken: bdstoken,
+            version: version,
+          },
+          {
+            headers: {
+              accept: "application/json;charset=UTF-8",
+              "Content-Type": " application/x-www-form-urlencoded",
+            },
+          }
+        );
+        const { link } = res || ({} as any);
         setShareResults((prev) => {
           const updated = [...prev];
-          // if (share_url) {
-          //   // 分享成功
-          //   updated[i] = {
-          //     ...updated[i],
-          //     expireTime: shareConfig.expireTime,
-          //     status: "success",
-          //     shareLink: share_url,
-          //     extractCode: passcode,
-          //     restoreLimit: shareConfig.extractLimit,
-          //     shareTheme: shareConfig.shareTheme,
-          //   };
-          // } else {
-          //   //分享失败
-          //   updated[i] = {
-          //     ...updated[i],
-          //     status: "error",
-          //     message: "分享失败",
-          //   };
-          // }
+          if (link) {
+            // 分享成功
+            updated[i] = {
+              ...updated[i],
+              expireTime: shareConfig.expireTime,
+              status: "success",
+              shareLink: shareConfig.autoFillCode ? `${link}?pwd=${pwd}` : link,
+              extractCode: pwd,
+            };
+          } else {
+            //分享失败
+            updated[i] = {
+              ...updated[i],
+              status: "error",
+              message: "分享失败",
+            };
+          }
           return updated;
         });
       } catch (error) {
@@ -223,13 +251,13 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         handleShare,
         handleCancelShare,
         copyToClipboard: () => {
-          // handleCopy(formatStringForCopyAndDownload(filteredResults));
+          handleCopy(formatStringForCopyAndDownload(filteredResults));
         },
         downloadLinksToTxt: () => {
-          // handleDownloadLinks(formatStringForCopyAndDownload(filteredResults));
+          handleDownloadLinks(formatStringForCopyAndDownload(filteredResults));
         },
         downloadLinksToExcel: () => {
-          // handleDownloadExcel(transformShareInfoForXlsx(filteredResults));
+          handleDownloadExcel(transformShareInfoForXlsx(filteredResults));
         },
         disabledCopy: isSharing,
         disabledDownloadLinks: isSharing,
@@ -437,6 +465,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                         </TableCell>
                         <TableCell>状态</TableCell>
                         <TableCell>文件名</TableCell>
+                        <TableCell>文件大小</TableCell>
                         <TableCell>分享链接</TableCell>
                         <TableCell>提取码</TableCell>
                         <TableCell>信息</TableCell>
@@ -467,6 +496,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                           >
                             {result.fileName}
                           </TableCell>
+                          <TableCell>{result.fileSize}</TableCell>
                           <TableCell>
                             {result.shareLink ? (
                               <Box className="flex items-center gap-1">

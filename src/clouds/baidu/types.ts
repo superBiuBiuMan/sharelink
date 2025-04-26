@@ -10,6 +10,13 @@ export enum ExpireTimeEnum {
   oneYear = 365,
   forever = 0, //永久
 }
+export const ExpireTimeEnumMap = {
+  [ExpireTimeEnum.oneDay]: "1天",
+  [ExpireTimeEnum.sevenDay]: "7天",
+  [ExpireTimeEnum.thirtyDay]: "30天",
+  [ExpireTimeEnum.oneYear]: "1年",
+  [ExpireTimeEnum.forever]: "永久",
+};
 export interface ShareResult extends BaseShareResult {
   id: string; //文件id
   status: FileShareStatus; //状态
