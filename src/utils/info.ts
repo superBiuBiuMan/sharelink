@@ -2,6 +2,7 @@
 export const cloudEnum = {
   xunlei: "xunlei",
   uc: "uc",
+  baidu: "baidu",
 } as const;
 
 // 云盘信息
@@ -57,6 +58,36 @@ export const cloudInfoAll = {
         const tempDOM = document.createElement("div");
         tempDOM.id = cloudInfoAll[cloudEnum.uc].rootElementId;
         mountDOM?.parentNode?.insertBefore(tempDOM, mountDOM.nextSibling);
+        const shadowContainer = tempDOM.attachShadow({
+          mode: "open",
+        });
+        shadowContainer.appendChild(appContainer);
+        return {
+          appContainer,
+          shadowContainer,
+        };
+      }
+      return {
+        appContainer,
+      };
+    },
+  },
+  [cloudEnum.baidu]: {
+    name: "百度网盘", // 云盘名称
+    type: cloudEnum.baidu, // 云盘类型
+    rootElementId: "sharelink-plus-baidu", //挂载唯一id标识,判断是否挂载成功的用途
+    matchUrl: [new RegExp("pan.baidu.com/disk/main*")], // 匹配url
+    mountFn: () => {
+      const appContainer = document.createElement("div");
+      appContainer.style.cssText = `
+      `;
+      const mountDOM = document.querySelector(
+        "div.wp-s-header__right"
+      ) as HTMLElement;
+      if (mountDOM) {
+        const tempDOM = document.createElement("div");
+        tempDOM.id = cloudInfoAll[cloudEnum.baidu].rootElementId;
+        mountDOM?.insertBefore(tempDOM, mountDOM?.firstChild);
         const shadowContainer = tempDOM.attachShadow({
           mode: "open",
         });
