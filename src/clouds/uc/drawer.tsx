@@ -51,6 +51,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     filterStatus,
     shareResults,
     configExpanded,
+    open,
 
     setLoadingShareData,
     setIsSharing,
@@ -60,11 +61,9 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     setFilterStatus,
     setShareResults,
     setConfigExpanded,
+    setOpen,
     copyLink,
   } = useShare<ShareResult>({ cloudName });
-
-  // 抽屉开关状态
-  const [open, setOpen] = useState(false);
 
   // 分享配置状态
   const [shareConfig, setShareConfig] = useState<any>({

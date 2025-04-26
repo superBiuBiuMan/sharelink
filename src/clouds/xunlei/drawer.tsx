@@ -59,6 +59,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     filterStatus,
     shareResults,
     configExpanded,
+    open,
 
     setLoadingShareData,
     setIsSharing,
@@ -68,15 +69,13 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     setFilterStatus,
     setShareResults,
     setConfigExpanded,
+    setOpen,
 
     handleCopy,
     handleDownloadLinks,
     handleDownloadExcel,
     copyLink,
   } = useShare<ShareResult>({ cloudName });
-  // 抽屉开关状态
-  const [open, setOpen] = useState(false);
-
   // 分享配置信息
   const [shareConfig, setShareConfig] = useState<ShareConfig>({
     expireTime: ExpireTimeEnum.forever, // 提取期限，默认永久

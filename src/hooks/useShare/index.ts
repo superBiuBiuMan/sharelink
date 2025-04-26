@@ -14,7 +14,10 @@ function useShare<T extends BaseShareResult>({
 }: {
   cloudName: string;
 }) {
+  // 通知
   const notifications = useNotifications();
+  // 抽屉开关状态
+  const [open, setOpen] = useState(false);
   // 分享配置面板是否展开
   const [configExpanded, setConfigExpanded] = useState(true);
   // 是否正在加载分享数据
@@ -98,6 +101,7 @@ function useShare<T extends BaseShareResult>({
     filterStatus,
     shareResults,
     configExpanded,
+    open,
 
     setLoadingShareData,
     setIsSharing,
@@ -107,6 +111,7 @@ function useShare<T extends BaseShareResult>({
     setFilterStatus,
     setShareResults,
     setConfigExpanded,
+    setOpen,
 
     handleCopy,
     handleDownloadLinks,
