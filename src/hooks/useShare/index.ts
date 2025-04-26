@@ -91,6 +91,19 @@ function useShare<T extends BaseShareResult>({
         });
       });
   };
+  //重置状态为准备分享状态，允许重新开始分享流程
+  const resetShareStatus = () => {
+    setIsPreparingShare(true);
+    setIsSharing(false);
+    isCancellingRef.current = false;
+  };
+  //默认关闭抽屉的处理函数
+  const handleDefaultCloseDrawerCallback = () => {
+    setOpen(false);
+    setIsCancelling(false);
+    setIsSharing(false);
+    setIsPreparingShare(true);
+  };
   return {
     loadingShareData,
     isSharing,
@@ -117,6 +130,8 @@ function useShare<T extends BaseShareResult>({
     handleDownloadLinks,
     handleDownloadExcel,
     copyLink,
+    resetShareStatus,
+    handleDefaultCloseDrawerCallback,
 
     notifications,
   } as const;

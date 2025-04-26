@@ -42,7 +42,7 @@ import { useBaseCloudInfo } from "@/utils/provider";
 import { getShareInfo, transformFileInfo } from "./tools";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useShare from "@/hooks/useShare/index";
-import type { FileShareStatus } from "@/hooks/useShare/types";
+import StatusCount from "@/components/StatucCount";
 import Drawer from "@/components/Drawer";
 import defaultGlobalSetting from "@/setting";
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
@@ -75,6 +75,8 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     handleDownloadLinks,
     handleDownloadExcel,
     copyLink,
+    resetShareStatus,
+    handleDefaultCloseDrawerCallback,
   } = useShare<ShareResult>({ cloudName });
   // 分享配置信息
   const [shareConfig, setShareConfig] = useState<ShareConfig>({
@@ -104,8 +106,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     try {
       setLoadingShareData(true);
       const { selectRowInfos } = getShareInfo();
-      // 模拟获取文件信息的过程 todo 删除
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       setShareResults(transformFileInfo(selectRowInfos ?? []));
       setIsPreparingShare(false);
       setIsPrepared(true);
@@ -218,9 +218,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     }
 
     // 重置状态为准备分享状态，允许重新开始分享流程
-    setIsPreparingShare(true);
-    setIsSharing(false);
-    isCancellingRef.current = false;
+    resetShareStatus();
   };
   /**
    * 根据筛选条件过滤分享结果
@@ -229,26 +227,12 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     if (filterStatus === "all") return true;
     return result.status === filterStatus;
   });
-
-  /**
-   * 获取特定状态的结果数量
-   * @param status 状态类型
-   * @returns 该状态的结果数量
-   */
-  const getStatusCount = (
-    status: "ready" | "sharing" | "success" | "error"
-  ) => {
-    return shareResults.filter((r) => r.status === status).length;
-  };
   /**
    * 处理取消/关闭抽屉
    * 重置所有状态
    */
   const handleCancelClose = () => {
-    setOpen(false);
-    setIsCancelling(false);
-    setIsSharing(false);
-    setIsPreparingShare(true);
+    handleDefaultCloseDrawerCallback();
   };
 
   /**
@@ -469,13 +453,10 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                 <Box className="flex justify-between items-center mb-2">
                   <Box>
                     <h3 className="font-medium text-base">分享结果</h3>
-                    <Typography variant="caption" color="textSecondary">
-                      总计: {shareResults.length} | 准备:{" "}
-                      {getStatusCount("ready")} | 分享中:{" "}
-                      {getStatusCount("sharing")} | 成功:{" "}
-                      {getStatusCount("success")} | 失败:{" "}
-                      {getStatusCount("error")} | 已选: {selectedItems.length}
-                    </Typography>
+                    <StatusCount
+                      shareResults={shareResults}
+                      selectedItems={selectedItems}
+                    />
                   </Box>
                   <Box className="flex gap-2">
                     {/* 删除选中项按钮 */}

@@ -35,6 +35,7 @@ import Drawer from "@/components/Drawer";
 import { extractOptions, expireOptions } from "./options";
 import { ExtractEnum, ExpireTimeEnum, ExtractCodeTypeEnum } from "./types";
 import defaultGlobalSetting from "@/setting";
+import StatusCount from "@/components/StatucCount";
 import {
   transformShareInfo,
   formatStringForCopyAndDownload,
@@ -44,6 +45,7 @@ import { findNodeReact } from "@/utils/nodeFind";
 import { generateRandomString } from "@/utils/common";
 import { shareLogicMap } from "@/api";
 import { cloudEnum } from "@/utils/info";
+import { sleep } from "@/utils/sleep";
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   // 获取云盘名称
   const { name: cloudName } = useBaseCloudInfo();
@@ -73,6 +75,8 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     handleDownloadLinks,
     handleDownloadExcel,
     copyLink,
+    resetShareStatus,
+    handleDefaultCloseDrawerCallback,
   } = useShare<ShareResult>({ cloudName });
 
   // 分享配置状态
@@ -114,9 +118,12 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
       setLoadingShareData(true);
       const result = findNodeReact(".file-list", ["selectedRowKeys", "list"]);
       setShareResults(
-        transformShareInfo(result.list)?.filter((item) =>
-          result.selectedRowKeys.includes(item.id)
-        ) ?? []
+        transformShareInfo(result.list)
+          ?.filter((item) => result.selectedRowKeys.includes(item.id))
+          ?.map((item) => ({
+            ...item,
+            status: "ready",
+          })) ?? []
       );
       setIsPreparingShare(false);
       setIsPrepared(true);
@@ -215,18 +222,18 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         setIsPreparingShare(true);
         setIsSharing(false);
         isCancellingRef.current = false;
+        // 分享间隔延迟
+        await sleep(shareConfig.shareDelay);
       }
     }
+    resetShareStatus();
   };
 
   /**
    * 处理取消/关闭抽屉
    */
   const handleCancelClose = () => {
-    setOpen(false);
-    setIsCancelling(false);
-    setIsSharing(false);
-    setIsPreparingShare(true);
+    handleDefaultCloseDrawerCallback();
   };
 
   /**
@@ -260,14 +267,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     );
     setSelectedItems([]);
   };
-
-  // 获取特定状态的结果数量
-  const getStatusCount = (
-    status: "ready" | "sharing" | "success" | "error"
-  ) => {
-    return shareResults.filter((r) => r.status === status).length;
-  };
-
   return (
     <Drawer
       open={open}
@@ -465,26 +464,25 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                 <Box className="flex justify-between items-center mb-2">
                   <Box>
                     <h3 className="font-medium text-base">分享结果</h3>
-                    <Typography variant="caption" color="textSecondary">
-                      总计: {shareResults.length} | 待分享:{" "}
-                      {getStatusCount("ready")} | 分享中:{" "}
-                      {getStatusCount("sharing")} | 成功:{" "}
-                      {getStatusCount("success")} | 失败:{" "}
-                      {getStatusCount("error")}
-                    </Typography>
+                    <StatusCount
+                      shareResults={shareResults}
+                      selectedItems={selectedItems}
+                    />
                   </Box>
                   <Box className="flex gap-2">
-                    {selectedItems.length > 0 && (
-                      <Tooltip title="删除选中项">
+                    {/* 删除选中项按钮 */}
+                    <Tooltip title="删除已选项">
+                      <span>
                         <IconButton
                           size="small"
                           onClick={handleDeleteSelected}
-                          disabled={isSharing}
+                          disabled={selectedItems.length === 0 || isSharing}
+                          color="error"
                         >
-                          <DeleteIcon />
+                          <DeleteIcon fontSize="small" />
                         </IconButton>
-                      </Tooltip>
-                    )}
+                      </span>
+                    </Tooltip>
                     <FormControl size="small">
                       <Select
                         value={filterStatus}
