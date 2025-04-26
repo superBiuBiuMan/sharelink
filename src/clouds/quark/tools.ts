@@ -1,6 +1,22 @@
 import type { ShareResult } from "./types";
 import { ExpireTimeEnumMap } from "./types";
 import { FileShareStatusEnum } from "@/hooks/useShare/types";
+import { bytesToSize } from "@/utils/size";
+/**
+ * 转换分享信息
+ * @param list 分享信息列表
+ * @returns 分享信息列表
+ */
+export const transformShareInfo = (list: any[]): ShareResult[] => {
+  if (!list || list.length === 0) return [];
+  return list.map((item) => ({
+    id: item.fid, // 文件id
+    fileName: item.file_name, // 文件名
+    fileSize: bytesToSize(item.size), // 文件大小
+    fileType: item.file_type, // 文件类型
+    status: FileShareStatusEnum.ready, // 状态
+  }));
+};
 
 /**
  * 格式化分享信息

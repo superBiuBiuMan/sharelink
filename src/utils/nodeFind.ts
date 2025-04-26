@@ -5,10 +5,11 @@
  * @returns 查找的结果
  */
 export function findNodeReact<const T extends readonly string[]>(
-  selector: string,
+  selector: string | HTMLElement,
   findKeys: T
 ): { [K in T[number]]: any } {
-  const node = document.querySelector(selector);
+  const node =
+    typeof selector === "string" ? document.querySelector(selector) : selector;
   if (!node) return {} as any;
 
   // 获取 React Fiber 的内部 key（兼容旧版本）

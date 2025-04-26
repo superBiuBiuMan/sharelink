@@ -18,6 +18,7 @@ import { shareOptions } from "./options";
 import { getSelectList } from "./tools";
 import { shareLogicMap } from "@/api";
 import { cloudEnum } from "@/utils/info";
+import { FileShareStatusEnum } from "@/hooks/useShare/types";
 import {
   formatStringForCopyAndDownload,
   transformShareInfoForXlsx,
@@ -150,7 +151,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             updated[i] = {
               ...updated[i],
               expireTime: shareConfig.expireTime,
-              status: "success",
+              status: FileShareStatusEnum.success,
               shareLink: shareInfo.accessUrl || shareInfo.url,
               extractCode: shareInfo.accessCode,
             };
@@ -158,7 +159,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             //分享失败
             updated[i] = {
               ...updated[i],
-              status: "error",
+              status: FileShareStatusEnum.error,
               message: "分享失败" + (res.res_message ?? ""),
             };
           }
@@ -170,7 +171,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           const updated = [...prev];
           updated[i] = {
             ...updated[i],
-            status: "error",
+            status: FileShareStatusEnum.error,
             message: "分享失败",
           };
           return updated;

@@ -4,6 +4,7 @@ export const cloudEnum = {
   uc: "uc",
   baidu: "baidu",
   tianyi: "tianyi",
+  quark: "quark",
 } as const;
 
 // 云盘信息
@@ -118,6 +119,38 @@ export const cloudInfoAll = {
         const tempDOM = document.createElement("div");
         tempDOM.id = cloudInfoAll[cloudEnum.tianyi].rootElementId;
         mountDOM?.appendChild(tempDOM);
+        const shadowContainer = tempDOM.attachShadow({
+          mode: "open",
+        });
+        shadowContainer.appendChild(appContainer);
+        return {
+          appContainer,
+          shadowContainer,
+        };
+      }
+      return {
+        appContainer,
+      };
+    },
+  },
+  [cloudEnum.quark]: {
+    name: "天翼云盘", // 云盘名称
+    type: cloudEnum.quark, // 云盘类型
+    rootElementId: "sharelink-plus-quark", //挂载唯一id标识,判断是否挂载成功的用途
+    matchUrl: [new RegExp("pan.quark.cn/*")], // 匹配url
+    mountFn: () => {
+      // todo 挂载逻辑
+      const appContainer = document.createElement("div");
+      appContainer.style.cssText = `
+      `;
+      const mountDOM = document.querySelector(
+        ".file-search-box"
+      ) as HTMLElement;
+      if (mountDOM) {
+        const tempDOM = document.createElement("div");
+        tempDOM.id = cloudInfoAll[cloudEnum.quark].rootElementId;
+        // mountDOM?.appendChild(tempDOM);
+        mountDOM?.parentNode?.insertBefore(tempDOM, mountDOM);
         const shadowContainer = tempDOM.attachShadow({
           mode: "open",
         });

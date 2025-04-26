@@ -16,6 +16,7 @@ export default defineConfig({
           "https://drive.uc.cn/**",
           "https://pan.baidu.com/disk/main*",
           "https://cloud.189.cn/**",
+          "https://pan.quark.cn/**",
         ],
       },
       build: {

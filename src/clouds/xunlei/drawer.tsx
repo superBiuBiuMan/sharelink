@@ -45,6 +45,7 @@ import useShare from "@/hooks/useShare/index";
 import StatusCount from "@/components/StatucCount";
 import Drawer from "@/components/Drawer";
 import defaultGlobalSetting from "@/setting";
+import { FileShareStatusEnum } from "@/hooks/useShare/types";
 const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   // 获取云盘名称
   const { name: cloudName } = useBaseCloudInfo();
@@ -183,7 +184,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             // 分享失败
             updated[i] = {
               ...updated[i],
-              status: "error",
+              status: FileShareStatusEnum.error,
               message: "分享失败",
             };
           } else {
@@ -206,7 +207,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           const updated = [...prev];
           updated[i] = {
             ...updated[i],
-            status: "error",
+            status: FileShareStatusEnum.error,
             message: "分享失败",
           };
           return updated;
@@ -245,8 +246,11 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     // 将所有sharing状态的项重置为ready
     setShareResults((prev) => {
       return prev.map((result) => {
-        if (result.status === "sharing" || result.status === "ready") {
-          return { ...result, status: "ready" };
+        if (
+          result.status === FileShareStatusEnum.sharing ||
+          result.status === FileShareStatusEnum.ready
+        ) {
+          return { ...result, status: FileShareStatusEnum.ready };
         }
         return result;
       });

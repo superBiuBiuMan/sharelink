@@ -16,6 +16,7 @@ import StatusText from "@/components/StatusText";
 import sleep from "@/utils/sleep";
 import { expireOptions } from "./options";
 import { unsafeWindow } from "$";
+import { FileShareStatusEnum } from "@/hooks/useShare/types";
 import { shareLogicMap } from "@/api";
 import { cloudEnum } from "@/utils/info";
 import {
@@ -177,7 +178,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             updated[i] = {
               ...updated[i],
               expireTime: shareConfig.expireTime,
-              status: "success",
+              status: FileShareStatusEnum.success,
               shareLink: shareConfig.autoFillCode ? `${link}?pwd=${pwd}` : link,
               extractCode: pwd,
             };
@@ -185,7 +186,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             //分享失败
             updated[i] = {
               ...updated[i],
-              status: "error",
+              status: FileShareStatusEnum.error,
               message: "分享失败",
             };
           }
@@ -197,7 +198,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           const updated = [...prev];
           updated[i] = {
             ...updated[i],
-            status: "error",
+            status: FileShareStatusEnum.error,
             message: "分享失败",
           };
           return updated;

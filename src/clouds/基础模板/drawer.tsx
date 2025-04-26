@@ -16,6 +16,7 @@ import StatusText from "@/components/StatusText";
 import sleep from "@/utils/sleep";
 import { shareLogicMap } from "@/api";
 import { cloudEnum } from "@/utils/info";
+import { FileShareStatusEnum } from "@/hooks/useShare/types";
 import {
   formatStringForCopyAndDownload,
   transformShareInfoForXlsx,
@@ -113,7 +114,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
       //     ?.filter((item) => result.selectedRowKeys.includes(item.id))
       //     ?.map((item) => ({
       //       ...item,
-      //       status: "ready",
+      //       status: FileShareStatusEnum.ready,
       //     })) ?? []
       // );
       setIsPreparingShare(false);
@@ -152,7 +153,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           //   updated[i] = {
           //     ...updated[i],
           //     expireTime: shareConfig.expireTime,
-          //     status: "success",
+          //     status: FileShareStatusEnum.success,
           //     shareLink: share_url,
           //     extractCode: passcode,
           //     restoreLimit: shareConfig.extractLimit,
@@ -162,7 +163,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           //   //分享失败
           //   updated[i] = {
           //     ...updated[i],
-          //     status: "error",
+          //     status: FileShareStatusEnum.error,,
           //     message: "分享失败",
           //   };
           // }
@@ -174,7 +175,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
           const updated = [...prev];
           updated[i] = {
             ...updated[i],
-            status: "error",
+            status: FileShareStatusEnum.error,
             message: "分享失败",
           };
           return updated;
@@ -480,6 +481,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                         </TableCell>
                         <TableCell>状态</TableCell>
                         <TableCell>文件名</TableCell>
+                        <TableCell>文件大小</TableCell>
                         <TableCell>分享链接</TableCell>
                         <TableCell>提取码</TableCell>
                         <TableCell>信息</TableCell>
@@ -510,6 +512,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                           >
                             {result.fileName}
                           </TableCell>
+                          <TableCell>{result.fileSize}</TableCell>
                           <TableCell>
                             {result.shareLink ? (
                               <Box className="flex items-center gap-1">

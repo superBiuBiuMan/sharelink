@@ -2,12 +2,14 @@ import Xunlei from "./clouds/xunlei";
 import Uc from "./clouds/uc";
 import Baidu from "./clouds/baidu";
 import Tianyi from "./clouds/tianyi";
+import Quark from "./clouds/quark";
 import { cloudEnum, getCloudInfo } from "./utils/info";
 export const cloudsRegister = {
   [cloudEnum.xunlei]: Xunlei,
   [cloudEnum.uc]: Uc,
   [cloudEnum.baidu]: Baidu,
   [cloudEnum.tianyi]: Tianyi,
+  [cloudEnum.quark]: Quark,
 };
 
 /**
