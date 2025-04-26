@@ -6,6 +6,7 @@ export const cloudEnum = {
   tianyi: "tianyi",
   quark: "quark",
   alipan: "alipan",
+  yidong139: "yidong139",
 } as const;
 
 // 云盘信息
@@ -223,6 +224,38 @@ export const cloudInfoAll = {
       return {
         appContainer,
         shadowContainer,
+      };
+    },
+  },
+  [cloudEnum.yidong139]: {
+    name: "中国移动网盘", // 云盘名称
+    type: cloudEnum.yidong139, // 云盘类型
+    rootElementId: "sharelink-plus-yidong139", //挂载唯一id标识,判断是否挂载成功的用途
+    matchUrl: [new RegExp("yun.139.com/*")], // 匹配url
+    mountFn: () => {
+      // todo 挂载逻辑
+      const appContainer = document.createElement("div");
+      appContainer.style.cssText = `
+               display:inline-block;
+                margin-top:20px;`;
+      const mountDOM = document.querySelector(
+        ".document_top_upload_button"
+      ) as HTMLElement;
+      if (mountDOM) {
+        const tempDOM = document.createElement("div");
+        tempDOM.id = cloudInfoAll[cloudEnum.yidong139].rootElementId;
+        mountDOM.parentNode?.append(appContainer, tempDOM);
+        const shadowContainer = tempDOM.attachShadow({
+          mode: "open",
+        });
+        shadowContainer.appendChild(appContainer);
+        return {
+          appContainer,
+          shadowContainer,
+        };
+      }
+      return {
+        appContainer,
       };
     },
   },

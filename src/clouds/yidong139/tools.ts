@@ -1,11 +1,14 @@
-import { ShareResult, ExpireTimeEnumMap } from "./types";
-import { bytesToSize } from "@/utils/size";
-import { unsafeWindow } from "$";
+import type { ShareResult } from "./types";
+import { ExpireTimeEnumMap } from "./types";
+import { FileShareStatusEnum } from "@/hooks/useShare/types";
+import { CatalogTypeEnum } from "./types";
+
 /**
- * 获取百度网盘分享列表信息
+ * 获取分享列表
+ * @returns 分享列表
  */
-export const getBaiduShareListInfo = (): any => {
-  const tempDOM = document.querySelector("tbody");
+export const getShareList = () => {
+  const tempDOM = document.querySelector(".main_file_list");
   //@ts-ignore
   const instance = tempDOM?.__vue__;
   if (!instance)
@@ -13,7 +16,7 @@ export const getBaiduShareListInfo = (): any => {
       list: [],
     };
   return {
-    list: instance?.$store?.state?.detail?.view?.fileMeta ?? [],
+    list: instance?.selectList ?? [],
   } as const;
 };
 
@@ -24,24 +27,15 @@ export const getBaiduShareListInfo = (): any => {
  */
 export const transformShareInfo = (list: any[]): ShareResult[] => {
   if (!list || list.length === 0) return [];
-  return list.map((item) => ({
-    id: item.fs_id,
-    fileName: item.formatName,
-    fileSize: bytesToSize(item.size),
-    status: "ready",
+  return list.map(({ item }) => ({
+    id: item?.contentID ? item?.contentID : item?.catalogID, //文件id (文件夹id)
+    fileName: item?.contentName ? item?.contentName : item?.catalogName, //文件名 (文件夹名称)
+    owner: item?.owner ?? "", //分享用得到
+    status: FileShareStatusEnum.ready, //状态
+    catalogType: item?.contentID
+      ? CatalogTypeEnum.file
+      : CatalogTypeEnum.folder, //0代表文件分享 1代表文件夹分享
   }));
-};
-
-/**
- * 获取百度网盘分享基础参数
- * @returns 百度网盘分享基础参数
- */
-export const getBaiduBaseShareParams = () => {
-  return {
-    //@ts-ignore
-    bdstoken: unsafeWindow?.locals?.userInfo?.bdstoken,
-    version: window.localStorage.getItem("cdp_checkVersionTime"),
-  } as const;
 };
 
 /**
@@ -54,6 +48,7 @@ export const formatStringForCopyAndDownload = (list: ShareResult[]) => {
     .map((item) => `${item.fileName} - ${item.shareLink} ${item.extractCode}`)
     .join("\n");
 };
+
 /**
  * 转换分享信息为xlsx格式
  * @param list 分享信息列表
@@ -62,7 +57,6 @@ export const formatStringForCopyAndDownload = (list: ShareResult[]) => {
 export const transformShareInfoForXlsx = (list: ShareResult[]) => {
   return list.map((item) => ({
     文件名: item.fileName,
-    文件大小: item.fileSize,
     分享链接: item.shareLink,
     提取码: item.extractCode,
     有效期:

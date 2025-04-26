@@ -19,6 +19,7 @@ export default defineConfig({
           "https://pan.quark.cn/**",
           "https://www.aliyundrive.com/**",
           "https://www.alipan.com/**",
+          "https://yun.139.com/**",
         ],
       },
       build: {

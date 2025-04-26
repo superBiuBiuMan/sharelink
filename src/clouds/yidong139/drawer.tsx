@@ -14,9 +14,12 @@ import StatusCount from "@/components/StatucCount";
 import StatusIcon from "@/components/StatucIcon";
 import StatusText from "@/components/StatusText";
 import sleep from "@/utils/sleep";
+import { expireTimeOptions } from "./options";
 import { shareLogicMap } from "@/api";
 import { cloudEnum } from "@/utils/info";
-import { expireTimeOptions } from "./options";
+import { transformShareInfo } from "./tools";
+import { getShareList } from "./tools";
+import { CatalogTypeEnum, ExpireTimeEnumMapVersion2 } from "./types";
 import { FileShareStatusEnum } from "@/hooks/useShare/types";
 import {
   formatStringForCopyAndDownload,
@@ -55,6 +58,19 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
       },
     };
   });
+  const [userInfo, setUserInfo] = useState<any>(() => {
+    //@ts-ignore
+    return document.querySelector(".body_main")?.__vue__?.$store?.state?.auth;
+  });
+  const [authInfo] = useState(() => {
+    const regex = /authorization=Basic\s([A-Za-z0-9+/=]+)/;
+    const match = document.cookie.match(regex);
+    if (match) {
+      return "Basic " + match?.[1];
+    } else {
+      return "";
+    }
+  });
   // 获取云盘名称
   const { name: cloudName } = useBaseCloudInfo();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -90,10 +106,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   // 分享配置状态
   const [shareConfig, setShareConfig] = useState<any>({
     shareDelay: defaultGlobalSetting.defaultShareDelay, // 分享延迟
-    shareTheme: "", // 分享主题
     expireTime: ExpireTimeEnum.forever, // 有效期
-    enableCustomCode: false, // 是否启用自定义提取码
-    customCode: "", // 自定义提取码
   });
   //根据筛选条件过滤分享结果
   const filteredResults = shareResults.filter((result) => {
@@ -108,16 +121,9 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const handlePrepareShare = async () => {
     try {
       setLoadingShareData(true);
-      //todo 查找分享文件列表
-      // const result = findNodeReact(".file-list", ["selectedRowKeys", "list"]);
-      // setShareResults(
-      //   transformShareInfo(result.list)
-      //     ?.filter((item) => result.selectedRowKeys.includes(item.id))
-      //     ?.map((item) => ({
-      //       ...item,
-      //       status: FileShareStatusEnum.ready,
-      //     })) ?? []
-      // );
+      //查找分享文件列表
+      const { list } = getShareList();
+      setShareResults(transformShareInfo(list));
       setIsPreparingShare(false);
       setIsPrepared(true);
     } catch (e) {
@@ -146,28 +152,66 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         break;
       }
       try {
-        // todo 对应的分享逻辑
+        const { userPhone, accountPhone } = userInfo;
+        const currentShare = shareResults[i];
+        const res: any = await shareLogicMap[cloudEnum.yidong139].share(
+          {
+            getOutLinkReq: {
+              period:
+                ExpireTimeEnumMapVersion2[
+                  shareConfig.expireTime as keyof typeof ExpireTimeEnumMapVersion2
+                ],
+              caIDLst:
+                currentShare.catalogType === CatalogTypeEnum.folder
+                  ? [currentShare.id]
+                  : [], //分享的文件夹
+              coIDLst:
+                currentShare.catalogType === CatalogTypeEnum.file
+                  ? [currentShare.id]
+                  : [], //分享的文件
+              commonAccountInfo: {
+                //新建文件夹可能无法获取,就存储了下用户的手机,无法获取再从用户那边读取
+                account: currentShare.owner
+                  ? currentShare.owner
+                  : accountPhone || userPhone, //账户名,一般是手机号
+                accountType: 1,
+              },
+              dedicatedName: currentShare.fileName, //文件或文件夹名称
+              encrypt: 1,
+              extInfo: {
+                isWatermark: 0,
+                shareChannel: "3001",
+              },
+              periodUnit: 1,
+              pubType: 1,
+              subLinkType: 0,
+              viewerLst: [],
+            },
+          },
+          authInfo
+        );
         setShareResults((prev) => {
           const updated = [...prev];
-          // if (share_url) {
-          //   // 分享成功
-          //   updated[i] = {
-          //     ...updated[i],
-          //     expireTime: shareConfig.expireTime,
-          //     status: FileShareStatusEnum.success,
-          //     shareLink: share_url,
-          //     extractCode: passcode,
-          //     restoreLimit: shareConfig.extractLimit,
-          //     shareTheme: shareConfig.shareTheme,
-          //   };
-          // } else {
-          //   //分享失败
-          //   updated[i] = {
-          //     ...updated[i],
-          //     status: FileShareStatusEnum.error,,
-          //     message: "分享失败",
-          //   };
-          // }
+          const { code, data } = res;
+          if (code === "0") {
+            // 分享成功
+            const { getOutLinkRes: { getOutLinkResSet = [] } = {} } = data;
+            const resultInfo = getOutLinkResSet?.[0] ?? {}; //分享结果
+            updated[i] = {
+              ...updated[i],
+              expireTime: shareConfig.expireTime,
+              status: FileShareStatusEnum.success,
+              shareLink: resultInfo?.linkUrl,
+              extractCode: resultInfo?.passwd,
+            };
+          } else {
+            //分享失败
+            updated[i] = {
+              ...updated[i],
+              status: FileShareStatusEnum.error,
+              message: `分享失败` + (data?.message ?? ""),
+            };
+          }
           return updated;
         });
       } catch (error) {
@@ -282,57 +326,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                       }}
                     />
                   </FormControl>
-
-                  {/* 分享主题 */}
-                  <FormControl fullWidth size="small">
-                    <TextField
-                      size="small"
-                      label="分享主题"
-                      value={shareConfig.shareTheme}
-                      onChange={(e) =>
-                        setShareConfig((prev: any) => ({
-                          ...prev,
-                          shareTheme: e.target.value,
-                        }))
-                      }
-                      placeholder="请输入分享主题"
-                      slotProps={{
-                        htmlInput: {
-                          maxLength: 30,
-                        },
-                      }}
-                    />
-                  </FormControl>
-
-                  {/* 下载次数 */}
-                  <FormControl fullWidth size="small">
-                    <InputLabel>下载次数</InputLabel>
-                    <Select
-                      label="下载次数"
-                      value={shareConfig.extractLimit}
-                      onChange={(e) =>
-                        setShareConfig((prev: any) => ({
-                          ...prev,
-                          extractLimit: Number(e.target.value),
-                        }))
-                      }
-                      size="small"
-                    >
-                      {/* todo 替换 */}
-                      {[
-                        { value: ExpireTimeEnum.oneDay, label: "1天" },
-                        { value: ExpireTimeEnum.sevenDay, label: "7天" },
-                        { value: ExpireTimeEnum.thirtyDay, label: "30天" },
-                        { value: ExpireTimeEnum.oneYear, label: "1年" },
-                        { value: ExpireTimeEnum.forever, label: "永久" },
-                      ].map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-
                   {/* 有效期 */}
                   <FormControl fullWidth size="small">
                     <InputLabel>有效期</InputLabel>
@@ -354,47 +347,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                       ))}
                     </Select>
                   </FormControl>
-
-                  {/* 开启提取码开关 */}
-                  <FormControl fullWidth>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={shareConfig.enableCustomCode}
-                          onChange={(e) =>
-                            setShareConfig((prev: any) => ({
-                              ...prev,
-                              enableCustomCode: e.target.checked,
-                            }))
-                          }
-                          size="small"
-                        />
-                      }
-                      label="开启提取码"
-                    />
-                  </FormControl>
-
-                  {/* 开启提取码输入框 */}
-                  {shareConfig.enableCustomCode && (
-                    <FormControl fullWidth>
-                      <TextField
-                        size="small"
-                        value={shareConfig.customCode}
-                        onChange={(e) =>
-                          setShareConfig((prev: any) => ({
-                            ...prev,
-                            customCode: e.target.value,
-                          }))
-                        }
-                        placeholder="(可空)只能包含大小写英文+数字)"
-                        slotProps={{
-                          htmlInput: {
-                            maxLength: 4,
-                          },
-                        }}
-                      />
-                    </FormControl>
-                  )}
                 </Box>
               </Box>
             </Collapse>
@@ -475,7 +427,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                         </TableCell>
                         <TableCell>状态</TableCell>
                         <TableCell>文件名</TableCell>
-                        <TableCell>文件大小</TableCell>
                         <TableCell>分享链接</TableCell>
                         <TableCell>提取码</TableCell>
                         <TableCell>信息</TableCell>
@@ -506,7 +457,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                           >
                             {result.fileName}
                           </TableCell>
-                          <TableCell>{result.fileSize}</TableCell>
                           <TableCell>
                             {result.shareLink ? (
                               <Box className="flex items-center gap-1">
