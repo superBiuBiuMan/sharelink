@@ -14,6 +14,7 @@ import StatusCount from "@/components/StatucCount";
 import StatusIcon from "@/components/StatucIcon";
 import StatusText from "@/components/StatusText";
 import sleep from "@/utils/sleep";
+import { expireOptions } from "./options";
 import {
   Table,
   TableBody,
@@ -82,10 +83,10 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   // 分享配置状态
   const [shareConfig, setShareConfig] = useState<any>({
     shareDelay: defaultGlobalSetting.defaultShareDelay, // 分享延迟
-    shareTheme: "", // 分享主题
     expireTime: ExpireTimeEnum.forever, // 有效期
     enableCustomCode: false, // 是否启用自定义提取码
     customCode: "", // 自定义提取码
+    autoFillCode: false, // 是否自动填充提取码
   });
   //根据筛选条件过滤分享结果
   const filteredResults = shareResults.filter((result) => {
@@ -275,56 +276,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                     />
                   </FormControl>
 
-                  {/* 分享主题 */}
-                  <FormControl fullWidth size="small">
-                    <TextField
-                      size="small"
-                      label="分享主题"
-                      value={shareConfig.shareTheme}
-                      onChange={(e) =>
-                        setShareConfig((prev: any) => ({
-                          ...prev,
-                          shareTheme: e.target.value,
-                        }))
-                      }
-                      placeholder="请输入分享主题"
-                      slotProps={{
-                        htmlInput: {
-                          maxLength: 30,
-                        },
-                      }}
-                    />
-                  </FormControl>
-
-                  {/* 下载次数 */}
-                  <FormControl fullWidth size="small">
-                    <InputLabel>下载次数</InputLabel>
-                    <Select
-                      label="下载次数"
-                      value={shareConfig.extractLimit}
-                      onChange={(e) =>
-                        setShareConfig((prev: any) => ({
-                          ...prev,
-                          extractLimit: Number(e.target.value),
-                        }))
-                      }
-                      size="small"
-                    >
-                      {/* todo 替换 */}
-                      {[
-                        { value: ExpireTimeEnum.oneDay, label: "1天" },
-                        { value: ExpireTimeEnum.sevenDay, label: "7天" },
-                        { value: ExpireTimeEnum.thirtyDay, label: "30天" },
-                        { value: ExpireTimeEnum.oneYear, label: "1年" },
-                        { value: ExpireTimeEnum.forever, label: "永久" },
-                      ].map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-
                   {/* 有效期 */}
                   <FormControl fullWidth size="small">
                     <InputLabel>有效期</InputLabel>
@@ -340,21 +291,33 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                       size="small"
                     >
                       {/* todo 替换 */}
-                      {[
-                        { value: ExpireTimeEnum.oneDay, label: "1天" },
-                        { value: ExpireTimeEnum.sevenDay, label: "7天" },
-                        { value: ExpireTimeEnum.thirtyDay, label: "30天" },
-                        { value: ExpireTimeEnum.oneYear, label: "1年" },
-                        { value: ExpireTimeEnum.forever, label: "永久" },
-                      ].map((option) => (
+                      {expireOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                           {option.label}
                         </MenuItem>
                       ))}
                     </Select>
                   </FormControl>
+                  {/* 自动填充提取码 */}
+                  <FormControl fullWidth size="small">
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={shareConfig.autoFillCode}
+                          onChange={(e) =>
+                            setShareConfig((prev: any) => ({
+                              ...prev,
+                              autoFillCode: e.target.checked,
+                            }))
+                          }
+                          size="small"
+                        />
+                      }
+                      label="自动填充提取码"
+                    />
+                  </FormControl>
 
-                  {/* 开启提取码开关 */}
+                  {/* 自定义提取码开关 */}
                   <FormControl fullWidth>
                     <FormControlLabel
                       control={
@@ -369,11 +332,11 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                           size="small"
                         />
                       }
-                      label="开启提取码"
+                      label="自定义提取码"
                     />
                   </FormControl>
 
-                  {/* 开启提取码输入框 */}
+                  {/* 自定义提取码输入框 */}
                   {shareConfig.enableCustomCode && (
                     <FormControl fullWidth>
                       <TextField
