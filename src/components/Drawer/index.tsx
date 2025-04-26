@@ -27,7 +27,7 @@ const BaseDrawer = forwardRef<BaseDrawerRef, BaseDrawerProps>((props, ref) => {
   const {
     open,
     onClose,
-    width = "40vw",
+    width = "50vw",
     children,
     footerProps,
     headerProps,

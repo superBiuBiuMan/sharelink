@@ -1,6 +1,6 @@
 import { FileShareStatusEnum } from "@/hooks/useShare/types";
 import { bytesToSize } from "@/utils/size";
-import { ExtractEnum } from "./types";
+import { ExtractEnumMap, ExpireTimeEnumMap } from "./types";
 import type { ShareResult } from "./types";
 
 /**
@@ -31,9 +31,9 @@ export const transformShareInfoForXlsx = (list: ShareResult[]): any[] => {
     文件名: item.fileName,
     链接: item.shareLink,
     提取码: item.extractCode,
-    有效期: item.expireTime,
-    下载次数:
-      item.restoreLimit === ExtractEnum.forever ? "永久" : item.restoreLimit,
+    有效期:
+      ExpireTimeEnumMap[item.expireTime as keyof typeof ExpireTimeEnumMap],
+    下载次数: ExtractEnumMap[item.restoreLimit as keyof typeof ExtractEnumMap],
     分享主题: item.shareTheme,
   }));
 };
@@ -45,5 +45,10 @@ export const transformShareInfoForXlsx = (list: ShareResult[]): any[] => {
  */
 export const formatStringForCopyAndDownload = (list: ShareResult[]): string => {
   if (!list || list.length === 0) return "";
-  return list.map((item) => `${item.id} ${item.fileName}`).join("\n");
+  return list
+    .map(
+      (item) =>
+        `${item.fileName} 链接:${item.shareLink} 提取码:${item.extractCode} 有效期:${item.expireTime} 下载次数:${item.restoreLimit}`
+    )
+    .join("\n");
 };

@@ -435,7 +435,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                             customCode: e.target.value,
                           }))
                         }
-                        placeholder="请输入4位提取码(只能包含大小写英文+数字)"
+                        placeholder="(可空)只能包含大小写英文+数字)"
                         slotProps={{
                           htmlInput: {
                             maxLength: 4,
