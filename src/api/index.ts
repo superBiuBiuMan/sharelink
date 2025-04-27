@@ -7,6 +7,7 @@ import quark from "./quark";
 import alipan from "./alipan";
 import yidong139 from "./yidong139";
 import lanzou from "./lanzou";
+import yun115 from "./yun115";
 export const shareLogicMap = {
   //参考https://alova.js.org/zh-CN/api/alova#alovapost
   //迅雷分享逻辑
@@ -25,4 +26,6 @@ export const shareLogicMap = {
   [cloudEnum.yidong139]: yidong139,
   //蓝奏云分享逻辑
   [cloudEnum.lanzou]: lanzou,
+  //115网盘分享逻辑
+  [cloudEnum.yun115]: yun115,
 } as const;

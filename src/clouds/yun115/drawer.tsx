@@ -5,6 +5,7 @@ import useShare from "@/hooks/useShare/index";
 import defaultGlobalSetting from "@/setting";
 import { useState, useImperativeHandle } from "react";
 import { ExpireTimeEnum } from "./types";
+import { unsafeWindow } from "$";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,8 +16,17 @@ import StatusIcon from "@/components/StatucIcon";
 import StatusText from "@/components/StatusText";
 import sleep from "@/utils/sleep";
 import { shareLogicMap } from "@/api";
+import { FileTypeEnum } from "./types";
 import { cloudEnum } from "@/utils/info";
 import { expireTimeOptions } from "./options";
+import {
+  getShareInfo,
+  getShareFirstInfo,
+  getShareSecondInfo,
+  getShareThirdInfo,
+} from "./tools";
+import FolderIcon from "@mui/icons-material/Folder";
+import FileIcon from "@mui/icons-material/FilePresent";
 import { generateRandomString } from "@/utils/common";
 import { FileShareStatusEnum } from "@/hooks/useShare/types";
 import {
@@ -93,6 +103,10 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     shareDelay: defaultGlobalSetting.defaultShareDelay, // 分享延迟
     expireTime: ExpireTimeEnum.forever, // 有效期
     customCode: "", // 自定义提取码
+    autoFillAccessCode: false, // 自动填充访问码
+    allowAnonymousDownload: false, // 允许免登录下载
+    anonymousDownloadTraffic: 0, // 免登录下载流量限制(KB)
+    acceptLimit: 0, // 接受次数限制
   });
   //根据筛选条件过滤分享结果
   const filteredResults = shareResults.filter((result) => {
@@ -107,16 +121,8 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const handlePrepareShare = async () => {
     try {
       setLoadingShareData(true);
-      //todo 查找分享文件列表
-      // const result = findNodeReact(".file-list", ["selectedRowKeys", "list"]);
-      // setShareResults(
-      //   transformShareInfo(result.list)
-      //     ?.filter((item) => result.selectedRowKeys.includes(item.id))
-      //     ?.map((item) => ({
-      //       ...item,
-      //       status: FileShareStatusEnum.ready,
-      //     })) ?? []
-      // );
+      const result = await getShareInfo();
+      setShareResults(result);
       setIsPreparingShare(false);
       setIsPrepared(true);
     } catch (e) {
@@ -145,6 +151,39 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         break;
       }
       try {
+        const currentShareItem = filteredResults[i];
+        //第一次获取基础信息
+        const { formData: formDataFirst, info: infoFirst } =
+          getShareFirstInfo(currentShareItem);
+        const resultOne =
+          await shareLogicMap[cloudEnum.yun115].share(formDataFirst);
+        console.log(resultOne, "resultOne");
+        // 分享间隔延迟
+        await sleep(shareConfig.shareDelay);
+        //第二次更新分享信息
+        const { formData: formDataSecond, info: infoSecond } =
+          getShareSecondInfo(resultOne, shareConfig);
+        // 分享间隔延迟
+        await sleep(shareConfig.shareDelay);
+        const resultTwo =
+          await shareLogicMap[cloudEnum.yun115].updateSetting(formDataSecond);
+        console.log(resultTwo, "resultTwo");
+        // 分享间隔延迟
+        await sleep(shareConfig.shareDelay);
+        //第三次更新免登录下载限制
+        const { formData: formDataThird } = getShareThirdInfo(
+          infoFirst,
+          resultOne
+        );
+        const resultThree =
+          await shareLogicMap[cloudEnum.yun115].updateAnonymousDownloadLimit(
+            formDataThird
+          );
+
+        debugger;
+        console.log(resultOne, "resultOne");
+        console.log(resultTwo, "resultTwo");
+        console.log(resultThree, "resultThree");
         // todo 对应的分享逻辑
         setShareResults((prev) => {
           const updated = [...prev];
@@ -304,6 +343,25 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                     </Select>
                   </FormControl>
 
+                  {/* 自动填充访问码开关 */}
+                  <FormControl fullWidth>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={shareConfig.autoFillAccessCode}
+                          onChange={(e) =>
+                            setShareConfig((prev: any) => ({
+                              ...prev,
+                              autoFillAccessCode: e.target.checked,
+                            }))
+                          }
+                          size="small"
+                        />
+                      }
+                      label="自动填充访问码"
+                    />
+                  </FormControl>
+
                   {/* 提取码输入框 */}
                   <FormControl fullWidth>
                     <TextField
@@ -317,6 +375,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                         }))
                       }
                       placeholder="(可空)只能包含大小写英文+数字)"
+                      disabled={shareConfig.autoFillAccessCode}
                       slotProps={{
                         htmlInput: {
                           maxLength: 4,
@@ -324,6 +383,70 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                       }}
                     />
                   </FormControl>
+                  {/* 接受次数限制 */}
+                  <FormControl fullWidth size="small">
+                    <TextField
+                      label="接受次数限制(为0则表示无限制)"
+                      size="small"
+                      type="number"
+                      value={shareConfig.acceptLimit}
+                      onChange={(e) =>
+                        setShareConfig((prev: any) => ({
+                          ...prev,
+                          acceptLimit: Number(e.target.value),
+                        }))
+                      }
+                      slotProps={{
+                        htmlInput: {
+                          min: 0,
+                          step: 1,
+                        },
+                      }}
+                    />
+                  </FormControl>
+
+                  {/* 允许免登录下载开关 */}
+                  <FormControl fullWidth>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={shareConfig.allowAnonymousDownload}
+                          onChange={(e) =>
+                            setShareConfig((prev: any) => ({
+                              ...prev,
+                              allowAnonymousDownload: e.target.checked,
+                            }))
+                          }
+                          size="small"
+                        />
+                      }
+                      label="允许免登录下载"
+                    />
+                  </FormControl>
+
+                  {/* 免登录下载流量限制 */}
+                  {shareConfig.allowAnonymousDownload && (
+                    <FormControl fullWidth size="small">
+                      <TextField
+                        label="免登录下载流量限制(为0则表示无限制)KB"
+                        size="small"
+                        type="number"
+                        value={shareConfig.anonymousDownloadTraffic}
+                        onChange={(e) =>
+                          setShareConfig((prev: any) => ({
+                            ...prev,
+                            anonymousDownloadTraffic: Number(e.target.value),
+                          }))
+                        }
+                        slotProps={{
+                          htmlInput: {
+                            min: 0,
+                            step: 100,
+                          },
+                        }}
+                      />
+                    </FormControl>
+                  )}
                 </Box>
               </Box>
             </Collapse>
@@ -403,6 +526,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                           />
                         </TableCell>
                         <TableCell>状态</TableCell>
+                        <TableCell>文件类型</TableCell>
                         <TableCell>文件名</TableCell>
                         <TableCell>文件大小</TableCell>
                         <TableCell>分享链接</TableCell>
@@ -423,6 +547,14 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                           </TableCell>
                           <TableCell align="center">
                             <StatusIcon status={result.status} />
+                          </TableCell>
+                          {/* 文件类型 */}
+                          <TableCell>
+                            {result.fileType === FileTypeEnum.folder ? (
+                              <FolderIcon fontSize="small" />
+                            ) : (
+                              <FileIcon fontSize="small" />
+                            )}
                           </TableCell>
                           <TableCell
                             sx={{
