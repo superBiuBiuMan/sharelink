@@ -8,6 +8,7 @@ export const cloudEnum = {
   alipan: "alipan",
   yidong139: "yidong139",
   lanzou: "lanzou",
+  yun115: "yun115",
 } as const;
 
 // 云盘信息
@@ -290,6 +291,37 @@ export const cloudInfoAll = {
         });
         shadowContainer.appendChild(appContainer);
         console.log(appContainer, shadowContainer);
+        return {
+          appContainer,
+          shadowContainer,
+        };
+      }
+      return {
+        appContainer,
+      };
+    },
+  },
+  [cloudEnum.yun115]: {
+    name: "115网盘", // 云盘名称
+    type: cloudEnum.yun115, // 云盘类型
+    rootElementId: "sharelink-plus-yun115", //挂载唯一id标识,判断是否挂载成功的用途
+    matchUrl: [new RegExp("115.com/*")], // 匹配url
+    mountFn: () => {
+      //挂载逻辑
+      const appContainer = document.createElement("div");
+      appContainer.style.cssText = `
+              margin-top: 12px;
+              margin-left: 10px;
+      `;
+      const mountDOM = document.querySelector("div.main-top") as HTMLElement;
+      if (mountDOM) {
+        const tempDOM = document.createElement("div");
+        tempDOM.id = cloudInfoAll[cloudEnum.yun115].rootElementId;
+        mountDOM.appendChild(tempDOM);
+        const shadowContainer = tempDOM.attachShadow({
+          mode: "open",
+        });
+        shadowContainer.appendChild(appContainer);
         return {
           appContainer,
           shadowContainer,

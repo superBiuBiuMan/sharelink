@@ -6,7 +6,9 @@ import Quark from "./clouds/quark";
 import Alipan from "./clouds/alipan";
 import Yidong139 from "./clouds/yidong139";
 import Lanzou from "./clouds/lanzou";
+import Yun115 from "./clouds/yun115";
 import { cloudEnum, getCloudInfo } from "./utils/info";
+//todo 异步引入
 export const cloudsRegister = {
   [cloudEnum.xunlei]: Xunlei,
   [cloudEnum.uc]: Uc,
@@ -16,6 +18,7 @@ export const cloudsRegister = {
   [cloudEnum.alipan]: Alipan,
   [cloudEnum.yidong139]: Yidong139,
   [cloudEnum.lanzou]: Lanzou,
+  [cloudEnum.yun115]: Yun115,
 };
 
 /**

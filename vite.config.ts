@@ -20,6 +20,7 @@ export default defineConfig({
           "https://www.aliyundrive.com/**",
           "https://www.alipan.com/**",
           "https://yun.139.com/**",
+          "https://115.com/**",
           //蓝奏云
           "https://lanzou.com/u",
           "https://www.lanzou.com/u",
