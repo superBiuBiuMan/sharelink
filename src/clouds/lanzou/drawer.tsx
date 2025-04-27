@@ -4,7 +4,6 @@ import { useBaseCloudInfo } from "@/utils/provider";
 import useShare from "@/hooks/useShare/index";
 import defaultGlobalSetting from "@/setting";
 import { useState, useImperativeHandle } from "react";
-import { ExpireTimeEnum } from "./types";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -13,12 +12,16 @@ import Drawer from "@/components/Drawer";
 import StatusCount from "@/components/StatucCount";
 import StatusIcon from "@/components/StatucIcon";
 import StatusText from "@/components/StatusText";
+import { FileTypeEnum } from "./types";
 import sleep from "@/utils/sleep";
 import { shareLogicMap } from "@/api";
+import { getFileList } from "./tools";
 import { cloudEnum } from "@/utils/info";
-import { expireTimeOptions } from "./options";
-import { generateRandomString } from "@/utils/common";
+import FolderIcon from "@mui/icons-material/Folder";
+import FileIcon from "@mui/icons-material/FilePresent";
 import { FileShareStatusEnum } from "@/hooks/useShare/types";
+import { generateRandomString } from "@/utils/common";
+import { TaskEnum } from "./types";
 import {
   formatStringForCopyAndDownload,
   transformShareInfoForXlsx,
@@ -91,8 +94,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   // 分享配置状态
   const [shareConfig, setShareConfig] = useState<any>({
     shareDelay: defaultGlobalSetting.defaultShareDelay, // 分享延迟
-    shareTheme: "", // 分享主题
-    expireTime: ExpireTimeEnum.forever, // 有效期
     enableCustomCode: false, // 是否启用自定义提取码
     customCode: "", // 自定义提取码
   });
@@ -109,16 +110,8 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
   const handlePrepareShare = async () => {
     try {
       setLoadingShareData(true);
-      //todo 查找分享文件列表
-      // const result = findNodeReact(".file-list", ["selectedRowKeys", "list"]);
-      // setShareResults(
-      //   transformShareInfo(result.list)
-      //     ?.filter((item) => result.selectedRowKeys.includes(item.id))
-      //     ?.map((item) => ({
-      //       ...item,
-      //       status: FileShareStatusEnum.ready,
-      //     })) ?? []
-      // );
+      const { folderList, fileList } = getFileList();
+      setShareResults([...folderList, ...fileList]);
       setIsPreparingShare(false);
       setIsPrepared(true);
     } catch (e) {
@@ -147,28 +140,72 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         break;
       }
       try {
-        // todo 对应的分享逻辑
+        const shareItem = shareResults[i];
+        let sendDataOne: any = {};
+        if (shareItem.fileType === FileTypeEnum.FILE) {
+          // 文件分享
+          sendDataOne = {
+            task: TaskEnum.share,
+            file_id: shareItem.id,
+          };
+        } else {
+          // 文件夹分享
+          sendDataOne = {
+            task: TaskEnum.file,
+            folder_id: shareItem.id,
+          };
+        }
+        const resOne: any =
+          await shareLogicMap[cloudEnum.lanzou].share(sendDataOne);
+        // 分享间隔延迟
+        await sleep(shareConfig.shareDelay);
+        //设置提取码
+        let password = "";
+        //自定义提取码
+        if (shareConfig.enableCustomCode) {
+          //设置密码参数
+          password = shareConfig.customCode
+            ? shareConfig.customCode
+            : generateRandomString(4);
+          sendDataOne.shownames = password;
+          //更新task参数设置
+          if (shareItem.fileType === FileTypeEnum.FILE) {
+            sendDataOne.task = TaskEnum.setCodeFile;
+          } else {
+            sendDataOne.task = TaskEnum.setCodeFolder;
+          }
+          sendDataOne.shows = "1";
+        }
+        const resTwo: any =
+          await shareLogicMap[cloudEnum.lanzou].share(sendDataOne);
+
         setShareResults((prev) => {
           const updated = [...prev];
-          // if (share_url) {
-          //   // 分享成功
-          //   updated[i] = {
-          //     ...updated[i],
-          //     expireTime: shareConfig.expireTime,
-          //     status: FileShareStatusEnum.success,
-          //     shareLink: share_url,
-          //     extractCode: passcode,
-          //     restoreLimit: shareConfig.extractLimit,
-          //     shareTheme: shareConfig.shareTheme,
-          //   };
-          // } else {
-          //   //分享失败
-          //   updated[i] = {
-          //     ...updated[i],
-          //     status: FileShareStatusEnum.error,,
-          //     message: "分享失败",
-          //   };
-          // }
+          let share_url = null;
+          // 文件分享
+          if (shareItem.fileType === FileTypeEnum.FILE) {
+            share_url = `${resOne.info.is_newd}/${resOne.info.f_id}`;
+          } else {
+            // 文件夹分享
+            share_url = resOne.info.new_url;
+          }
+
+          if (share_url) {
+            // 分享成功
+            updated[i] = {
+              ...updated[i],
+              status: FileShareStatusEnum.success,
+              shareLink: share_url,
+              extractCode: password ? password : resOne.info.pwd,
+            };
+          } else {
+            //分享失败
+            updated[i] = {
+              ...updated[i],
+              status: FileShareStatusEnum.error,
+              message: "分享失败",
+            };
+          }
           return updated;
         });
       } catch (error) {
@@ -217,6 +254,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     <Drawer
       open={open}
       onClose={handleCancelClose}
+      width="60vw"
       headerProps={{
         title: `${cloudName} 批量分享`,
         handleCancelClose,
@@ -282,78 +320,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                         },
                       }}
                     />
-                  </FormControl>
-
-                  {/* 分享主题 */}
-                  <FormControl fullWidth size="small">
-                    <TextField
-                      size="small"
-                      label="分享主题"
-                      value={shareConfig.shareTheme}
-                      onChange={(e) =>
-                        setShareConfig((prev: any) => ({
-                          ...prev,
-                          shareTheme: e.target.value,
-                        }))
-                      }
-                      placeholder="请输入分享主题"
-                      slotProps={{
-                        htmlInput: {
-                          maxLength: 30,
-                        },
-                      }}
-                    />
-                  </FormControl>
-
-                  {/* 下载次数 */}
-                  <FormControl fullWidth size="small">
-                    <InputLabel>下载次数</InputLabel>
-                    <Select
-                      label="下载次数"
-                      value={shareConfig.extractLimit}
-                      onChange={(e) =>
-                        setShareConfig((prev: any) => ({
-                          ...prev,
-                          extractLimit: Number(e.target.value),
-                        }))
-                      }
-                      size="small"
-                    >
-                      {/* todo 替换 */}
-                      {[
-                        { value: ExpireTimeEnum.oneDay, label: "1天" },
-                        { value: ExpireTimeEnum.sevenDay, label: "7天" },
-                        { value: ExpireTimeEnum.thirtyDay, label: "30天" },
-                        { value: ExpireTimeEnum.oneYear, label: "1年" },
-                        { value: ExpireTimeEnum.forever, label: "永久" },
-                      ].map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-
-                  {/* 有效期 */}
-                  <FormControl fullWidth size="small">
-                    <InputLabel>有效期</InputLabel>
-                    <Select
-                      label="有效期"
-                      value={shareConfig.expireTime}
-                      onChange={(e) =>
-                        setShareConfig((prev: any) => ({
-                          ...prev,
-                          expireTime: Number(e.target.value),
-                        }))
-                      }
-                      size="small"
-                    >
-                      {expireTimeOptions.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
                   </FormControl>
 
                   {/* 开启提取码开关 */}
@@ -475,8 +441,10 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                           />
                         </TableCell>
                         <TableCell>状态</TableCell>
+                        <TableCell>文件类型</TableCell>
                         <TableCell>文件名</TableCell>
                         <TableCell>文件大小</TableCell>
+                        <TableCell>文件时间</TableCell>
                         <TableCell>分享链接</TableCell>
                         <TableCell>提取码</TableCell>
                         <TableCell>信息</TableCell>
@@ -496,6 +464,14 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                           <TableCell align="center">
                             <StatusIcon status={result.status} />
                           </TableCell>
+                          {/* 文件类型 */}
+                          <TableCell>
+                            {result.fileType === FileTypeEnum.FOLDER ? (
+                              <FolderIcon fontSize="small" />
+                            ) : (
+                              <FileIcon fontSize="small" />
+                            )}
+                          </TableCell>
                           <TableCell
                             sx={{
                               maxWidth: "200px",
@@ -507,7 +483,12 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                           >
                             {result.fileName}
                           </TableCell>
+
+                          {/* 文件大小 */}
                           <TableCell>{result.fileSize}</TableCell>
+                          {/* 文件时间 */}
+                          <TableCell>{result.fileTime}</TableCell>
+                          {/* 分享链接 */}
                           <TableCell>
                             {result.shareLink ? (
                               <Box className="flex items-center gap-1">

@@ -20,6 +20,17 @@ export default defineConfig({
           "https://www.aliyundrive.com/**",
           "https://www.alipan.com/**",
           "https://yun.139.com/**",
+          //蓝奏云
+          "https://lanzou.com/u",
+          "https://www.lanzou.com/u",
+          "https://www.lanzou.com/account.php",
+          "https://up.woozooo.com/u",
+          "https://up.woozooo.com/mydisk.php",
+          "https://pc.woozooo.com/u",
+          "https://pc.woozooo.com/mydisk.php",
+          "https://lanzou.com/**",
+          "https://www.lanzou.com/**",
+          "https://pan.lanzou.com/**",
         ],
       },
       build: {

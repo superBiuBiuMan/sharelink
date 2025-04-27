@@ -5,6 +5,7 @@ import Tianyi from "./clouds/tianyi";
 import Quark from "./clouds/quark";
 import Alipan from "./clouds/alipan";
 import Yidong139 from "./clouds/yidong139";
+import Lanzou from "./clouds/lanzou";
 import { cloudEnum, getCloudInfo } from "./utils/info";
 export const cloudsRegister = {
   [cloudEnum.xunlei]: Xunlei,
@@ -14,6 +15,7 @@ export const cloudsRegister = {
   [cloudEnum.quark]: Quark,
   [cloudEnum.alipan]: Alipan,
   [cloudEnum.yidong139]: Yidong139,
+  [cloudEnum.lanzou]: Lanzou,
 };
 
 /**

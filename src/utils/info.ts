@@ -7,6 +7,7 @@ export const cloudEnum = {
   quark: "quark",
   alipan: "alipan",
   yidong139: "yidong139",
+  lanzou: "lanzou",
 } as const;
 
 // 云盘信息
@@ -141,7 +142,6 @@ export const cloudInfoAll = {
     rootElementId: "sharelink-plus-quark", //挂载唯一id标识,判断是否挂载成功的用途
     matchUrl: [new RegExp("pan.quark.cn/*")], // 匹配url
     mountFn: () => {
-      // todo 挂载逻辑
       const appContainer = document.createElement("div");
       appContainer.style.cssText = `
       `;
@@ -249,6 +249,47 @@ export const cloudInfoAll = {
           mode: "open",
         });
         shadowContainer.appendChild(appContainer);
+        return {
+          appContainer,
+          shadowContainer,
+        };
+      }
+      return {
+        appContainer,
+      };
+    },
+  },
+  [cloudEnum.lanzou]: {
+    name: "蓝奏云", // 云盘名称
+    type: cloudEnum.lanzou, // 云盘类型
+    rootElementId: "sharelink-plus-lanzou", //挂载唯一id标识,判断是否挂载成功的用途
+    matchUrl: [
+      new RegExp("lanzou\\.com/.*"),
+      new RegExp("www\\.lanzou\\.com/.*"),
+      new RegExp("www\\.lanzou\\.com/account\\.php"),
+      new RegExp("up\\.woozooo\\.com/.*"),
+      new RegExp("up\\.woozooo\\.com/mydisk\\.php"),
+      new RegExp("pc\\.woozooo\\.com/.*"),
+      new RegExp("pc\\.woozooo\\.com/mydisk\\.php"),
+      new RegExp("pan\\.lanzou\\.com/.*"),
+    ], // 匹配url
+    mountFn: () => {
+      //挂载逻辑
+      const appContainer = document.createElement("div");
+      appContainer.style.cssText = `
+          margin-top: -2px;
+      `;
+      const mountDOM = document.querySelector(".toum") as HTMLElement;
+      console.log(mountDOM, "22222222222222");
+      if (mountDOM) {
+        const tempDOM = document.createElement("div");
+        tempDOM.id = cloudInfoAll[cloudEnum.lanzou].rootElementId;
+        mountDOM?.append(tempDOM);
+        const shadowContainer = tempDOM.attachShadow({
+          mode: "open",
+        });
+        shadowContainer.appendChild(appContainer);
+        console.log(appContainer, shadowContainer);
         return {
           appContainer,
           shadowContainer,
