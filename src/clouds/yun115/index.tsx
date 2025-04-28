@@ -14,7 +14,7 @@ const Yun115: React.FC<Props> = () => {
   return (
     <>
       <Button
-        variant="outlined"
+        variant="contained"
         startIcon={<ShareIcon />}
         onClick={handleClick}
       >
