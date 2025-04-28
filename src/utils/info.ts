@@ -204,7 +204,10 @@ export const cloudInfoAll = {
     name: "阿里云盘", // 云盘名称
     type: cloudEnum.alipan, // 云盘类型
     rootElementId: "sharelink-plus-alipan", //挂载唯一id标识,判断是否挂载成功的用途
-    matchUrl: [new RegExp("www.alipan.com/*")], // 匹配url
+    matchUrl: [
+      new RegExp("www.alipan.com/*"),
+      new RegExp("www.aliyundrive.com/*"),
+    ], // 匹配url
     mountFn: () => {
       const appContainer = document.createElement("div");
       appContainer.style.cssText = ``;

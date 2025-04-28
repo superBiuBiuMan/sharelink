@@ -160,7 +160,8 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         };
         const res: any = await shareLogicMap[cloudEnum.alipan].share(shareData);
         setShareResults((prev) => {
-          const { share_url, share_msg, share_pwd } = res || {};
+          const { share_url, share_msg, share_pwd, display_message } =
+            res || {};
           const updated = [...prev];
           if (share_url) {
             // 分享成功
@@ -176,7 +177,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
             updated[i] = {
               ...updated[i],
               status: FileShareStatusEnum.error,
-              message: `分享失败:${share_msg}`,
+              message: `分享失败:${share_msg || display_message}`,
             };
           }
           return updated;
