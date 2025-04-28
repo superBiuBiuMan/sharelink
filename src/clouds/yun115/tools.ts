@@ -67,6 +67,20 @@ export const formatStringForCopyAndDownload = (list: ShareResult[]) => {
 };
 
 /**
+ * 格式化分享信息为下载格式2
+ * @param list 分享信息列表
+ * @returns 分享信息列表
+ */
+export const formatStringForCopyAndDownload2 = (list: ShareResult[]) => {
+  return list
+    .map(
+      (item) =>
+        `${item.fileName}[${item.fileSize}]$${item.shareLink}?password=${item.extractCode}`
+    )
+    .join("\n");
+};
+
+/**
  * 转换分享信息为xlsx格式
  * @param list 分享信息列表
  * @returns 分享信息列表
@@ -79,8 +93,10 @@ export const transformShareInfoForXlsx = (list: ShareResult[]) => {
     提取码: item.extractCode,
     有效期:
       ExpireTimeEnumMap[item.expireTime as keyof typeof ExpireTimeEnumMap],
-    接受次数限制: item.acceptLimit,
-    免登录下载流量限制: item.anonymousDownloadTraffic,
+    接受次数限制: !item.acceptLimit ? "不限制" : item.acceptLimit,
+    免登录下载流量限制: !item.anonymousDownloadTraffic
+      ? "不限制"
+      : `${item.anonymousDownloadTraffic}KB`,
   }));
 };
 //获取分享第一次信息

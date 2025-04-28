@@ -22,6 +22,7 @@ const Footer: React.FC<FooterProps> = (props) => {
     disabledCopy, // 复制按钮是否禁用
     disabledDownloadLinks, // 下载TXT按钮是否禁用
     disabledDownloadExcel, // 导出Excel按钮是否禁用
+    extraButtons,
   } = props;
   return (
     <>
@@ -79,6 +80,8 @@ const Footer: React.FC<FooterProps> = (props) => {
           >
             导出
           </Button>
+          {/* 额外的自定义按钮 */}
+          {extraButtons}
         </Box>
       </Box>
     </>

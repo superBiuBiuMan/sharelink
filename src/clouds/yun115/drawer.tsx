@@ -32,8 +32,10 @@ import { FileShareStatusEnum } from "@/hooks/useShare/types";
 import {
   formatStringForCopyAndDownload,
   transformShareInfoForXlsx,
+  formatStringForCopyAndDownload2,
 } from "./tools";
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -223,7 +225,8 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
               extractCode: infoSecond.receive_code
                 ? infoSecond.receive_code
                 : data.receive_code, //提取码
-              acceptLimit: data.receive_user_limit, //接受次数限制
+              acceptLimit: shareConfig.acceptLimit, //接受次数限制
+              anonymousDownloadTraffic: shareConfig.anonymousDownloadTraffic, //免登录下载流量限制
             };
           } else {
             //分享失败
@@ -307,6 +310,20 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         disabledDownloadLinks: isSharing,
         disabledDownloadExcel: isSharing,
       }}
+      extraButtons={
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() => {
+            handleDownloadLinks(
+              formatStringForCopyAndDownload2(filteredResults)
+            );
+          }}
+        >
+          下载格式2
+        </Button>
+      }
     >
       <Box className="flex flex-col h-full p-3">
         {/* 内容区域 */}

@@ -13,6 +13,7 @@ export interface FooterProps {
   disabledCopy: boolean; //复制按钮是否禁用
   disabledDownloadLinks: boolean; //下载TXT按钮是否禁用
   disabledDownloadExcel: boolean; //导出Excel按钮是否禁用
+  extraButtons?: React.ReactNode; //额外的自定义按钮
 }
 
 export interface HeaderProps {

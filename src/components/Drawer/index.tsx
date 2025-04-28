@@ -17,6 +17,7 @@ export interface BaseDrawerProps {
   headerProps?: HeaderProps; // 顶部内容
   children?: ReactNode; //抽屉内容
   footerProps?: FooterProps; // 底部内容
+  extraButtons?: ReactNode; // 额外按钮
 }
 
 /**
@@ -32,6 +33,7 @@ const BaseDrawer = forwardRef<BaseDrawerRef, BaseDrawerProps>((props, ref) => {
     footerProps,
     headerProps,
     className,
+    extraButtons,
   } = props;
 
   return (
@@ -57,7 +59,10 @@ const BaseDrawer = forwardRef<BaseDrawerRef, BaseDrawerProps>((props, ref) => {
         <Box className="flex-1 overflow-y-auto p-3">{children}</Box>
 
         {/* 固定底部 */}
-        <Footer {...(footerProps ? footerProps : ({} as any))} />
+        <Footer
+          {...(footerProps ? footerProps : ({} as any))}
+          extraButtons={extraButtons}
+        />
       </Box>
     </Drawer>
   );
