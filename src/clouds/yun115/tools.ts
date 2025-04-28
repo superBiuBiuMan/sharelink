@@ -79,6 +79,8 @@ export const transformShareInfoForXlsx = (list: ShareResult[]) => {
     提取码: item.extractCode,
     有效期:
       ExpireTimeEnumMap[item.expireTime as keyof typeof ExpireTimeEnumMap],
+    接受次数限制: item.acceptLimit,
+    免登录下载流量限制: item.anonymousDownloadTraffic,
   }));
 };
 //获取分享第一次信息
@@ -110,7 +112,7 @@ export const getShareSecondInfo = (resultOne: any, shareConfig: any) => {
     auto_fill_recvcode: shareConfig.autoFillAccessCode, //分享链接自动填充访问码-传入0则关闭,1则开启
     receive_user_limit: shareConfig.acceptLimit ? shareConfig.acceptLimit : "", //接收次数-不传则不限制,传入数字则限制
     skip_login: shareConfig.allowAnonymousDownload, //允许免登录下载 传入0关闭 1开启,
-    skip_login_down_flow_limit: shareConfig.anonymousDownloadTraffic
+    skip_login_down_flow_limit: shareConfig.allowAnonymousDownload
       ? shareConfig.anonymousDownloadTraffic * 1024
       : "", //免登录下载限制 - 大小  * 1024 B 不传则不限制
     share_duration: shareConfig.expireTime,
@@ -142,14 +144,14 @@ export const getShareThirdInfo = (info: any, resultOne: any) => {
   skipLoginForm.append("share_code", resultOne.data.share_code as string);
   if (info.skip_login * 1 === 1) {
     //开启免登录下载
-    skipLoginForm.append("skip_login", info.skip_login);
+    skipLoginForm.append("skip_login", "1");
     skipLoginForm.append(
       "skip_login_down_flow_limit",
       info.skip_login_down_flow_limit
     );
   } else {
     //关闭免登录下载
-    skipLoginForm.append("skip_login", info.skip_login);
+    skipLoginForm.append("skip_login", "0");
   }
   return {
     formData: skipLoginForm,

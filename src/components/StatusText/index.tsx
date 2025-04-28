@@ -5,15 +5,27 @@ const StatusText: FC<{ status: FileShareStatus; message?: string }> = ({
   status,
   message,
 }) => {
+  const style = {
+    maxWidth: "200px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap" as const,
+    display: "inline-block",
+  };
+
   switch (status) {
     case "ready":
-      return <span>准备分享</span>;
+      return <span style={style}>准备分享</span>;
     case "sharing":
-      return <span>分享中...</span>;
+      return <span style={style}>分享中...</span>;
     case "success":
-      return <span>分享成功</span>;
+      return <span style={style}>分享成功</span>;
     case "error":
-      return message || <span>分享失败</span>;
+      return message ? (
+        <span style={style}>{message}</span>
+      ) : (
+        <span style={style}>分享失败</span>
+      );
   }
 };
 

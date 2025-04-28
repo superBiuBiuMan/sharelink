@@ -3,7 +3,7 @@ import type { ShareDrawerRef, ShareResult } from "./types";
 import { useBaseCloudInfo } from "@/utils/provider";
 import useShare from "@/hooks/useShare/index";
 import defaultGlobalSetting from "@/setting";
-import { useState, useImperativeHandle } from "react";
+import { useState, useImperativeHandle, useEffect } from "react";
 import { ExpireTimeEnum } from "./types";
 import { unsafeWindow } from "$";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -98,6 +98,14 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     resetShareStatus,
     handleDefaultCloseDrawerCallback,
   } = useShare<ShareResult>({ cloudName });
+  //用户基础信息
+  const [userInfo, setUserInfo] = useState<any>(() => {
+    const { USER_PERMISSION } = unsafeWindow as any;
+    return {
+      //是否是VIP 为0则不是vip,为1则是vip
+      is_vip: USER_PERMISSION.is_vip,
+    };
+  });
   // 分享配置状态
   const [shareConfig, setShareConfig] = useState<any>({
     shareDelay: defaultGlobalSetting.defaultShareDelay, // 分享延迟
@@ -108,6 +116,19 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
     anonymousDownloadTraffic: 0, // 免登录下载流量限制(KB)
     acceptLimit: 0, // 接受次数限制
   });
+  useEffect(() => {
+    if (userInfo.is_vip) {
+      setShareConfig((prev: any) => ({
+        ...prev,
+        expireTime: ExpireTimeEnum.forever,
+      }));
+    } else {
+      setShareConfig((prev: any) => ({
+        ...prev,
+        expireTime: ExpireTimeEnum.fifteen,
+      }));
+    }
+  }, [userInfo.is_vip]);
   //根据筛选条件过滤分享结果
   const filteredResults = shareResults.filter((result) => {
     if (filterStatus === "all") return true;
@@ -170,52 +191,58 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
         console.log(resultTwo, "resultTwo");
         // 分享间隔延迟
         await sleep(shareConfig.shareDelay);
-        //第三次更新免登录下载限制
-        const { formData: formDataThird } = getShareThirdInfo(
-          infoFirst,
-          resultOne
-        );
-        const resultThree =
-          await shareLogicMap[cloudEnum.yun115].updateAnonymousDownloadLimit(
-            formDataThird
-          );
 
-        debugger;
+        //如果是VIP用户则更新免登录下载限制
+        if (userInfo.is_vip) {
+          //第三次更新免登录下载限制
+          console.log(infoSecond, "infoSecond");
+          const { formData: formDataThird } = getShareThirdInfo(
+            infoSecond,
+            resultOne
+          );
+          const resultThree =
+            await shareLogicMap[cloudEnum.yun115].updateAnonymousDownloadLimit(
+              formDataThird
+            );
+          console.log(resultThree, "resultThree");
+        }
         console.log(resultOne, "resultOne");
         console.log(resultTwo, "resultTwo");
-        console.log(resultThree, "resultThree");
         // todo 对应的分享逻辑
         setShareResults((prev) => {
           const updated = [...prev];
-          // if (share_url) {
-          //   // 分享成功
-          //   updated[i] = {
-          //     ...updated[i],
-          //     expireTime: shareConfig.expireTime,
-          //     status: FileShareStatusEnum.success,
-          //     shareLink: share_url,
-          //     extractCode: passcode,
-          //     restoreLimit: shareConfig.extractLimit,
-          //     shareTheme: shareConfig.shareTheme,
-          //   };
-          // } else {
-          //   //分享失败
-          //   updated[i] = {
-          //     ...updated[i],
-          //     status: FileShareStatusEnum.error,,
-          //     message: "分享失败",
-          //   };
-          // }
+          const { data = {} } = resultOne || {};
+          if (data.share_url) {
+            // 分享成功
+            updated[i] = {
+              ...updated[i],
+              expireTime: shareConfig.expireTime, //有效期
+              status: FileShareStatusEnum.success, //状态
+              shareLink: data.share_url, //分享链接
+              //如果是VIP设置了提取码则使用VIP的提取码,否则使用分享的提取码
+              extractCode: infoSecond.receive_code
+                ? infoSecond.receive_code
+                : data.receive_code, //提取码
+              acceptLimit: data.receive_user_limit, //接受次数限制
+            };
+          } else {
+            //分享失败
+            updated[i] = {
+              ...updated[i],
+              status: FileShareStatusEnum.error,
+              message: "分享失败" + (data.error || ""),
+            };
+          }
           return updated;
         });
-      } catch (error) {
+      } catch (error: any) {
         console.log(error, "分享失败");
         setShareResults((prev) => {
           const updated = [...prev];
           updated[i] = {
             ...updated[i],
             status: FileShareStatusEnum.error,
-            message: "分享失败",
+            message: "分享失败-" + (error?.error || ""),
           };
           return updated;
         });
@@ -325,7 +352,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                   <FormControl fullWidth size="small">
                     <InputLabel>有效期</InputLabel>
                     <Select
-                      label="有效期"
+                      label={`有效期(${userInfo.is_vip ? "VIP用户" : "非VIP用户"})`}
                       value={shareConfig.expireTime}
                       onChange={(e) =>
                         setShareConfig((prev: any) => ({
@@ -335,11 +362,23 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                       }
                       size="small"
                     >
-                      {expireTimeOptions.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
+                      {userInfo.is_vip
+                        ? expireTimeOptions.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                              {option.label}
+                            </MenuItem>
+                          ))
+                        : //排除永久
+                          expireTimeOptions
+                            .filter(
+                              (option) =>
+                                option.value !== ExpireTimeEnum.forever
+                            )
+                            .map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                            ))}
                     </Select>
                   </FormControl>
 
@@ -365,7 +404,11 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                   {/* 提取码输入框 */}
                   <FormControl fullWidth>
                     <TextField
-                      label="提取码"
+                      label={`提取码 (${
+                        userInfo.is_vip
+                          ? "VIP用户可自定义"
+                          : "非VIP用户不可自定义"
+                      })`}
                       size="small"
                       value={shareConfig.customCode}
                       onChange={(e) =>
@@ -375,7 +418,9 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                         }))
                       }
                       placeholder="(可空)只能包含大小写英文+数字)"
-                      disabled={shareConfig.autoFillAccessCode}
+                      disabled={
+                        shareConfig.autoFillAccessCode || !userInfo.is_vip
+                      }
                       slotProps={{
                         htmlInput: {
                           maxLength: 4,
@@ -410,6 +455,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                     <FormControlLabel
                       control={
                         <Switch
+                          disabled={!userInfo.is_vip}
                           checked={shareConfig.allowAnonymousDownload}
                           onChange={(e) =>
                             setShareConfig((prev: any) => ({
@@ -420,7 +466,7 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                           size="small"
                         />
                       }
-                      label="允许免登录下载"
+                      label={`允许免登录下载${userInfo.is_vip ? "" : " (VIP用户才可用)"}`}
                     />
                   </FormControl>
 

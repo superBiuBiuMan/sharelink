@@ -9,7 +9,11 @@ export default {
         url: `https://webapi.115.com/category/get?cid=${id}`,
         onload: ({ response }) => {
           const result: any = JSON.parse(response);
-          resolve(result?.size ?? "");
+          if (!result.error) {
+            resolve(result?.size ?? "");
+          } else {
+            reject(result);
+          }
         },
         onerror: (err) => {
           reject(err);
@@ -28,7 +32,12 @@ export default {
           Accept: "application/json, text/javascript, */*; q=0.01",
         },
         onload: ({ response }) => {
-          resolve(JSON.parse(response));
+          const result: any = JSON.parse(response);
+          if (!result.error) {
+            resolve(result);
+          } else {
+            reject(result);
+          }
         },
         onerror: (err) => {
           reject(err);
@@ -47,7 +56,12 @@ export default {
         },
         data,
         onload: ({ response }) => {
-          resolve(JSON.parse(response));
+          const result: any = JSON.parse(response);
+          if (!result.error) {
+            resolve(result);
+          } else {
+            reject(result);
+          }
         },
         onerror: (err) => {
           reject(err);
@@ -67,7 +81,12 @@ export default {
         },
         data,
         onload: ({ response }) => {
-          resolve(JSON.parse(response));
+          const result: any = JSON.parse(response);
+          if (!result.error) {
+            resolve(result);
+          } else {
+            reject(result);
+          }
         },
         onerror: (res) => {
           reject(res);
