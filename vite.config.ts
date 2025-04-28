@@ -15,6 +15,7 @@ export default defineConfig({
           "https://pan.xunlei.com/**",
           "https://drive.uc.cn/**",
           "https://pan.baidu.com/disk/main*",
+          "https://pan.baidu.com/disk/synchronization*",
           "https://cloud.189.cn/**",
           "https://pan.quark.cn/**",
           "https://www.aliyundrive.com/**",

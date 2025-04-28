@@ -7,6 +7,7 @@ import Alipan from "./clouds/alipan";
 import Yidong139 from "./clouds/yidong139";
 import Lanzou from "./clouds/lanzou";
 import Yun115 from "./clouds/yun115";
+import BaiduSync from "./clouds/baiduSync";
 import { cloudEnum, getCloudInfo } from "./utils/info";
 //todo 异步引入
 export const cloudsRegister = {
@@ -19,6 +20,7 @@ export const cloudsRegister = {
   [cloudEnum.yidong139]: Yidong139,
   [cloudEnum.lanzou]: Lanzou,
   [cloudEnum.yun115]: Yun115,
+  [cloudEnum.baiduSync]: BaiduSync,
 };
 
 /**

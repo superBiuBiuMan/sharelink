@@ -1,14 +1,15 @@
 // 云盘类型
 export const cloudEnum = {
-  xunlei: "xunlei",
-  uc: "uc",
-  baidu: "baidu",
-  tianyi: "tianyi",
-  quark: "quark",
-  alipan: "alipan",
-  yidong139: "yidong139",
-  lanzou: "lanzou",
-  yun115: "yun115",
+  xunlei: "xunlei", // 迅雷网盘
+  uc: "uc", // UC网盘
+  baidu: "baidu", // 百度网盘
+  baiduSync: "baiduSync", // 百度网盘同步
+  tianyi: "tianyi", // 天翼云盘
+  quark: "quark", // 天翼云盘
+  alipan: "alipan", // 阿里云盘
+  yidong139: "yidong139", // 中国移动网盘
+  lanzou: "lanzou", // 蓝奏云
+  yun115: "yun115", // 115网盘
 } as const;
 
 // 云盘信息
@@ -93,6 +94,37 @@ export const cloudInfoAll = {
       if (mountDOM) {
         const tempDOM = document.createElement("div");
         tempDOM.id = cloudInfoAll[cloudEnum.baidu].rootElementId;
+        mountDOM?.insertBefore(tempDOM, mountDOM?.firstChild);
+        const shadowContainer = tempDOM.attachShadow({
+          mode: "open",
+        });
+        shadowContainer.appendChild(appContainer);
+        return {
+          appContainer,
+          shadowContainer,
+        };
+      }
+      return {
+        appContainer,
+      };
+    },
+  },
+  [cloudEnum.baiduSync]: {
+    name: "百度网盘同步", // 云盘名称
+    type: cloudEnum.baiduSync, // 云盘类型
+    rootElementId: "sharelink-plus-baiduSync", //挂载唯一id标识,判断是否挂载成功的用途
+    matchUrl: [new RegExp("pan.baidu.com/disk/synchronization*")], // 匹配url
+    mountFn: () => {
+      const appContainer = document.createElement("div");
+      appContainer.style.cssText = `
+          text-align:center;
+      `;
+      const mountDOM = document.querySelector(
+        "div.wp-aside-nav__sub-top"
+      ) as HTMLElement;
+      if (mountDOM) {
+        const tempDOM = document.createElement("div");
+        tempDOM.id = cloudInfoAll[cloudEnum.baiduSync].rootElementId;
         mountDOM?.insertBefore(tempDOM, mountDOM?.firstChild);
         const shadowContainer = tempDOM.attachShadow({
           mode: "open",
