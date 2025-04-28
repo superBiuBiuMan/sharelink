@@ -476,7 +476,25 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                               "-"
                             )}
                           </TableCell>
-                          <TableCell>{result.extractCode || "-"}</TableCell>
+                          <TableCell>
+                            {result.extractCode ? (
+                              <Box className="flex items-center gap-1">
+                                <span className="truncate max-w-[150px]">
+                                  {result.extractCode}
+                                </span>
+                                <IconButton
+                                  size="small"
+                                  onClick={() =>
+                                    copyLink(result.extractCode ?? "")
+                                  }
+                                >
+                                  <ContentCopyIcon fontSize="small" />
+                                </IconButton>
+                              </Box>
+                            ) : (
+                              "-"
+                            )}
+                          </TableCell>
                           <TableCell>
                             <StatusText
                               status={result.status}

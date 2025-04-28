@@ -79,7 +79,7 @@ function useShare<T extends BaseShareResult>({
   const copyLink = (link: string) => {
     copy(link)
       .then(() => {
-        notifications.show("链接已复制", {
+        notifications.show("已复制", {
           autoHideDuration: 1500,
           severity: "success",
         });
