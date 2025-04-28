@@ -88,7 +88,7 @@ export const formatStringForCopyAndDownload = (list: ShareResult[]) => {
   if (!list || !list?.length) return "";
   return list
     ?.map((item) => {
-      return `${item?.fileName}: ${item?.shareLink} 提取码: ${item?.extractCode}`;
+      return `${item?.fileName} ${item?.shareLink} ${item?.extractCode}`;
     })
     .join("\n");
 };

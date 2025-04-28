@@ -51,7 +51,7 @@ export const getBaiduBaseShareParams = () => {
  */
 export const formatStringForCopyAndDownload = (list: ShareResult[]) => {
   return list
-    .map((item) => `${item.fileName} - ${item.shareLink} ${item.extractCode}`)
+    .map((item) => `${item.fileName} ${item.shareLink} ${item.extractCode}`)
     .join("\n");
 };
 /**
