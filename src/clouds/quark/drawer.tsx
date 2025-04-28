@@ -332,7 +332,6 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                       }
                       size="small"
                     >
-                      {/* todo 替换 */}
                       {expireTimeOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                           {option.label}
