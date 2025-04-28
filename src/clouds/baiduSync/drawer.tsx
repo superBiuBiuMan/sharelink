@@ -148,6 +148,8 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
       try {
         const pwd = shareConfig.enableCustomCode
           ? shareConfig.customCode
+            ? shareConfig.customCode
+            : generateRandomString()
           : generateRandomString();
         const res = await shareLogicMap[cloudEnum.baidu].share(
           window.location.origin + "/share/set",
