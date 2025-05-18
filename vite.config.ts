@@ -11,7 +11,7 @@ export default defineConfig({
       userscript: {
         name: "网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)",
         author: "superBiuBiu",
-        version: "3.0.1",
+        version: "3.0.2",
         namespace: "dreamlove",
         match: [
           "https://pan.xunlei.com/**",

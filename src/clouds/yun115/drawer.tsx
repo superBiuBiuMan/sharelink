@@ -379,23 +379,11 @@ const ShareDrawer = forwardRef<ShareDrawerRef>((props, ref) => {
                       }
                       size="small"
                     >
-                      {userInfo.is_vip
-                        ? expireTimeOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                              {option.label}
-                            </MenuItem>
-                          ))
-                        : //排除永久
-                          expireTimeOptions
-                            .filter(
-                              (option) =>
-                                option.value !== ExpireTimeEnum.forever
-                            )
-                            .map((option) => (
-                              <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                              </MenuItem>
-                            ))}
+                      {expireTimeOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
 
