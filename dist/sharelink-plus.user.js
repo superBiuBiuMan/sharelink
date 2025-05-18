@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         网盘批量分享工具(支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘)
 // @namespace    dreamlove
-// @version      3.0.1
+// @version      3.0.2
 // @author       superBiuBiu
 // @description  网盘文件批量分享,目前支持蓝奏云,115网盘,123网盘,百度网盘,夸克网盘,阿里云盘,天翼网盘,迅雷网盘,中国移动网盘,UC网盘~
 // @iconURL      https://www.google.com/s2/favicons?domain=dreamlove.top
@@ -26970,12 +26970,7 @@ For detailed: https://alova.js.org/error#${errorCode}` : ""));
                       expireTime: Number(e.target.value)
                     })),
                     size: "small",
-                    children: userInfo.is_vip ? expireTimeOptions.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsx(MenuItem, { value: option.value, children: option.label }, option.value)) : (
-                      //排除永久
-                      expireTimeOptions.filter(
-                        (option) => option.value !== ExpireTimeEnum$1.forever
-                      ).map((option) => /* @__PURE__ */ jsxRuntimeExports.jsx(MenuItem, { value: option.value, children: option.label }, option.value))
-                    )
+                    children: expireTimeOptions.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsx(MenuItem, { value: option.value, children: option.label }, option.value))
                   }
                 )
               ] }),
